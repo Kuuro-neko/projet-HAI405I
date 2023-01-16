@@ -37,7 +37,7 @@ def login():
       for users in data:
          if users['user'] == login and users['password'] == password:
             session['user'] = login
-            return render_template("index.html")
+            return redirect(url_for('index'))
       return render_template("login.html", error = "Login ou mot de passe incorrect")
    else:
       return render_template("login.html")
