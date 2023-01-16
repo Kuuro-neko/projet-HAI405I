@@ -8,7 +8,11 @@
    <body>
     <center>
         <h1>Projet-HAI405I</h1>
+
         <a href="{{ url_for('login') }}">Connexion</a>
+        {% if name != None %}
+            <a href="{{ url_for('logout') }}">Déconnexion</a>
+        {% endif %}
     </center>
    </body>
    
