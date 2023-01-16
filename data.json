@@ -6,18 +6,34 @@
             {
                 "type": "QCM",
                 "text": "Quelle est la capitale de la France ?",
+                "etiquettes": [],
                 "answers": [
                     {
                         "text": "Paris",
-                        "isCorrect": true
+                        "isCorrect": "on"
                     },
                     {
-                        "text": "Lyon",
-                        "isCorrect": false
+                        "text": "N\u00eemes",
+                        "isCorrect": null
                     },
                     {
                         "text": "Marseille",
-                        "isCorrect": false
+                        "isCorrect": null
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "De quelle couleur est une orange ?",
+                "etiquettes": [],
+                "answers": [
+                    {
+                        "text": "Orange",
+                        "isCorrect": "1"
+                    },
+                    {
+                        "text": "Jaune",
+                        "isCorrect": null
                     }
                 ]
             }
