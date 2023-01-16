@@ -57,6 +57,27 @@ def login():
    else:
       return render_template("login.html")
 
+@app.route("/inscription", methods = ['POST', 'GET'])
+def inscription():
+   if request.method == 'POST':
+      with open('data.json', 'r') as fp:
+         data = json.load(fp)
+      login = request.form['login']
+      password = request.form['password']
+      for users in data:
+         if users['user'] == login:
+            return render_template("inscription.html", error = "Login déjà utilisé")
+      data.append({
+         "user": login,
+         "password": password,
+         "questions": []
+      })
+      with open('data.json', 'w') as fp:
+         json.dump(data, fp, indent=4)
+      return redirect(url_for('login'))
+   else:
+      return render_template("inscription.html")
+
 @app.route("/questions")
 def questions():
    if 'user' in session:
