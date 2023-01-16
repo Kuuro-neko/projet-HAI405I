@@ -1,0 +1,24 @@
+<html>
+
+   <head>
+    <title>Questions</title>
+      <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
+   </head>
+   
+   <body>
+    <center>
+        <h1>Bonjour, {{ name }} ! Vos questions :</h1>
+        <a href="{{ url_for('add_question') }}">Créer une nouvelle question</a>
+        {% for i in range(0, length) %}
+            <div class="question" id="{{ i }}">
+                <h2 id="text">{{ questions[i].text }}</h2>
+                <!-- Boutons edit et suppr -->
+                <a href="{{ url_for('edit_question', id_question = i) }}">Modifier</a>
+                <a href="{{ url_for('del_question', id_question = i) }}">Supprimer</a>
+            </div>
+        {% endfor %}
+        <a href="{{ url_for('index') }}">Retour</a>
+    </center>
+   </body>
+   
+</html>

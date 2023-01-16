@@ -1,0 +1,67 @@
+<html>
+
+   <head>
+    <title>Modifier question</title>
+      <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
+
+      <script>
+        var nbAnswers = parseInt("{{ nbAnswers }}");
+        function addAnswer() {
+            answers = document.getElementById("answers");
+            answer = document.createElement("div");
+            answer.id = "answer" + nbAnswers;
+            answerCheckbox = document.createElement("input");
+            answerCheckbox.type = "checkbox";
+            answerCheckbox.name = "correct" + nbAnswers;
+            answerCheckbox.value = "1";
+            answerText = document.createElement("input");
+            answerText.type = "text";
+            answerText.name = "text" + nbAnswers;
+            answerText.placeholder = "Réponse " + (nbAnswers + 1);
+            answer.appendChild(answerCheckbox);
+            answer.appendChild(answerText);
+            answers.appendChild(answer);
+            nbAnswers++;
+            nbAnswersInput = document.getElementById("nbAnswers");
+            nbAnswersInput.value = nbAnswers;
+        }
+        function delAnswer() {
+            answer = document.getElementById("answer" + (nbAnswers - 1));
+            answers.removeChild(answer);
+            nbAnswers--;
+            nbAnswersInput = document.getElementById("nbAnswers");
+            nbAnswersInput.value = nbAnswers;
+        }
+      </script>
+   </head>
+   
+   <body>
+    <center>
+        <h1>modification de question</h1>
+        <form method="post">
+            <p>Type : {{ question.type }}</p>
+            <label for="text">Question :</label>
+            <input type="text" name="text" placeholder="Quelle est la capitale de la France ?" value="{{ question.text }}">
+            <div id="answers">
+                {% for i in range(0, nbAnswers) %}
+                <div id="answer{{ i }}">
+                    {% if question['answers'][i]['isCorrect'] %}
+                        <input type="checkbox" name="correct{{ i }}" checked>
+                    {% else %}
+                        <input type="checkbox" name="correct{{ i }}">
+                    {% endif %}
+                    <input type="text" name="text{{ i }}" value='{{ question["answers"][i]["text"] }}'>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" onclick="addAnswer()">Ajouter une réponse</button>
+            <button type="button" onclick="delAnswer()">Supprimer une réponse</button>
+            <input type="submit" value="Modifier">
+            <input type="hidden" name="id_question" value="{{ id_question }}">
+            <input type="hidden" name="nbAnswers" value="{{ nbAnswers }}" id="nbAnswers">
+        </form>
+    </center>
+   </body>
+   
+   
+</html>

@@ -14,6 +14,21 @@ app.secret_key = "super secret key"
 host = '0.0.0.0'
 port = 8888
 
+def get_user_id(user):
+   with open('data.json', 'r') as fp:
+      data = json.load(fp)
+   
+   for i in range(len(data)):
+      if data[i]['user'] == user:
+         return i
+   return None
+
+def get_questions(user):
+   with open('data.json', 'r') as fp:
+      data = json.load(fp)
+   user_id = get_user_id(user)
+   return data[user_id]['questions']
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -41,6 +56,100 @@ def login():
       return render_template("login.html", error = "Login ou mot de passe incorrect")
    else:
       return render_template("login.html")
+
+@app.route("/questions")
+def questions():
+   if 'user' in session:
+      name = session['user']
+      questions = get_questions(name)
+      return render_template("questions.html", name = name, questions = questions, length = len(questions))
+   return render_template("index.html", name = None)
+
+@app.route("/del_question/<int:id_question>")
+def del_question(id_question):
+   if 'user' in session:
+      name = session['user']
+      with open('data.json', 'r') as fp:
+         data = json.load(fp)
+      user_id = get_user_id(name)
+      data[user_id]['questions'].pop(id_question)
+      with open('data.json', 'w') as fp:
+         json.dump(data, fp, indent=4)
+      return redirect(url_for('questions'))
+   return render_template("index.html", name = None)
+
+@app.route("/add_question", methods = ['POST', 'GET'])
+def add_question():
+   if request.method == 'POST':
+      with open('data.json', 'r') as fp:
+         data = json.load(fp)
+      
+      text = request.form['text']
+      user = session['user']
+      user_id = get_user_id(user)
+
+      nbAnswers = request.form['nbAnswers']
+      answers = []
+      for i in range(int(nbAnswers)):
+         answers.append({
+            "text": request.form['text' + str(i)],
+            "isCorrect": request.form.get('correct' + str(i)) != None
+         })
+
+      question = {
+         "type" : "QCM",
+         "text": text,
+         "etiquettes" : [],
+         "answers": answers
+      }
+      data[user_id]['questions'].append(question)
+      with open('data.json', 'w') as fp:
+         json.dump(data, fp, indent=4)
+      
+      return redirect(url_for('questions'))
+   else:
+      return render_template("add_question.html")
+
+@app.route("/edit_question/<int:id_question>", methods = ['POST', 'GET'])
+def edit_question(id_question):
+   
+   if 'user' in session:
+      if request.method == 'POST':
+         with open('data.json', 'r') as fp:
+            data = json.load(fp)
+         
+         text = request.form['text']
+         user = session['user']
+         user_id = get_user_id(user)
+         id_question = int(request.form['id_question'])
+
+         nbAnswers = request.form['nbAnswers']
+         answers = []
+         for i in range(int(nbAnswers)):
+            answers.append({
+               "text": request.form['text' + str(i)],
+               "isCorrect": request.form.get('correct' + str(i)) != None
+            })
+
+         question = {
+            "type" : "QCM",
+            "text": text,
+            "etiquettes" : [],
+            "answers": answers
+         }
+
+         data[user_id]['questions'][id_question] = question
+
+         with open('data.json', 'w') as fp:
+            json.dump(data, fp, indent=4)
+         
+         return redirect(url_for('questions'))
+      else:
+         name = session['user']
+         questions = get_questions(name)
+         nbAnswers = len(questions[id_question]['answers'])
+         return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, nbAnswers = nbAnswers)
+   return render_template("index.html", name = None)
 
 @app.route('/hello')
 def hello_world():
