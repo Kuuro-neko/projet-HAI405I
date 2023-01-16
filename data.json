@@ -10,15 +10,15 @@
                 "answers": [
                     {
                         "text": "Paris",
-                        "isCorrect": "on"
+                        "isCorrect": true
                     },
                     {
                         "text": "N\u00eemes",
-                        "isCorrect": null
+                        "isCorrect": false
                     },
                     {
                         "text": "Marseille",
-                        "isCorrect": null
+                        "isCorrect": false
                     }
                 ]
             },
@@ -29,11 +29,11 @@
                 "answers": [
                     {
                         "text": "Orange",
-                        "isCorrect": "1"
+                        "isCorrect": true
                     },
                     {
                         "text": "Jaune",
-                        "isCorrect": null
+                        "isCorrect": false
                     }
                 ]
             }

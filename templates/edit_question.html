@@ -45,7 +45,7 @@
             <div id="answers">
                 {% for i in range(0, nbAnswers) %}
                 <div id="answer{{ i }}">
-                    {% if question['answers'][i]['isCorrect'] == "1" %}
+                    {% if question['answers'][i]['isCorrect'] %}
                         <input type="checkbox" name="correct{{ i }}" checked>
                     {% else %}
                         <input type="checkbox" name="correct{{ i }}">

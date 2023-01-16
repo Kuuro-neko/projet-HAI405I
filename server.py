@@ -93,7 +93,7 @@ def add_question():
       for i in range(int(nbAnswers)):
          answers.append({
             "text": request.form['text' + str(i)],
-            "isCorrect": request.form.get('correct' + str(i))
+            "isCorrect": request.form.get('correct' + str(i)) != None
          })
 
       question = {
@@ -128,7 +128,7 @@ def edit_question(id_question):
          for i in range(int(nbAnswers)):
             answers.append({
                "text": request.form['text' + str(i)],
-               "isCorrect": request.form.get('correct' + str(i))
+               "isCorrect": request.form.get('correct' + str(i)) != None
             })
 
          question = {
