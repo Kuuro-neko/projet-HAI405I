@@ -1,0 +1,26 @@
+[
+    {
+        "user": "Test",
+        "password": "test",
+        "questions": [
+            {
+                "type": "QCM",
+                "text": "Quelle est la capitale de la France ?",
+                "answers": [
+                    {
+                        "text": "Paris",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Lyon",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Marseille",
+                        "isCorrect": false
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,4 +1,0 @@
-IPhone---Un IPhone ?---1500---20
-Stylo 4 couleurs---Un stylo bien pratique---2---560
-Gomme---Une petite gomme pratique---0.75---234
-Bouton html---Un élément de html pour valider des formulaires par exemple---15.02---13
