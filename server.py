@@ -29,6 +29,42 @@ def get_questions(user):
    user_id = get_user_id(user)
    return data[user_id]['questions']
 
+def majListeEtiquettes(listeEtiquettes):
+   with open('etiquettes.json', 'r') as fp:
+      data = json.load(fp)
+   for etiquette in listeEtiquettes:
+      if etiquette not in data:
+         data.append(etiquette)
+   with open('etiquettes.json', 'w') as fp:
+      json.dump(data, fp, indent=4)
+
+def get_etiquettes():
+   with open('etiquettes.json', 'r') as fp:
+      data = json.load(fp)
+   return data
+
+def clear_etiquettes_non_utilisees():
+   with open('etiquettes.json', 'r') as fp:
+      data = json.load(fp)
+   with open('data.json', 'r') as fp:
+      data2 = json.load(fp)
+      
+   # Pour chaque etiquette, si on la trouve dans une question, on la garde sinon on la supprime
+   for etiquette in data:
+      found = False
+      for user in data2:
+         if found:
+            break
+         for question in user['questions']:
+            if etiquette in question['etiquettes']:
+               found = True
+               break
+      if not found:
+         data.remove(etiquette)
+   
+   with open('etiquettes.json', 'w') as fp:
+      json.dump(data, fp, indent=4)
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -106,6 +142,8 @@ def add_question():
          data = json.load(fp)
       
       text = request.form['text']
+      etiquettes = json.loads(request.form['etiquettes'])
+      majListeEtiquettes(etiquettes)
       user = session['user']
       user_id = get_user_id(user)
 
@@ -120,7 +158,7 @@ def add_question():
       question = {
          "type" : "QCM",
          "text": text,
-         "etiquettes" : [],
+         "etiquettes" : etiquettes,
          "answers": answers
       }
       data[user_id]['questions'].append(question)
@@ -129,7 +167,8 @@ def add_question():
       
       return redirect(url_for('questions'))
    else:
-      return render_template("add_question.html")
+      etiquettes_existantes = get_etiquettes()
+      return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes)
 
 @app.route("/edit_question/<int:id_question>", methods = ['POST', 'GET'])
 def edit_question(id_question):
@@ -140,6 +179,8 @@ def edit_question(id_question):
             data = json.load(fp)
          
          text = request.form['text']
+         etiquettes = json.loads(request.form['etiquettes'])
+         majListeEtiquettes(etiquettes)
          user = session['user']
          user_id = get_user_id(user)
          id_question = int(request.form['id_question'])
@@ -155,7 +196,7 @@ def edit_question(id_question):
          question = {
             "type" : "QCM",
             "text": text,
-            "etiquettes" : [],
+            "etiquettes" : etiquettes,
             "answers": answers
          }
 
@@ -169,13 +210,11 @@ def edit_question(id_question):
          name = session['user']
          questions = get_questions(name)
          nbAnswers = len(questions[id_question]['answers'])
-         return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, nbAnswers = nbAnswers)
+         etiquettes_existantes = get_etiquettes()
+         return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, nbAnswers = nbAnswers, etiquettes_existantes = etiquettes_existantes)
    return render_template("index.html", name = None)
-
-@app.route('/hello')
-def hello_world():
-   return "hello world"
 
 if __name__ == '__main__':
   #app.run(host=host, port=port)
   app.run(host=host, port=port, debug=True)
+

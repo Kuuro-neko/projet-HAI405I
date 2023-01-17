@@ -9,7 +9,11 @@
       <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
       <!-- Bootstrap 5 CSS --><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
       <!-- Font Awesome CSS --><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
+      <script src="{{ url_for('static', filename = 'etiquettes.js') }} "></script>
+      
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" rel="stylesheet"/>
+      <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
       <script>
         var nbAnswers = 1;
         function addAnswer() {
@@ -38,6 +42,11 @@
             nbAnswersInput = document.getElementById("nbAnswers");
             nbAnswersInput.value = nbAnswers;
         }
+        $(function() {
+            $( "#input_etiquette" ).autocomplete({
+                source: {{ etiquettes_existantes | tojson }}
+            });
+        });
       </script>
    </head>
    
@@ -45,22 +54,40 @@
     <center>
         <h1>Création de question</h1>
         <form method="post">
+
             <p>Type : QCM</p>
+
             <label for="text">Question :</label>
             <input type="text" name="text" placeholder="Quelle est la capitale de la France ?">
+
+            <br><br><!-- Supprimer les BR et les remplacer par du css -->
+
+            <div id="form-etiquettes" style="border: solid grey 1px; padding: 10px;">
+                <label for="etiquette">Etiquettes :</label>
+                <div id="etiquettes-list">
+                </div>
+                <input type="hidden" name="etiquettes" value="" id="etiquettes">
+                <div id="add_etiquette">
+                    <input id="input_etiquette" placeholder="Ajouter une étiquette">
+                    <button type="button" onclick="addEtiquette()">Ajouter</button>
+                </div>
+            </div>
+            
+            <br><br><!-- Supprimer les BR et les remplacer par du css -->
+
             <div id="answers">
                 <div id="answer0">
                     <input type="checkbox" name="correct0" value="1">
                     <input type="text" name="text0" placeholder="Réponse 1">
                 </div>
             </div>
+            <input type="hidden" name="nbAnswers" value="1" id="nbAnswers">
             <button type="button" onclick="addAnswer()">Ajouter une réponse</button>
             <!--<button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">Trash</button>-->
             <button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">
                 <span class="btn-label"><i class="fa fa-trash"></i></span> Suppr. Dernière réponse
             </button>
             <input type="submit" value="Créer">
-            <input type="hidden" name="nbAnswers" value="1" id="nbAnswers">
         </form>
     </center>
    </body>
