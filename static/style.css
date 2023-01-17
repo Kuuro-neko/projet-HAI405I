@@ -31,6 +31,13 @@
     margin-top: 15px;
 }
 
+.question {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 #etiquettes-list {
     display: flex;
     flex-direction: column;
@@ -39,7 +46,14 @@
     margin-top: 20px;
 }
 
-.etiquette {
+.etiquette, .etiquettes {
     display: flex;
     flex-direction: row;
+}
+
+.etiquettes p {
+    margin: 10px;
+    border: 1px solid grey;
+    padding: 5px;
+    border-radius: 5px;
 }

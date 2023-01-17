@@ -17,7 +17,6 @@
         {% for i in range(0, length) %}
             <div class="question" id="{{ i }}">
                 <h2 id="text">{{ questions[i].text }}</h2>
-                Etiquettes : <!-- Supprimer quand le css rend évident que c'est des étiquettes -->
                 <div class="etiquettes">
                     {% for etiquette in questions[i].etiquettes %}
                         <p>{{ etiquette }}</p>
