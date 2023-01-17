@@ -6,7 +6,10 @@
             {
                 "type": "QCM",
                 "text": "Quelle est la capitale de la France ?",
-                "etiquettes": ["France", "Capitale"],
+                "etiquettes": [
+                    "France",
+                    "Capitale"
+                ],
                 "answers": [
                     {
                         "text": "oui",
@@ -14,6 +17,32 @@
                     },
                     {
                         "text": "non",
+                        "isCorrect": false
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "Est ce que les etiquettes marchent ?",
+                "etiquettes": [
+                    "Spaghetti code",
+                    "Javascript"
+                ],
+                "answers": [
+                    {
+                        "text": "Paris",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Oui",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Peut \u00eatre",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Non",
                         "isCorrect": false
                     }
                 ]

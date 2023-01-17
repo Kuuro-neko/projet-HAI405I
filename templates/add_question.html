@@ -38,6 +38,39 @@
             nbAnswersInput = document.getElementById("nbAnswers");
             nbAnswersInput.value = nbAnswers;
         }
+        
+        function addEtiquette() {
+            let texte = document.getElementsByName("etiquette")[0].value;
+            let etiquettes = document.getElementById("etiquettes-list");
+            let etiquette = document.createElement("div");
+            etiquette.id = texte;
+            etiquette.className = "etiquette";
+            let etiquetteText = document.createElement("p");
+            etiquetteText.innerHTML = texte;
+            let etiquetteButton = document.createElement("button");
+            etiquetteButton.type = "button";
+            etiquetteButton.onclick = function() { delEtiquette(texte); };
+            etiquetteButton.innerHTML = "Supprimer";
+            etiquette.appendChild(etiquetteText);
+            etiquette.appendChild(etiquetteButton);
+            etiquettes.appendChild(etiquette);
+            majInputEtiquettes()
+        }
+        function delEtiquette(id) {
+            let etiquettes = document.getElementById("etiquettes-list");
+            let etiquette = document.getElementById(id);
+            etiquettes.removeChild(etiquette);
+            majInputEtiquettes()
+        }
+        function majInputEtiquettes() {
+            let etiquettes = document.getElementsByClassName("etiquette");
+            let inputEtiquettes = document.getElementById("etiquettes");
+            let liste = [];
+            for (let etiquette of etiquettes) {
+                liste.push(etiquette.id);
+            }
+            inputEtiquettes.value = JSON.stringify(liste);
+        }
       </script>
    </head>
    
@@ -55,14 +88,7 @@
 
             <div id="form-etiquettes" style="border: solid grey 1px; padding: 10px;">
                 <label for="etiquette">Etiquettes :</label>
-                <div id="etiquettes">
-
-                    <div id="etiquette0" class="etiquette">
-                        <p id="etiquette0">Nom</p>
-                        <button type="button" onclick="delEtiquette(0)">Supprimer</button>
-                    </div>
-                    
-
+                <div id="etiquettes-list">
                 </div>
                 <input type="hidden" name="etiquettes" value="" id="etiquettes">
                 <div id="add_etiquette">

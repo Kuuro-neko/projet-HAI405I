@@ -29,6 +29,15 @@ def get_questions(user):
    user_id = get_user_id(user)
    return data[user_id]['questions']
 
+def majListeEtiquettes(listeEtiquettes):
+   with open('etiquettes.json', 'r') as fp:
+      data = json.load(fp)
+   for etiquette in listeEtiquettes:
+      if etiquette not in data:
+         data.append(etiquette)
+   with open('etiquettes.json', 'w') as fp:
+      json.dump(data, fp, indent=4)
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -106,6 +115,8 @@ def add_question():
          data = json.load(fp)
       
       text = request.form['text']
+      etiquettes = json.loads(request.form['etiquettes'])
+      majListeEtiquettes(etiquettes)
       user = session['user']
       user_id = get_user_id(user)
 
@@ -120,7 +131,7 @@ def add_question():
       question = {
          "type" : "QCM",
          "text": text,
-         "etiquettes" : [],
+         "etiquettes" : etiquettes,
          "answers": answers
       }
       data[user_id]['questions'].append(question)
@@ -140,6 +151,8 @@ def edit_question(id_question):
             data = json.load(fp)
          
          text = request.form['text']
+         etiquettes = json.loads(request.form['etiquettes'])
+         majListeEtiquettes(etiquettes)
          user = session['user']
          user_id = get_user_id(user)
          id_question = int(request.form['id_question'])
@@ -155,7 +168,7 @@ def edit_question(id_question):
          question = {
             "type" : "QCM",
             "text": text,
-            "etiquettes" : [],
+            "etiquettes" : etiquettes,
             "answers": answers
          }
 
@@ -179,3 +192,4 @@ def hello_world():
 if __name__ == '__main__':
   #app.run(host=host, port=port)
   app.run(host=host, port=port, debug=True)
+

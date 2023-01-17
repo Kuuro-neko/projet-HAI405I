@@ -30,3 +30,16 @@
     font-size: 20px;
     margin-top: 15px;
 }
+
+#etiquettes-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.etiquette {
+    display: flex;
+    flex-direction: row;
+}
