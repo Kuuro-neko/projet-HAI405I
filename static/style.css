@@ -3,13 +3,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
 } 
+
 .login{
     width : 360px;
     height: min-content;
     padding: 20px;
-    border-radius: 12px;
-    background: #ffff;
+
 }
 
 .login h1 {
@@ -29,6 +30,10 @@
 .login form input[type="submit"] {
     font-size: 20px;
     margin-top: 15px;
+}
+
+.editDelet {
+    text-align: right;
 }
 
 .question {

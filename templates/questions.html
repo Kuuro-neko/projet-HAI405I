@@ -7,33 +7,73 @@
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
       <!-- Font Awesome CSS -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">    
+      <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
+      <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
+      <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
+      <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
    </head>
    
    <body>
     <center>
-        <h1>Bonjour, {{ name }} ! Vos questions :</h1>
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <div class="container-fluid">
+              <h3 class="navbar-brand">Bonjour, {{ name }} !</h3>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                  {% if name != None %}
+                  <a class="nav-link" href="{{ url_for('logout') }}">Se déconnecter</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </nav>
+        
         <a href="{{ url_for('add_question') }}">Créer une nouvelle question</a>
         {% for i in range(0, length) %}
-            <div class="question" id="{{ i }}">
-                <h2 id="text">{{ questions[i].text }}</h2>
-                <div class="etiquettes">
-                    {% for etiquette in questions[i].etiquettes %}
-                        <p>{{ etiquette }}</p>
-                    {% endfor %}
-                </div>
-                <a href="{{ url_for('edit_question', id_question = i) }}">Modifier</a>
-                <form action="{{ url_for('del_question', id_question = i) }}">
-                    <button type="submit" class="btn btn-labeled btn-danger" >
-                        <span class="btn-label"><i class="fa fa-trash"></i></span>Supprimer</button>                  
-                </form>
 
-                   
-                <!--<a href="{{ url_for('del_question', id_question = i) }}">Supprimer</a>-->
-            </div>
+        <div class="container">
+            <div class=" row shadow p-3 mb-5 bg-white" id="{{ i }} " >
+                <div class="questions" style="display:flex ; flex-direction: row; justify-content: center;">
+                    <h5 id="text">{{ questions[i].text }}</h5>
+                
+                <div class="boutons" style="display:flex ; flex-direction: row;">
+                <!-- Boutons edit et suppr -->
+                    <form action="{{ url_for('edit_question', id_question = i) }}">
+                    <button type="submit" class="btn btn-link" ><span class="bi bi-pencil-fill"></span></button>
+                    </form>
+                    <form action="{{ url_for('del_question', id_question = i) }}">
+                        <button type="submit" class="btn btn-labeled btn-danger" >
+                            <span class="btn-label"><i class="fa fa-trash"></i></span></button>                  
+                    </form> 
+                </div> 
+                </div>
+                </div>
+            </div>            
+        </div>
+
+
         {% endfor %}
         <a href="{{ url_for('index') }}">Retour</a>
     </center>
    </body>
+   <div class="panel-footer"><!-- panel-footer -->
+
+    <div class="previous">
+        <button type="button" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </button>
+    </div>
+
+    <div class="next">
+        <button type="button" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </button>
+    </div>
+
+</div><!-- end panel-footer -->
    
 </html>
