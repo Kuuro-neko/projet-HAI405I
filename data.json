@@ -19,5 +19,38 @@
                 ]
             }
         ]
+    },
+    {
+        "user": "Test2",
+        "password": "test",
+        "questions": [
+            {
+                "type": "QCM",
+                "text": "Test",
+                "etiquettes": [],
+                "answers": [
+                    {
+                        "text": "Bonne r\u00e9ponse",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Non",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Bonne r\u00e9ponse",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Past\u00e8que",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Pas la bonne r\u00e9ponse",
+                        "isCorrect": false
+                    }
+                ]
+            }
+        ]
     }
 ]

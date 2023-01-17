@@ -1,7 +1,7 @@
 <html>
 
    <head>
-    <title>Projet-HAI405I</title>
+    <title>Connexion</title>
       <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
       <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
       <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
@@ -26,8 +26,8 @@
             </div>
             <input class="btn btn-success w-100" type="submit" value="Connexion">            
     </div>
-
         </form>
+        <a href="{{ url_for('inscription') }}">Inscription</a>
     </center>
    </body>
    
