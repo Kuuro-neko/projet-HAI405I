@@ -3,6 +3,12 @@
    <head>
     <title>Créer question</title>
       <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
+      <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
+      <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
+      <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
+      <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
+      <!-- Bootstrap 5 CSS --><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+      <!-- Font Awesome CSS --><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
       <script>
         var nbAnswers = 1;
@@ -75,8 +81,10 @@
             </div>
             <input type="hidden" name="nbAnswers" value="1" id="nbAnswers">
             <button type="button" onclick="addAnswer()">Ajouter une réponse</button>
-            <button type="button" onclick="delAnswer()">Supprimer une réponse</button>
-
+            <!--<button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">Trash</button>-->
+            <button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">
+                <span class="btn-label"><i class="fa fa-trash"></i></span> Suppr. Dernière réponse
+            </button>
             <input type="submit" value="Créer">
         </form>
     </center>

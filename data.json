@@ -9,30 +9,11 @@
                 "etiquettes": ["France", "Capitale"],
                 "answers": [
                     {
-                        "text": "Paris",
+                        "text": "oui",
                         "isCorrect": true
                     },
                     {
-                        "text": "N\u00eemes",
-                        "isCorrect": false
-                    },
-                    {
-                        "text": "Marseille",
-                        "isCorrect": false
-                    }
-                ]
-            },
-            {
-                "type": "QCM",
-                "text": "De quelle couleur est une orange ?",
-                "etiquettes": [],
-                "answers": [
-                    {
-                        "text": "Orange",
-                        "isCorrect": true
-                    },
-                    {
-                        "text": "Jaune",
+                        "text": "non",
                         "isCorrect": false
                     }
                 ]
