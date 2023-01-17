@@ -192,10 +192,6 @@ def edit_question(id_question):
          return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, nbAnswers = nbAnswers, etiquettes_existantes = etiquettes_existantes)
    return render_template("index.html", name = None)
 
-@app.route('/hello')
-def hello_world():
-   return "hello world"
-
 if __name__ == '__main__':
   #app.run(host=host, port=port)
   app.run(host=host, port=port, debug=True)
