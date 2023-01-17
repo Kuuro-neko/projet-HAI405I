@@ -43,6 +43,28 @@ def get_etiquettes():
       data = json.load(fp)
    return data
 
+def clear_etiquettes_non_utilisees():
+   with open('etiquettes.json', 'r') as fp:
+      data = json.load(fp)
+   with open('data.json', 'r') as fp:
+      data2 = json.load(fp)
+      
+   # Pour chaque etiquette, si on la trouve dans une question, on la garde sinon on la supprime
+   for etiquette in data:
+      found = False
+      for user in data2:
+         if found:
+            break
+         for question in user['questions']:
+            if etiquette in question['etiquettes']:
+               found = True
+               break
+      if not found:
+         data.remove(etiquette)
+   
+   with open('etiquettes.json', 'w') as fp:
+      json.dump(data, fp, indent=4)
+
 @app.route("/")
 @app.route("/index")
 def index():
