@@ -1,6 +1,18 @@
 function addEtiquette() {
-    let texte = document.getElementsByName("etiquette")[0].value;
-    document.getElementsByName("etiquette")[0].value = "";
+    let texte = document.getElementById("input_etiquette").value;
+    // Si etiquette vide, ne pas ajouter
+    if (texte == "") { 
+        return;
+    }
+    // Si etiquette déjà utilisée, ne pas ajouter
+    document.getElementById("input_etiquette").value = "";
+    let etiquettes_list = document.getElementsByClassName("etiquette");
+    for (let etiquette of etiquettes_list) {
+        if (etiquette.id == texte) {
+            return; 
+        }
+    }
+    // Ajouter etiquette
     let etiquettes = document.getElementById("etiquettes-list");
     let etiquette = document.createElement("div");
     etiquette.id = texte;
