@@ -39,19 +39,45 @@
     <center>
         <h1>Création de question</h1>
         <form method="post">
+
             <p>Type : QCM</p>
+
             <label for="text">Question :</label>
             <input type="text" name="text" placeholder="Quelle est la capitale de la France ?">
+
+            <br><br><!-- Supprimer les BR et les remplacer par du css -->
+
+            <div id="form-etiquettes" style="border: solid grey 1px; padding: 10px;">
+                <label for="etiquette">Etiquettes :</label>
+                <div id="etiquettes">
+
+                    <div id="etiquette0" class="etiquette">
+                        <p id="etiquette0">Nom</p>
+                        <button type="button" onclick="delEtiquette(0)">Supprimer</button>
+                    </div>
+                    
+
+                </div>
+                <input type="hidden" name="etiquettes" value="" id="etiquettes">
+                <div id="add_etiquette">
+                    <input type="text" name="etiquette" placeholder="Ajouter une étiquette">
+                    <button type="button" onclick="addEtiquette()">Ajouter</button>
+                </div>
+            </div>
+            
+            <br><br><!-- Supprimer les BR et les remplacer par du css -->
+
             <div id="answers">
                 <div id="answer0">
                     <input type="checkbox" name="correct0" value="1">
                     <input type="text" name="text0" placeholder="Réponse 1">
                 </div>
             </div>
+            <input type="hidden" name="nbAnswers" value="1" id="nbAnswers">
             <button type="button" onclick="addAnswer()">Ajouter une réponse</button>
             <button type="button" onclick="delAnswer()">Supprimer une réponse</button>
+
             <input type="submit" value="Créer">
-            <input type="hidden" name="nbAnswers" value="1" id="nbAnswers">
         </form>
     </center>
    </body>

@@ -12,7 +12,12 @@
         {% for i in range(0, length) %}
             <div class="question" id="{{ i }}">
                 <h2 id="text">{{ questions[i].text }}</h2>
-                <!-- Boutons edit et suppr -->
+                Etiquettes : <!-- Supprimer quand le css rend évident que c'est des étiquettes -->
+                <div class="etiquettes">
+                    {% for etiquette in questions[i].etiquettes %}
+                        <p>{{ etiquette }}</p>
+                    {% endfor %}
+                </div>
                 <a href="{{ url_for('edit_question', id_question = i) }}">Modifier</a>
                 <a href="{{ url_for('del_question', id_question = i) }}">Supprimer</a>
             </div>

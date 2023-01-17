@@ -6,7 +6,7 @@
             {
                 "type": "QCM",
                 "text": "Quelle est la capitale de la France ?",
-                "etiquettes": [],
+                "etiquettes": ["France", "Capitale"],
                 "answers": [
                     {
                         "text": "Paris",
