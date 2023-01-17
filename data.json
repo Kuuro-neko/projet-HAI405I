@@ -82,5 +82,32 @@
                 ]
             }
         ]
+    },
+    {
+        "user": "test3",
+        "password": "test",
+        "questions": [
+            {
+                "type": "QCM",
+                "text": "De quelle couleur est le logo de Python ?",
+                "etiquettes": [
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "Bleu et jaune",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Bleu et rouge",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Jeune et vert",
+                        "isCorrect": false
+                    }
+                ]
+            }
+        ]
     }
 ]

@@ -1,3 +1,30 @@
+function addAnswer() {
+    answers = document.getElementById("answers");
+    answer = document.createElement("div");
+    answer.id = "answer" + nbAnswers;
+    answerCheckbox = document.createElement("input");
+    answerCheckbox.type = "checkbox";
+    answerCheckbox.name = "correct" + nbAnswers;
+    answerCheckbox.value = "1";
+    answerText = document.createElement("input");
+    answerText.type = "text";
+    answerText.name = "text" + nbAnswers;
+    answerText.placeholder = "Réponse " + (nbAnswers + 1);
+    answer.appendChild(answerCheckbox);
+    answer.appendChild(answerText);
+    answers.appendChild(answer);
+    nbAnswers++;
+    nbAnswersInput = document.getElementById("nbAnswers");
+    nbAnswersInput.value = nbAnswers;
+}
+function delAnswer() {
+    answer = document.getElementById("answer" + (nbAnswers - 1));
+    answers.removeChild(answer);
+    nbAnswers--;
+    nbAnswersInput = document.getElementById("nbAnswers");
+    nbAnswersInput.value = nbAnswers;
+}
+
 function addEtiquette() {
     let texte = document.getElementById("input_etiquette").value;
     // Si etiquette vide, ne pas ajouter
