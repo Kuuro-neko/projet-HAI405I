@@ -2,18 +2,39 @@
 
    <head>
     <title>Projet-HAI405I</title>
-      <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
+
+   <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
+   <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
+   <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
+   <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
+   
+
    </head>
    
    <body>
     <center>
-         <h1>Projet-HAI405I</h1>
-
-         <a href="{{ url_for('login') }}">Connexion</a>
-         {% if name != None %}
-            <a href="{{ url_for('questions') }}">Vos Questions</a>
-            <a href="{{ url_for('logout') }}">Déconnexion</a>
-         {% endif %}
+   <div style="margin-top: 35%;" class="container">
+         <div class="row">
+            <div class="col">
+               <div class="card">
+                  <div class="card-header bg-dark text-light">
+                     <h1>Acceuil</h1>
+                     <div class="row">
+                        <div class="col-sm-12"><a href="{{ url_for('login') }}">Connexion</a></div>
+                        {% if name != None %}
+                        <div class="row">
+                           <div class="col-sm-12"><a href="{{ url_for('questions') }}">Vos Questions</a></div>
+                        </div>
+                        <div class="row">
+                           <div class="col-sm-12"><a href="{{ url_for('logout') }}">Déconnexion</a></div>                           
+                        </div>
+                        {% endif %}                     
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
     </center>
    </body>
    
