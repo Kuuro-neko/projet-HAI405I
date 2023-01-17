@@ -17,6 +17,25 @@
                         "isCorrect": false
                     }
                 ]
+            },
+            {
+                "type": "QCM",
+                "text": "quelle est la capitale de l'espagne",
+                "etiquettes": [],
+                "answers": [
+                    {
+                        "text": "madrid",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "barcelone",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "jsp",
+                        "isCorrect": false
+                    }
+                ]
             }
         ]
     },
