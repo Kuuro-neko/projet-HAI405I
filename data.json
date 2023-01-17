@@ -5,8 +5,12 @@
         "questions": [
             {
                 "type": "QCM",
-                "text": "quelle est la capitale de la france",
-                "etiquettes": [],
+                "text": "Quelle est la capitale de la France ?",
+                "etiquettes": [
+                    "France",
+                    "Capitales",
+                    "Spaghetti code"
+                ],
                 "answers": [
                     {
                         "text": "oui",
@@ -20,19 +24,26 @@
             },
             {
                 "type": "QCM",
-                "text": "quelle est la capitale de l'espagne",
-                "etiquettes": [],
+                "text": "Est ce que les etiquettes marchent ?",
+                "etiquettes": [
+                    "Spaghetti code",
+                    "Javascript"
+                ],
                 "answers": [
                     {
-                        "text": "madrid",
-                        "isCorrect": true
-                    },
-                    {
-                        "text": "barcelone",
+                        "text": "Paris",
                         "isCorrect": false
                     },
                     {
-                        "text": "jsp",
+                        "text": "Oui",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Peut \u00eatre",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Non",
                         "isCorrect": false
                     }
                 ]
@@ -66,6 +77,33 @@
                     },
                     {
                         "text": "Pas la bonne r\u00e9ponse",
+                        "isCorrect": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "user": "test3",
+        "password": "test",
+        "questions": [
+            {
+                "type": "QCM",
+                "text": "De quelle couleur est le logo de Python ?",
+                "etiquettes": [
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "Bleu et jaune",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "Bleu et rouge",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "Jeune et vert",
                         "isCorrect": false
                     }
                 ]

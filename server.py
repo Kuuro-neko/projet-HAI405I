@@ -14,20 +14,72 @@ app.secret_key = "super secret key"
 host = '0.0.0.0'
 port = 8888
 
-def get_user_id(user):
+# Retourne le contenu du fichier data.json
+# Out : data (dict)
+def get_data():
    with open('data.json', 'r') as fp:
       data = json.load(fp)
-   
+   return data
+
+# Ecrit dans le fichier data.json
+# In : data (dict)
+def write_data(data):
+   with open('data.json', 'w') as fp:
+      json.dump(data, fp, indent=4)
+
+# Retourne l'id de l'utilisateur dans le fichier data.json
+# In : user (str)
+# Out : id (int)
+def get_user_id(user):
+   data = get_data()
    for i in range(len(data)):
       if data[i]['user'] == user:
          return i
    return None
 
+# Retourne la liste des questions de l'utilisateur
+# In : user (str)
+# Out : questions (list)
 def get_questions(user):
-   with open('data.json', 'r') as fp:
+   data = get_data()
+   return data[get_user_id(user)]['questions']
+
+# Retourne la liste des etiquettes utilisées
+# Out : etiquettes (list)
+def get_etiquettes():
+   with open('etiquettes.json', 'r') as fp:
       data = json.load(fp)
-   user_id = get_user_id(user)
-   return data[user_id]['questions']
+   return data
+
+# Met à jour la liste des etiquettes utilisées
+def majListeEtiquettes(listeEtiquettes):
+   data = get_etiquettes()
+   for etiquette in listeEtiquettes:
+      if etiquette not in data:
+         data.append(etiquette)
+   with open('etiquettes.json', 'w') as fp:
+      json.dump(data, fp, indent=4)
+
+# Supprime les etiquettes non utilisées
+def clear_etiquettes_non_utilisees():
+   data = get_etiquettes()
+   data2 = get_data()
+      
+   # Pour chaque etiquette, si on la trouve dans une question, on la garde sinon on la supprime
+   for etiquette in data:
+      found = False
+      for user in data2:
+         if found:
+            break
+         for question in user['questions']:
+            if etiquette in question['etiquettes']:
+               found = True
+               break
+      if not found:
+         data.remove(etiquette)
+   
+   with open('etiquettes.json', 'w') as fp:
+      json.dump(data, fp, indent=4)
 
 @app.route("/")
 @app.route("/index")
@@ -45,8 +97,7 @@ def logout():
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
    if request.method == 'POST':
-      with open('data.json', 'r') as fp:
-         data = json.load(fp)
+      data = get_data()
       login = request.form['login']
       password = request.form['password']
       for users in data:
@@ -60,8 +111,7 @@ def login():
 @app.route("/inscription", methods = ['POST', 'GET'])
 def inscription():
    if request.method == 'POST':
-      with open('data.json', 'r') as fp:
-         data = json.load(fp)
+      data = get_data()
       login = request.form['login']
       password = request.form['password']
       for users in data:
@@ -72,8 +122,7 @@ def inscription():
          "password": password,
          "questions": []
       })
-      with open('data.json', 'w') as fp:
-         json.dump(data, fp, indent=4)
+      write_data(data)
       return redirect(url_for('login'))
    else:
       return render_template("inscription.html")
@@ -90,24 +139,22 @@ def questions():
 def del_question(id_question):
    if 'user' in session:
       name = session['user']
-      with open('data.json', 'r') as fp:
-         data = json.load(fp)
+      data = get_data()
       user_id = get_user_id(name)
       data[user_id]['questions'].pop(id_question)
-      with open('data.json', 'w') as fp:
-         json.dump(data, fp, indent=4)
+      write_data(data)
       return redirect(url_for('questions'))
    return render_template("index.html", name = None)
 
 @app.route("/add_question", methods = ['POST', 'GET'])
 def add_question():
    if request.method == 'POST':
-      with open('data.json', 'r') as fp:
-         data = json.load(fp)
+      data = get_data()
       
       text = request.form['text']
+      etiquettes = json.loads(request.form['etiquettes'])
+      majListeEtiquettes(etiquettes)
       user = session['user']
-      user_id = get_user_id(user)
 
       nbAnswers = request.form['nbAnswers']
       answers = []
@@ -120,26 +167,26 @@ def add_question():
       question = {
          "type" : "QCM",
          "text": text,
-         "etiquettes" : [],
+         "etiquettes" : etiquettes,
          "answers": answers
       }
-      data[user_id]['questions'].append(question)
-      with open('data.json', 'w') as fp:
-         json.dump(data, fp, indent=4)
-      
+      data[get_user_id(user)]['questions'].append(question)
+      write_data(data)
       return redirect(url_for('questions'))
    else:
-      return render_template("add_question.html")
+      etiquettes_existantes = get_etiquettes()
+      return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes)
 
 @app.route("/edit_question/<int:id_question>", methods = ['POST', 'GET'])
 def edit_question(id_question):
    
    if 'user' in session:
       if request.method == 'POST':
-         with open('data.json', 'r') as fp:
-            data = json.load(fp)
+         data = get_data()
          
          text = request.form['text']
+         etiquettes = json.loads(request.form['etiquettes'])
+         majListeEtiquettes(etiquettes)
          user = session['user']
          user_id = get_user_id(user)
          id_question = int(request.form['id_question'])
@@ -155,27 +202,22 @@ def edit_question(id_question):
          question = {
             "type" : "QCM",
             "text": text,
-            "etiquettes" : [],
+            "etiquettes" : etiquettes,
             "answers": answers
          }
 
          data[user_id]['questions'][id_question] = question
-
-         with open('data.json', 'w') as fp:
-            json.dump(data, fp, indent=4)
-         
+         write_data(data)
          return redirect(url_for('questions'))
       else:
          name = session['user']
          questions = get_questions(name)
          nbAnswers = len(questions[id_question]['answers'])
-         return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, nbAnswers = nbAnswers)
+         etiquettes_existantes = get_etiquettes()
+         return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, nbAnswers = nbAnswers, etiquettes_existantes = etiquettes_existantes)
    return render_template("index.html", name = None)
-
-@app.route('/hello')
-def hello_world():
-   return "hello world"
 
 if __name__ == '__main__':
   #app.run(host=host, port=port)
   app.run(host=host, port=port, debug=True)
+

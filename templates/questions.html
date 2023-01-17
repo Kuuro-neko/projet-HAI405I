@@ -34,6 +34,7 @@
         
         <a href="{{ url_for('add_question') }}">Créer une nouvelle question</a>
         {% for i in range(0, length) %}
+
         <div class="container">
             <div class=" row shadow p-3 mb-5 bg-white" id="{{ i }} " >
                 <div class="questions" style="display:flex ; flex-direction: row; justify-content: center;">
@@ -53,6 +54,7 @@
                 </div>
             </div>            
         </div>
+
 
         {% endfor %}
         <a href="{{ url_for('index') }}">Retour</a>
