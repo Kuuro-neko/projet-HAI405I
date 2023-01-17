@@ -38,6 +38,11 @@ def majListeEtiquettes(listeEtiquettes):
    with open('etiquettes.json', 'w') as fp:
       json.dump(data, fp, indent=4)
 
+def get_etiquettes():
+   with open('etiquettes.json', 'r') as fp:
+      data = json.load(fp)
+   return data
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -140,7 +145,8 @@ def add_question():
       
       return redirect(url_for('questions'))
    else:
-      return render_template("add_question.html")
+      etiquettes_existantes = get_etiquettes()
+      return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes)
 
 @app.route("/edit_question/<int:id_question>", methods = ['POST', 'GET'])
 def edit_question(id_question):
@@ -182,7 +188,8 @@ def edit_question(id_question):
          name = session['user']
          questions = get_questions(name)
          nbAnswers = len(questions[id_question]['answers'])
-         return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, nbAnswers = nbAnswers)
+         etiquettes_existantes = get_etiquettes()
+         return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, nbAnswers = nbAnswers, etiquettes_existantes = etiquettes_existantes)
    return render_template("index.html", name = None)
 
 @app.route('/hello')

@@ -1,5 +1,6 @@
 function addEtiquette() {
     let texte = document.getElementsByName("etiquette")[0].value;
+    document.getElementsByName("etiquette")[0].value = "";
     let etiquettes = document.getElementById("etiquettes-list");
     let etiquette = document.createElement("div");
     etiquette.id = texte;

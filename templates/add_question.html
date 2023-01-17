@@ -10,6 +10,7 @@
       <!-- Bootstrap 5 CSS --><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
       <!-- Font Awesome CSS --><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
       <script src="{{ url_for('static', filename = 'etiquettes.js') }} "></script>
+      <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
       <script>
         var nbAnswers = 1;
         function addAnswer() {
@@ -59,7 +60,12 @@
                 </div>
                 <input type="hidden" name="etiquettes" value="" id="etiquettes">
                 <div id="add_etiquette">
-                    <input type="text" name="etiquette" placeholder="Ajouter une étiquette">
+                    <input type="text" list="etiquettes_existantes" name="etiquette" placeholder="Ajouter une étiquette">
+                    <datalist id="etiquettes_existantes">
+                        {% for etiquette in etiquettes %}
+                            <option value="{{ etiquette }}">
+                        {% endfor %}
+                    </datalist>
                     <button type="button" onclick="addEtiquette()">Ajouter</button>
                 </div>
             </div>
