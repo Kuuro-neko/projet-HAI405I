@@ -14,40 +14,56 @@ app.secret_key = "super secret key"
 host = '0.0.0.0'
 port = 8888
 
-def get_user_id(user):
+# Retourne le contenu du fichier data.json
+# Out : data (dict)
+def get_data():
    with open('data.json', 'r') as fp:
       data = json.load(fp)
-   
+   return data
+
+# Ecrit dans le fichier data.json
+# In : data (dict)
+def write_data(data):
+   with open('data.json', 'w') as fp:
+      json.dump(data, fp, indent=4)
+
+# Retourne l'id de l'utilisateur dans le fichier data.json
+# In : user (str)
+# Out : id (int)
+def get_user_id(user):
+   data = get_data()
    for i in range(len(data)):
       if data[i]['user'] == user:
          return i
    return None
 
+# Retourne la liste des questions de l'utilisateur
+# In : user (str)
+# Out : questions (list)
 def get_questions(user):
-   with open('data.json', 'r') as fp:
-      data = json.load(fp)
-   user_id = get_user_id(user)
-   return data[user_id]['questions']
+   data = get_data()
+   return data[get_user_id(user)]['questions']
 
-def majListeEtiquettes(listeEtiquettes):
+# Retourne la liste des etiquettes utilisées
+# Out : etiquettes (list)
+def get_etiquettes():
    with open('etiquettes.json', 'r') as fp:
       data = json.load(fp)
+   return data
+
+# Met à jour la liste des etiquettes utilisées
+def majListeEtiquettes(listeEtiquettes):
+   data = get_etiquettes()
    for etiquette in listeEtiquettes:
       if etiquette not in data:
          data.append(etiquette)
    with open('etiquettes.json', 'w') as fp:
       json.dump(data, fp, indent=4)
 
-def get_etiquettes():
-   with open('etiquettes.json', 'r') as fp:
-      data = json.load(fp)
-   return data
-
+# Supprime les etiquettes non utilisées
 def clear_etiquettes_non_utilisees():
-   with open('etiquettes.json', 'r') as fp:
-      data = json.load(fp)
-   with open('data.json', 'r') as fp:
-      data2 = json.load(fp)
+   data = get_etiquettes()
+   data2 = get_data()
       
    # Pour chaque etiquette, si on la trouve dans une question, on la garde sinon on la supprime
    for etiquette in data:
@@ -81,8 +97,7 @@ def logout():
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
    if request.method == 'POST':
-      with open('data.json', 'r') as fp:
-         data = json.load(fp)
+      data = get_data()
       login = request.form['login']
       password = request.form['password']
       for users in data:
@@ -96,8 +111,7 @@ def login():
 @app.route("/inscription", methods = ['POST', 'GET'])
 def inscription():
    if request.method == 'POST':
-      with open('data.json', 'r') as fp:
-         data = json.load(fp)
+      data = get_data()
       login = request.form['login']
       password = request.form['password']
       for users in data:
@@ -108,8 +122,7 @@ def inscription():
          "password": password,
          "questions": []
       })
-      with open('data.json', 'w') as fp:
-         json.dump(data, fp, indent=4)
+      write_data(data)
       return redirect(url_for('login'))
    else:
       return render_template("inscription.html")
@@ -126,26 +139,22 @@ def questions():
 def del_question(id_question):
    if 'user' in session:
       name = session['user']
-      with open('data.json', 'r') as fp:
-         data = json.load(fp)
+      data = get_data()
       user_id = get_user_id(name)
       data[user_id]['questions'].pop(id_question)
-      with open('data.json', 'w') as fp:
-         json.dump(data, fp, indent=4)
+      write_data(data)
       return redirect(url_for('questions'))
    return render_template("index.html", name = None)
 
 @app.route("/add_question", methods = ['POST', 'GET'])
 def add_question():
    if request.method == 'POST':
-      with open('data.json', 'r') as fp:
-         data = json.load(fp)
+      data = get_data()
       
       text = request.form['text']
       etiquettes = json.loads(request.form['etiquettes'])
       majListeEtiquettes(etiquettes)
       user = session['user']
-      user_id = get_user_id(user)
 
       nbAnswers = request.form['nbAnswers']
       answers = []
@@ -161,10 +170,8 @@ def add_question():
          "etiquettes" : etiquettes,
          "answers": answers
       }
-      data[user_id]['questions'].append(question)
-      with open('data.json', 'w') as fp:
-         json.dump(data, fp, indent=4)
-      
+      data[get_user_id(user)]['questions'].append(question)
+      write_data(data)
       return redirect(url_for('questions'))
    else:
       etiquettes_existantes = get_etiquettes()
@@ -175,8 +182,7 @@ def edit_question(id_question):
    
    if 'user' in session:
       if request.method == 'POST':
-         with open('data.json', 'r') as fp:
-            data = json.load(fp)
+         data = get_data()
          
          text = request.form['text']
          etiquettes = json.loads(request.form['etiquettes'])
@@ -201,10 +207,7 @@ def edit_question(id_question):
          }
 
          data[user_id]['questions'][id_question] = question
-
-         with open('data.json', 'w') as fp:
-            json.dump(data, fp, indent=4)
-         
+         write_data(data)
          return redirect(url_for('questions'))
       else:
          name = session['user']
