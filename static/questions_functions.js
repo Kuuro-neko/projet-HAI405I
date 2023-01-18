@@ -1,42 +1,61 @@
-function addAnswer() {
-    answers = document.getElementById("answers");
-    answer = document.createElement("div");
-    answer.id = "answer" + nbAnswers;
-    answerCheckbox = document.createElement("input");
+function addAnswer(text = "", isCorrect = false) {
+    // Nouvelle réponse
+    let new_answer = document.createElement("div");
+    new_answer.className = "answer";
+    // Checkbox
+    let answerCheckbox = document.createElement("input");
     answerCheckbox.type = "checkbox";
-    answerCheckbox.name = "correct" + nbAnswers;
-    answerCheckbox.value = "1";
-    answerText = document.createElement("input");
+    answerCheckbox.name = "correct";
+    answerCheckbox.className = "isCorrect";
+    answerCheckbox.value = isCorrect.toString();
+    answerCheckbox.checked = isCorrect;
+    answerCheckbox.onclick = function() {
+        if (answerCheckbox.checked) {
+            answerCheckbox.value = "true";
+        } else {
+            answerCheckbox.value = "false";
+        }
+    };
+    // Champ de texte
+    let answerText = document.createElement("input");
     answerText.type = "text";
-    answerText.name = "text" + nbAnswers;
-    answerText.placeholder = "Réponse " + (nbAnswers + 1);
-    answerDelete = document.createElement("button");
+    answerText.name = "answer_text";
+    answerText.placeholder = "Réponse";
+    answerText.value = text;
+    // Bouton supprimer
+    let answerDelete = document.createElement("button");
     answerDelete.type = "button";
     answerDelete.className = "btn btn-labeled btn-danger";
-    answerDelete.addEventListener("click", delAnswer);
+    answerDelete.onclick = function() {
+        new_answer.remove();
+    };
     answerDeleteSpan = document.createElement("span");
     answerDeleteSpan.className = "btn-label";
     answerDeleteSpan_i = document.createElement("i");
     answerDeleteSpan_i.className = "fa fa-trash"
-
     answerDeleteSpan.appendChild(answerDeleteSpan_i)
     answerDelete.appendChild(answerDeleteSpan);
-    answer.appendChild(answerCheckbox);
-    answer.appendChild(answerText);
-    answer.appendChild(answerDelete);
+    // Ajout à la réponse des champs
+    new_answer.appendChild(answerCheckbox);
+    new_answer.appendChild(answerText);
+    new_answer.appendChild(answerDelete);
     
-    answers.appendChild(answer);
-    
-    nbAnswers++;
-    nbAnswersInput = document.getElementById("nbAnswers");
-    nbAnswersInput.value = nbAnswers;
+    let answers = document.getElementById("answers");
+    answers.appendChild(new_answer);
 }
-function delAnswer() {
-    answer = document.getElementById("answer" + (nbAnswers - 1));
-    answers.removeChild(answer);
-    nbAnswers--;
-    nbAnswersInput = document.getElementById("nbAnswers");
-    nbAnswersInput.value = nbAnswers;
+function majAnswers() {
+    let answers = [];
+    let answers_list = document.getElementsByClassName("answer");
+    for (let answer of answers_list) {
+        let answer_text = answer.children[1].value;
+        let answer_correct = answer.children[0].value;
+        answers.push({
+            "text": answer_text,
+            "isCorrect": answer_correct
+        });
+    }
+    let answers_json = document.getElementById("answers_json");
+    answers_json.value = JSON.stringify(answers);
 }
 
 function addEtiquette() {
@@ -73,8 +92,8 @@ function delEtiquette(id) {
     let etiquettes = document.getElementById("etiquettes-list");
     let etiquette = document.getElementById(id);
     etiquettes.removeChild(etiquette);
-    majInputEtiquettes()
-}
+    majInputEtiquettes();
+};
 function majInputEtiquettes() {
     let etiquettes = document.getElementsByClassName("etiquette");
     let inputEtiquettes = document.getElementById("etiquettes");

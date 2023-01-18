@@ -19,6 +19,7 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             {% if name != None %}
+            <a class="nav-link" href="{{ url_for('questions') }}">Vos questions</a>
             <a class="nav-link" href="{{ url_for('logout') }}">Se déconnecter</a>
             {% else %}
             <a class="nav-link" href="{{ url_for('login') }}">Se connecter</a>

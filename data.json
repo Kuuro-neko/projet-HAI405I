@@ -28,27 +28,27 @@
             },
             {
                 "type": "QCM",
-                "text": "quelle est la capitale de l'espagne",
+                "text": "Quelle est la capitale de l'espagne",
                 "etiquettes": [
                     "Spaghetti code",
                     "Javascript"
                 ],
                 "answers": [
                     {
+                        "text": "Barcelone",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Madrid",
+                        "isCorrect": "true"
+                    },
+                    {
                         "text": "Paris",
-                        "isCorrect": false
+                        "isCorrect": "false"
                     },
                     {
-                        "text": "Oui",
-                        "isCorrect": true
-                    },
-                    {
-                        "text": "Peut \u00eatre",
-                        "isCorrect": false
-                    },
-                    {
-                        "text": "madrid",
-                        "isCorrect": false
+                        "text": "Montpellier",
+                        "isCorrect": "false"
                     }
                 ]
             },
@@ -66,6 +66,59 @@
                     {
                         "text": "non",
                         "isCorrect": false
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "Test r\u00e9ponses",
+                "etiquettes": [],
+                "answers": [
+                    {
+                        "text": "o",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "n",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "o",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "n",
+                        "isCorrect": "false"
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "Est ce que les questions marchent toujours ?",
+                "etiquettes": [
+                    "Spaghetti code",
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "Oui",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Non",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Segmentation fault",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Peut \u00eatre",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "True",
+                        "isCorrect": "true"
                     }
                 ]
             }
