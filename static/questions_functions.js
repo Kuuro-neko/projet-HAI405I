@@ -1,14 +1,17 @@
 function addAnswer(text = "", isCorrect = false) {
     // Nouvelle réponse
     let new_answer = document.createElement("div");
-    new_answer.className = "answer";
+    new_answer.className = "answer form-check form-switch";
     // Checkbox
     let answerCheckbox = document.createElement("input");
     answerCheckbox.type = "checkbox";
     answerCheckbox.name = "correct";
-    answerCheckbox.className = "isCorrect";
+    answerCheckbox.setAttribute("id", "flexSwitchCheckDefault")
+    answerCheckbox.className = "isCorrect form-check-input";
     answerCheckbox.value = isCorrect.toString();
-    answerCheckbox.checked = isCorrect;
+    if (isCorrect.toString() == 'true') {
+        answerCheckbox.checked = true;
+    }
     answerCheckbox.onclick = function() {
         if (answerCheckbox.checked) {
             answerCheckbox.value = "true";
@@ -78,11 +81,14 @@ function addEtiquette() {
     etiquette.id = texte;
     etiquette.className = "etiquette";
     let etiquetteText = document.createElement("p");
-    etiquetteText.innerHTML = texte;
     let etiquetteButton = document.createElement("button");
     etiquetteButton.type = "button";
+    etiquetteButton.className = "btn btn-primary btn-sm";
+    etiquetteButton.data_bs_toggle = "tooltip";
+    etiquetteButton.data_bs_placement = "top";
+    etiquetteButton.title = "appuyez pour supprimer";
     etiquetteButton.onclick = function() { delEtiquette(texte); };
-    etiquetteButton.innerHTML = "Supprimer";
+    etiquetteButton.innerHTML = texte;
     etiquette.appendChild(etiquetteText);
     etiquette.appendChild(etiquetteButton);
     etiquettes.appendChild(etiquette);
