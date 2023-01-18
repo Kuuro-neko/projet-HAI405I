@@ -28,27 +28,27 @@
             },
             {
                 "type": "QCM",
-                "text": "quelle est la capitale de l'espagne",
+                "text": "Quelle est la capitale de l'espagne",
                 "etiquettes": [
                     "Spaghetti code",
                     "Javascript"
                 ],
                 "answers": [
                     {
+                        "text": "Barcelone",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Madrid",
+                        "isCorrect": "true"
+                    },
+                    {
                         "text": "Paris",
-                        "isCorrect": false
+                        "isCorrect": "false"
                     },
                     {
-                        "text": "Oui",
-                        "isCorrect": true
-                    },
-                    {
-                        "text": "Peut \u00eatre",
-                        "isCorrect": false
-                    },
-                    {
-                        "text": "madrid",
-                        "isCorrect": false
+                        "text": "Montpellier",
+                        "isCorrect": "false"
                     }
                 ]
             },

@@ -1,4 +1,4 @@
-function addAnswer() {
+function addAnswer(text = "", isCorrect = false) {
     // Nouvelle réponse
     let new_answer = document.createElement("div");
     new_answer.className = "answer";
@@ -7,8 +7,8 @@ function addAnswer() {
     answerCheckbox.type = "checkbox";
     answerCheckbox.name = "correct";
     answerCheckbox.className = "isCorrect";
-    answerCheckbox.value = "false";
-    answerCheckbox.checked = false;
+    answerCheckbox.value = isCorrect.toString();
+    answerCheckbox.checked = isCorrect;
     answerCheckbox.onclick = function() {
         if (answerCheckbox.checked) {
             answerCheckbox.value = "true";
@@ -21,6 +21,7 @@ function addAnswer() {
     answerText.type = "text";
     answerText.name = "answer_text";
     answerText.placeholder = "Réponse";
+    answerText.value = text;
     // Bouton supprimer
     let answerDelete = document.createElement("button");
     answerDelete.type = "button";

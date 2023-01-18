@@ -184,20 +184,18 @@ def edit_question(id_question):
          data = get_data()
          
          text = request.form['text']
-         etiquettes = json.loads(request.form['etiquettes'])
-         majListeEtiquettes(etiquettes)
+         try:
+            etiquettes = json.loads(request.form['etiquettes'])
+         except:
+            etiquettes = []
+         try:
+            answers = json.loads(request.form['answers_json'])
+         except:
+            answers = []
+         
          user = session['user']
          user_id = get_user_id(user)
          id_question = int(request.form['id_question'])
-
-         nbAnswers = request.form['nbAnswers']
-         answers = []
-         for i in range(int(nbAnswers)):
-            answers.append({
-               "text": request.form['text' + str(i)],
-               "isCorrect": request.form.get('correct' + str(i)) != None
-            })
-
          question = {
             "type" : "QCM",
             "text": text,
@@ -207,13 +205,13 @@ def edit_question(id_question):
 
          data[user_id]['questions'][id_question] = question
          write_data(data)
+         majListeEtiquettes(etiquettes)
          return redirect(url_for('questions'))
       else:
          name = session['user']
          questions = get_questions(name)
-         nbAnswers = len(questions[id_question]['answers'])
          etiquettes_existantes = get_etiquettes()
-         return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, nbAnswers = nbAnswers, etiquettes_existantes = etiquettes_existantes)
+         return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, etiquettes_existantes = etiquettes_existantes)
    return render_template("index.html", name = None)
 
 if __name__ == '__main__':
