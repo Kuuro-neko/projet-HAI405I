@@ -21,7 +21,7 @@
         window.onload = function() {
             let answer_list = {{ question['answers'] | tojson }};
             for (let i = 0; i < answer_list.length; i++) {
-                addAnswer(answer_list[i]['text'], answer_list[i]['is_correct']);
+                addAnswer(answer_list[i]['text'], answer_list[i]['isCorrect']);
             }
             majInputEtiquettes();
         }
@@ -47,15 +47,9 @@
             </div>
         </div>
         <center>
-            <section class="container my-2 bg-dark w-80 text-light p-2">
+            <section class="container my-2 bg-dark w-60 text-light p-2" style="box-shadow: 0px 0px 10px white; padding: 5px;">
                 <form method="post" style="margin-top: 10px;">
-                    <h5 class="text-light text-center display-12">Type : {{ question.type }}</h5>
-                    <div>
-                        <label for="text">Question :</label>
-                        <input type="text" name="text" placeholder="ex : De quelle couleur est une orange ?" value="{{ question.text }}">                                
-                    </div>
-
-                    <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px;">
+                    <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px; display:flex ; flex-direction: column; justify-content: center; margin: 10px;">
                         <label for="etiquette" class="text-light text-center display-12">Etiquettes :</label>
                         <div id="etiquettes-list" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">
                             {% for etiquette in question.etiquettes %}
@@ -76,16 +70,28 @@
                     </div>
 
                     <br><br>
-                    
-                    <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="justify-content: center; padding: 10px;">
 
-                    </div>
-                    <input type="hidden" name="answers_json" value="" id="answers_json">
-                    <div style="margin-top: 5px;">
-                    <button type="button" class="btn btn-labeled " onclick="addAnswer()">
-                        <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
-                    <input type="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()"> 
-                    <input type="hidden" name="id_question" value="{{ id_question }}">
+                    <div class="card bg-dark" style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px;">
+                        <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
+                            <h5 class="card-title">Type : {{ question.type }}</h5>
+                            <label for="qst">Question :</label>
+                            <textarea id="qst" name="text" rows="3" cols="33" >{{ question.text }}</textarea>
+                        </div>
+           
+
+                        <br><br>
+                        
+                        <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="justify-content: center; padding: 10px;">
+
+                        </div>
+                        <input type="hidden" name="answers_json" value="" id="answers_json">
+                            <div class="card-body">
+                                <button type="button" class="btn btn-labeled " onclick="addAnswer()">
+                                    <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
+                                <input type="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()"> 
+                                <input type="hidden" name="id_question" value="{{ id_question }}">
+                            </div>
+                    
                     </div>
                 </form>
                 <div style="margin-top: 5px;">
