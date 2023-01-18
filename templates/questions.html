@@ -16,7 +16,7 @@
    
    <body>
     <center>
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <nav class="navbar navbar-expand-md navbar-light bg-success ">
             <div class="container-fluid">
               <h3 class="navbar-brand">Bonjour, {{ name }} !</h3>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,6 @@
             </div>
           </nav>
         
-        <a href="{{ url_for('add_question') }}">Créer une nouvelle question</a>
         {% for i in range(0, length) %}
 
         <div class="container">
@@ -55,25 +54,13 @@
             </div>            
         </div>
 
-
         {% endfor %}
-        <a href="{{ url_for('index') }}">Retour</a>
+        <form action="{{ url_for('add_question') }}">
+            <button type="submit" class="btn btn-labeled btn-lg">
+                <span class="btn-label "><i class="fa fa-plus-circle w-100" aria-hidden="true"></i></span></button>
+        </form>
+
     </center>
    </body>
-   <div class="panel-footer"><!-- panel-footer -->
-
-    <div class="previous">
-        <button type="button" class="btn btn-default btn-lg">
-            <span class="glyphicon glyphicon-chevron-left"></span>
-        </button>
-    </div>
-
-    <div class="next">
-        <button type="button" class="btn btn-default btn-lg">
-            <span class="glyphicon glyphicon-chevron-right"></span>
-        </button>
-    </div>
-
-</div><!-- end panel-footer -->
    
 </html>

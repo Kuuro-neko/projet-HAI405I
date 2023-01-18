@@ -152,7 +152,11 @@ def add_question():
       data = get_data()
       
       text = request.form['text']
-      etiquettes = json.loads(request.form['etiquettes'])
+      try :
+         etiquettes = json.loads(request.form['etiquettes'])
+      except : 
+         etiquettes = []
+
       majListeEtiquettes(etiquettes)
       user = session['user']
 

@@ -17,14 +17,18 @@
                         "isCorrect": true
                     },
                     {
-                        "text": "non",
+                        "text": "coucou",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "montpellier",
                         "isCorrect": false
                     }
                 ]
             },
             {
                 "type": "QCM",
-                "text": "Est ce que les etiquettes marchent ?",
+                "text": "quelle est la capitale de l'espagne",
                 "etiquettes": [
                     "Spaghetti code",
                     "Javascript"
@@ -43,7 +47,24 @@
                         "isCorrect": false
                     },
                     {
-                        "text": "Non",
+                        "text": "madrid",
+                        "isCorrect": false
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "how are you ?",
+                "etiquettes": [
+                    "tomatte"
+                ],
+                "answers": [
+                    {
+                        "text": "good",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "non",
                         "isCorrect": false
                     }
                 ]

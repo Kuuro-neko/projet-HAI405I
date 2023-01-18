@@ -10,9 +10,23 @@ function addAnswer() {
     answerText.type = "text";
     answerText.name = "text" + nbAnswers;
     answerText.placeholder = "Réponse " + (nbAnswers + 1);
+    answerDelete = document.createElement("button");
+    answerDelete.type = "button";
+    answerDelete.className = "btn btn-labeled btn-danger";
+    answerDelete.addEventListener("click", delAnswer);
+    answerDeleteSpan = document.createElement("span");
+    answerDeleteSpan.className = "btn-label";
+    answerDeleteSpan_i = document.createElement("i");
+    answerDeleteSpan_i.className = "fa fa-trash"
+
+    answerDeleteSpan.appendChild(answerDeleteSpan_i)
+    answerDelete.appendChild(answerDeleteSpan);
     answer.appendChild(answerCheckbox);
     answer.appendChild(answerText);
+    answer.appendChild(answerDelete);
+    
     answers.appendChild(answer);
+    
     nbAnswers++;
     nbAnswersInput = document.getElementById("nbAnswers");
     nbAnswersInput.value = nbAnswers;

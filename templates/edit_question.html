@@ -2,7 +2,7 @@
 
    <head>
     <title>Modifier question</title>
-      <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
+      <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
       <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
       <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
       <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
@@ -27,61 +27,90 @@
                 source: {{ etiquettes_existantes | tojson }}
             });
         });
+        
+        $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
       </script>
    </head>
    
    <body>
-    <center>
-        <h1>modification de question</h1>
-        <form method="post">
-            <p>Type : {{ question.type }}</p>
+    
+        <div>
+            <div class="container-fluid bg-dark text-light py-3">
+                <header class="text-center">
+                    <h1 class="display-6">Modification de question</h1> 
+                </header>
+            </div>
+        </div>
+        <center>
+        <section class="container my-2 bg-dark w-80 text-light p-2">
 
-            <label for="text">Question :</label>
-            <input type="text" name="text" placeholder="Quelle est la capitale de la France ?" value="{{ question.text }}">
-            
-            <br><br><!-- Supprimer les BR et les remplacer par du css -->
+            <form method="post" style="margin-top: 10px;">
+                            <h5 class="text-light text-center display-12">Type : {{ question.type }}</h5>
+                            <div>
+                                <label for="text">Question :</label>
+                                <input type="text" name="text" placeholder="ex : De quelle couleur est une orange ?" value="{{ question.text }}">                                
+                            </div>
 
-            <div id="form-etiquettes" style="border: solid grey 1px; padding: 10px;">
-                <label for="etiquette">Etiquettes :</label>
-                <div id="etiquettes-list">
-                    {% for etiquette in question.etiquettes %}
-                    <div id="{{ etiquette }}" class="etiquette">
-                        <p>{{ etiquette }}</p>
-                        <button type="button" onclick="delEtiquette('{{ etiquette }}')">Supprimer</button>
+                        <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px;">
+                            <label for="etiquette" class="text-light text-center display-12">Etiquettes :</label>
+                            <div id="etiquettes-list" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">
+                                {% for etiquette in question.etiquettes %}
+                                <div id="{{ etiquette }}" class="etiquette" style="margin: 5px;">
+                                    <button type="button" onclick="delEtiquette('{{ etiquette }}')" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="appuyez pour supprimer">
+                                        {{ etiquette }}
+                                        </button>
+
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" name="etiquettes" value="" id="etiquettes">
+                            <div id="add_etiquette">
+                                <input id="input_etiquette" placeholder="Ajouter une étiquette">
+                                <button type="button" class="btn btn-labeled " onclick="addEtiquette()">
+                                    <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
+                            </div>
+                        </div>
+
+                        <br><br>
+                        
+                        <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="justify-content: center; padding: 10px;">
+                            
+                            {% for i in range(0, nbAnswers) %}
+                            <div id="answer{{ i }}" style="position:relative;">
+                                <button type="button" class="btn btn-labeled btn-danger" style="position:relative; left:27%;" onclick="delAnswer()">
+                                    <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                </button>
+                                {% if question['answers'][i]['isCorrect'] %}
+                                    <input type="checkbox" name="correct{{ i }}" checked>
+                                {% else %}
+                                    <input type="checkbox" name="correct{{ i }}">
+                                {% endif %}
+                                <input type="text" name="text{{ i }}" value='{{ question["answers"][i]["text"] }}'>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                        <div style="margin-top: 5px;">
+                        <button type="button" class="btn btn-labeled " onclick="addAnswer()">
+                            <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
+                        <input type="submit" class="btn btn-success" value="Confirmer">                
+                        </div>
+
+                        
+                    </form>
+                    <div style="margin-top: 5px;">
+                    <form action="{{ url_for('questions') }}">
+                        <input type="submit" class="btn btn-dark" value="Retour">
+                        <input type="hidden" name="id_question" value="{{ id_question }}">
+                        <input type="hidden" name="nbAnswers" value="{{ nbAnswers }}" id="nbAnswers">
+                    </form>             
                     </div>
-                    {% endfor %}
-                </div>
-                <input type="hidden" name="etiquettes" value="" id="etiquettes">
-                <div id="add_etiquette">
-                    <input id="input_etiquette" placeholder="Ajouter une étiquette">
-                    <button type="button" onclick="addEtiquette()">Ajouter</button>
-                </div>
-            </div>
+        </section> 
+        </center>
 
-            <br><br><!-- Supprimer les BR et les remplacer par du css -->
-            
-            <div id="answers">
-                {% for i in range(0, nbAnswers) %}
-                <div id="answer{{ i }}">
-                    {% if question['answers'][i]['isCorrect'] %}
-                        <input type="checkbox" name="correct{{ i }}" checked>
-                    {% else %}
-                        <input type="checkbox" name="correct{{ i }}">
-                    {% endif %}
-                    <input type="text" name="text{{ i }}" value='{{ question["answers"][i]["text"] }}'>
-                </div>
-                {% endfor %}
-            </div>
-            <button type="button" onclick="addAnswer()">Ajouter une réponse</button>
-            <!--<button type="button" onclick="delAnswer()">Supprimer une réponse</button>-->
-            <button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">
-                <span class="btn-label"><i class="fa fa-trash"></i></span>Supprimer
-            </button>
-            <button type="submit" class="btn btn-link"><span class="bi bi-pencil-fill"></span></button>
-            <input type="hidden" name="id_question" value="{{ id_question }}">
-            <input type="hidden" name="nbAnswers" value="{{ nbAnswers }}" id="nbAnswers">
-        </form>
-    </center>
+     
    </body>
    
    
