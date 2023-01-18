@@ -5,29 +5,6 @@
         "questions": [
             {
                 "type": "QCM",
-                "text": "Quelle est la capitale de la France ?",
-                "etiquettes": [
-                    "France",
-                    "Capitales",
-                    "Spaghetti code"
-                ],
-                "answers": [
-                    {
-                        "text": "oui",
-                        "isCorrect": true
-                    },
-                    {
-                        "text": "coucou",
-                        "isCorrect": false
-                    },
-                    {
-                        "text": "montpellier",
-                        "isCorrect": false
-                    }
-                ]
-            },
-            {
-                "type": "QCM",
                 "text": "quelle est la capitale de l'espagne",
                 "etiquettes": [
                     "Spaghetti code",

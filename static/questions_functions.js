@@ -59,11 +59,14 @@ function addEtiquette() {
     etiquette.id = texte;
     etiquette.className = "etiquette";
     let etiquetteText = document.createElement("p");
-    etiquetteText.innerHTML = texte;
     let etiquetteButton = document.createElement("button");
     etiquetteButton.type = "button";
+    etiquetteButton.className = "btn btn-primary btn-sm";
+    etiquetteButton.data_bs_toggle = "tooltip";
+    etiquetteButton.data_bs_placement = "top";
+    etiquetteButton.title = "appuyez pour supprimer";
     etiquetteButton.onclick = function() { delEtiquette(texte); };
-    etiquetteButton.innerHTML = "Supprimer";
+    etiquetteButton.innerHTML = texte;
     etiquette.appendChild(etiquetteText);
     etiquette.appendChild(etiquetteButton);
     etiquettes.appendChild(etiquette);

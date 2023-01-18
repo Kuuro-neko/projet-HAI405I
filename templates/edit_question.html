@@ -44,16 +44,11 @@
             </div>
         </div>
         <center>
-        <section class="container my-2 bg-dark w-80 text-light p-2">
+        <section class="container my-2 bg-dark w-60 text-light p-2" style="box-shadow: 0px 0px 10px white; padding: 5px;">
 
             <form method="post" style="margin-top: 10px;">
-                            <h5 class="text-light text-center display-12">Type : {{ question.type }}</h5>
-                            <div>
-                                <label for="text">Question :</label>
-                                <input type="text" name="text" placeholder="ex : De quelle couleur est une orange ?" value="{{ question.text }}">                                
-                            </div>
 
-                        <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px;">
+                        <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px; display:flex ; flex-direction: column; justify-content: center; margin: 10px;">
                             <label for="etiquette" class="text-light text-center display-12">Etiquettes :</label>
                             <div id="etiquettes-list" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">
                                 {% for etiquette in question.etiquettes %}
@@ -72,39 +67,89 @@
                                     <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
                             </div>
                         </div>
-
+                        <!--<h5 class="text-light text-center display-12">Type : {{ question.type }}</h5>
+                        <div>
+                            <label for="text">Question :</label>
+                            <input type="text" name="text" placeholder="ex : De quelle couleur est une orange ?" value="{{ question.text }}">                                
+                        </div>
+                    -->
                         <br><br>
-                        
-                        <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="justify-content: center; padding: 10px;">
-                            
-                            {% for i in range(0, nbAnswers) %}
-                            <div id="answer{{ i }}" style="position:relative;">
-                                <button type="button" class="btn btn-labeled btn-danger" style="position:relative; left:27%;" onclick="delAnswer()">
-                                    <span class="btn-label"><i class="fa fa-trash"></i></span>
-                                </button>
+
+                        <div class="card bg-dark" style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px;">
+                            <div class="card-body">
+                              <h5 class="card-title">Type : {{ question.type }}</h5>
+                              <label for="qst">Question :</label>
+                                <textarea id="qst" name="text" rows="3" cols="33" >{{ question.text }}</textarea>
+                            </div>
+                                {% for i in range(0, nbAnswers) %}
+                            <div class="form-check form-switch" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">
                                 {% if question['answers'][i]['isCorrect'] %}
-                                    <input type="checkbox" name="correct{{ i }}" checked>
+                                        <input class="form-check-input"  type="checkbox" name="correct{{ i }}" id="flexSwitchCheckDefault" checked>
                                 {% else %}
-                                    <input type="checkbox" name="correct{{ i }}">
+                                    <input class="form-check-input"  type="checkbox" name="correct{{ i }}" id="flexSwitchCheckDefault" >
                                 {% endif %}
                                 <input type="text" name="text{{ i }}" value='{{ question["answers"][i]["text"] }}'>
+                                <button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">
+                                    <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                </button>
                             </div>
-                            {% endfor %}
+                            
 
-                        </div>
-                        <div style="margin-top: 5px;">
-                        <button type="button" class="btn btn-labeled " onclick="addAnswer()">
-                            <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
-                        <input type="submit" class="btn btn-success" value="Confirmer">                
-                        </div>
-
+                        {% endfor %}
                         
+                            <div class="card-body">
+                                <button type="button" class="btn btn-labeled " onclick="addAnswer()">
+                                    <span class="btn-label ">
+                                        <i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i>
+                                    </span>
+                                </button>                              
+                                <input type="submit" class="btn btn-success" value="Confirmer">
+                                <input type="hidden" name="id_question" value="{{ id_question }}">
+                                <input type="hidden" name="nbAnswers" value="{{ nbAnswers }}" id="nbAnswers">                
+                            </div>
+                          </div>
+                        </div>
+
+
+             <!--
+                        <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex ; flex-direction: column; justify-content: center; padding: 10px;">
+                                                    
+                                                    {% for i in range(0, nbAnswers) %}
+                                                    <div id="answer{{ i }}" style="display:flex ; flex-direction: row; justify-content: center; padding: 10px;">
+                                                        
+
+                                                        {% if question['answers'][i]['isCorrect'] %}
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input"  type="checkbox" name="correct{{ i }}" id="flexSwitchCheckDefault" checked>
+                                                        </div>
+                                                        {% else %}
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input"  type="checkbox" name="correct{{ i }}" id="flexSwitchCheckDefault" >
+                                                        </div>
+                                                        {% endif %}
+                                                        <input type="text" name="text{{ i }}" value='{{ question["answers"][i]["text"] }}'>
+                                                        <button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">
+                                                            <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                                        </button>
+                                                    </div>
+                                                    {% endfor %}
+
+                                                </div>
+                                                <div style="margin-top: 5px;">
+                                                <button type="button" class="btn btn-labeled " onclick="addAnswer()">
+                                                    <span class="btn-label ">
+                                                        <i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i>
+                                                    </span>
+                                                </button>
+                                                <input type="submit" class="btn btn-success" value="Confirmer">                
+                                                </div>                            
+                -->
+    
+                                               
                     </form>
                     <div style="margin-top: 5px;">
                     <form action="{{ url_for('questions') }}">
                         <input type="submit" class="btn btn-dark" value="Retour">
-                        <input type="hidden" name="id_question" value="{{ id_question }}">
-                        <input type="hidden" name="nbAnswers" value="{{ nbAnswers }}" id="nbAnswers">
                     </form>             
                     </div>
         </section> 
