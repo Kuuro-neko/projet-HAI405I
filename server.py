@@ -5,6 +5,7 @@ from flask import make_response
 
 from flask import redirect, url_for, request, session
 
+import mistune
 import json
 
 
@@ -212,6 +213,17 @@ def edit_question(id_question):
          questions = get_questions(name)
          etiquettes_existantes = get_etiquettes()
          return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, etiquettes_existantes = etiquettes_existantes)
+   return render_template("index.html", name = None)
+
+@app.route("/visualiser/<int:id_question>")
+def visualiser(id_question):
+   if 'user' in session:
+      name = session['user']
+      questions = get_questions(name)
+      texte_a_traiter = questions[id_question]["text"]
+      html = mistune.markdown(texte_a_traiter)
+
+      return render_template("visualiser.html", html = html)
    return render_template("index.html", name = None)
 
 if __name__ == '__main__':

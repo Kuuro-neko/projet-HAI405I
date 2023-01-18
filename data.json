@@ -71,7 +71,7 @@
             },
             {
                 "type": "QCM",
-                "text": "Test r\u00e9ponses",
+                "text": "'''\r\n## titre H2\r\n### sous titre H3\r\n**en gras**, *en italique*...\r\n- un item\r\n- un second item\r\n'''",
                 "etiquettes": [],
                 "answers": [
                     {
