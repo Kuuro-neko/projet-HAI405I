@@ -2,51 +2,7 @@
     {
         "user": "Test",
         "password": "test",
-        "questions": [
-            {
-                "type": "QCM",
-                "text": "quelle est la capitale de l'espagne",
-                "etiquettes": [
-                    "Spaghetti code",
-                    "Javascript"
-                ],
-                "answers": [
-                    {
-                        "text": "Paris",
-                        "isCorrect": false
-                    },
-                    {
-                        "text": "Oui",
-                        "isCorrect": true
-                    },
-                    {
-                        "text": "Peut \u00eatre",
-                        "isCorrect": false
-                    },
-                    {
-                        "text": "madrid",
-                        "isCorrect": false
-                    }
-                ]
-            },
-            {
-                "type": "QCM",
-                "text": "how are you ?",
-                "etiquettes": [
-                    "tomatte"
-                ],
-                "answers": [
-                    {
-                        "text": "good",
-                        "isCorrect": true
-                    },
-                    {
-                        "text": "non",
-                        "isCorrect": false
-                    }
-                ]
-            }
-        ]
+        "questions": []
     },
     {
         "user": "Test2",
