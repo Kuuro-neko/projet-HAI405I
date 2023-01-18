@@ -15,30 +15,30 @@
       <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
       <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
       <script>
-        var nbAnswers = 1;
+        window.onload = function() {
+            addAnswer();
+            addAnswer();
+        }
         $(function() {
             $( "#input_etiquette" ).autocomplete({
                 source: {{ etiquettes_existantes | tojson }}
             });
         });
-        
         $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+            $('[data-toggle="tooltip"]').tooltip()
+        })
       </script>
    </head>
    
    <body>
     <center>
-        <div>
-            <h1>Création de question</h1>
-            <form method="post">
+        <h1>Création de question</h1>
+        <form method="post">
 
-                <p>Type : QCM</p>
+            <p>Type : QCM</p>
 
-                <label for="text">Question :</label>
-                <input type="text" name="text" placeholder="Quelle est la capitale de la France ?">            
-        </div>
+            <label for="text">Question :</label>
+            <input type="text" name="text" placeholder="Quelle est la capitale de la France ?">            
 
 
             <br><br><!-- Supprimer les BR et les remplacer par du css -->
@@ -56,21 +56,14 @@
             
             <br><br><!-- Supprimer les BR et les remplacer par du css -->
 
-            <div id="answers">
-                <div id="answer0">
-                    <input type="checkbox" name="correct0" value="1">
-                    <input type="text" name="text0" placeholder="Réponse 1">
-                    <button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">
-                        <span class="btn-label"><i class="fa fa-trash"></i></span>
-                    </button>
-
-                </div>
+            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="justify-content: center; padding: 10px;">
+                <!-- Réponses ajoutées avec addAnswer() -->
             </div>
-            <input type="hidden" name="nbAnswers" value="1" id="nbAnswers">
+
+            <input type="hidden" name="answers_json" value="" id="answers_json">
             <button type="button" class="btn btn-labeled btn-lg" onclick="addAnswer()">
                 <span class="btn-label "><i class="fa fa-plus-circle w-100" aria-hidden="true"></i></span></button>
-
-            <input type="submit" class="btn btn-success" value="créer">
+            <input type="submit" class="btn btn-success" value="créer" onclick="majAnswers()">
         </form>
         <form action="{{ url_for('questions') }}">
             <input type="submit" class="btn btn-dark" value="Retour">

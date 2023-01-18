@@ -2,7 +2,127 @@
     {
         "user": "Test",
         "password": "test",
-        "questions": []
+        "questions": [
+            {
+                "type": "QCM",
+                "text": "Quelle est la capitale de la France ?",
+                "etiquettes": [
+                    "France",
+                    "Capitales",
+                    "Spaghetti code"
+                ],
+                "answers": [
+                    {
+                        "text": "oui",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "coucou",
+                        "isCorrect": false
+                    },
+                    {
+                        "text": "montpellier",
+                        "isCorrect": false
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "Quelle est la capitale de l'espagne",
+                "etiquettes": [
+                    "Spaghetti code",
+                    "Javascript"
+                ],
+                "answers": [
+                    {
+                        "text": "Barcelone",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Madrid",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Paris",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Montpellier",
+                        "isCorrect": "false"
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "how are you ?",
+                "etiquettes": [
+                    "tomatte"
+                ],
+                "answers": [
+                    {
+                        "text": "good",
+                        "isCorrect": true
+                    },
+                    {
+                        "text": "non",
+                        "isCorrect": false
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "Test r\u00e9ponses",
+                "etiquettes": [],
+                "answers": [
+                    {
+                        "text": "o",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "n",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "o",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "n",
+                        "isCorrect": "false"
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "Est ce que les questions marchent toujours ?",
+                "etiquettes": [
+                    "Spaghetti code",
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "Oui",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Non",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Segmentation fault",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Peut \u00eatre",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "True",
+                        "isCorrect": "true"
+                    }
+                ]
+            }
+        ]
     },
     {
         "user": "Test2",
