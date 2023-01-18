@@ -21,18 +21,25 @@
                 source: {{ etiquettes_existantes | tojson }}
             });
         });
+        
+        $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
       </script>
    </head>
    
    <body>
     <center>
-        <h1>Création de question</h1>
-        <form method="post">
+        <div>
+            <h1>Création de question</h1>
+            <form method="post">
 
-            <p>Type : QCM</p>
+                <p>Type : QCM</p>
 
-            <label for="text">Question :</label>
-            <input type="text" name="text" placeholder="Quelle est la capitale de la France ?">
+                <label for="text">Question :</label>
+                <input type="text" name="text" placeholder="Quelle est la capitale de la France ?">            
+        </div>
+
 
             <br><br><!-- Supprimer les BR et les remplacer par du css -->
 
@@ -53,16 +60,21 @@
                 <div id="answer0">
                     <input type="checkbox" name="correct0" value="1">
                     <input type="text" name="text0" placeholder="Réponse 1">
+                    <button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">
+                        <span class="btn-label"><i class="fa fa-trash"></i></span>
+                    </button>
+
                 </div>
             </div>
             <input type="hidden" name="nbAnswers" value="1" id="nbAnswers">
-            <button type="button" onclick="addAnswer()">Ajouter une réponse</button>
-            <!--<button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">Trash</button>-->
-            <button type="button" class="btn btn-labeled btn-danger" onclick="delAnswer()">
-                <span class="btn-label"><i class="fa fa-trash"></i></span> Suppr. Dernière réponse
-            </button>
-            <input type="submit" value="Créer">
+            <button type="button" class="btn btn-labeled btn-lg" onclick="addAnswer()">
+                <span class="btn-label "><i class="fa fa-plus-circle w-100" aria-hidden="true"></i></span></button>
+
+            <input type="submit" class="btn btn-success" value="créer">
         </form>
+        <form action="{{ url_for('questions') }}">
+            <input type="submit" class="btn btn-dark" value="Retour">
+    </form>
     </center>
    </body>
 </html>
