@@ -157,18 +157,11 @@ def add_question():
          etiquettes = json.loads(request.form['etiquettes'])
       except:
          etiquettes = []
-
-      majListeEtiquettes(etiquettes)
+      try:
+         answers = json.loads(request.form['answers_json'])
+      except:
+         answers = []
       user = session['user']
-
-      nbAnswers = request.form['nbAnswers']
-      answers = []
-      for i in range(int(nbAnswers)):
-         answers.append({
-            "text": request.form['text' + str(i)],
-            "isCorrect": request.form.get('correct' + str(i)) != None
-         })
-
       question = {
          "type" : "QCM",
          "text": text,
@@ -176,6 +169,7 @@ def add_question():
          "answers": answers
       }
       data[get_user_id(user)]['questions'].append(question)
+      majListeEtiquettes(etiquettes)
       write_data(data)
       return redirect(url_for('questions'))
    else:

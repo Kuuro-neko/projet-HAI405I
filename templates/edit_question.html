@@ -29,8 +29,8 @@
         });
         
         $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+            $('[data-toggle="tooltip"]').tooltip()
+        })
       </script>
    </head>
    
@@ -44,70 +44,67 @@
             </div>
         </div>
         <center>
-        <section class="container my-2 bg-dark w-80 text-light p-2">
+            <section class="container my-2 bg-dark w-80 text-light p-2">
+                <form method="post" style="margin-top: 10px;">
+                    <h5 class="text-light text-center display-12">Type : {{ question.type }}</h5>
+                    <div>
+                        <label for="text">Question :</label>
+                        <input type="text" name="text" placeholder="ex : De quelle couleur est une orange ?" value="{{ question.text }}">                                
+                    </div>
 
-            <form method="post" style="margin-top: 10px;">
-                            <h5 class="text-light text-center display-12">Type : {{ question.type }}</h5>
-                            <div>
-                                <label for="text">Question :</label>
-                                <input type="text" name="text" placeholder="ex : De quelle couleur est une orange ?" value="{{ question.text }}">                                
-                            </div>
+                    <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px;">
+                        <label for="etiquette" class="text-light text-center display-12">Etiquettes :</label>
+                        <div id="etiquettes-list" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">
+                            {% for etiquette in question.etiquettes %}
+                            <div id="{{ etiquette }}" class="etiquette" style="margin: 5px;">
+                                <button type="button" onclick="delEtiquette('{{ etiquette }}')" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="appuyez pour supprimer">
+                                    {{ etiquette }}
+                                    </button>
 
-                        <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px;">
-                            <label for="etiquette" class="text-light text-center display-12">Etiquettes :</label>
-                            <div id="etiquettes-list" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">
-                                {% for etiquette in question.etiquettes %}
-                                <div id="{{ etiquette }}" class="etiquette" style="margin: 5px;">
-                                    <button type="button" onclick="delEtiquette('{{ etiquette }}')" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="appuyez pour supprimer">
-                                        {{ etiquette }}
-                                        </button>
-
-                                </div>
-                                {% endfor %}
-                            </div>
-                            <input type="hidden" name="etiquettes" value="" id="etiquettes">
-                            <div id="add_etiquette">
-                                <input id="input_etiquette" placeholder="Ajouter une étiquette">
-                                <button type="button" class="btn btn-labeled " onclick="addEtiquette()">
-                                    <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
-                            </div>
-                        </div>
-
-                        <br><br>
-                        
-                        <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="justify-content: center; padding: 10px;">
-                            
-                            {% for i in range(0, nbAnswers) %}
-                            <div id="answer{{ i }}" style="position:relative;">
-                                <button type="button" class="btn btn-labeled btn-danger" style="position:relative; left:27%;" onclick="delAnswer()">
-                                    <span class="btn-label"><i class="fa fa-trash"></i></span>
-                                </button>
-                                {% if question['answers'][i]['isCorrect'] %}
-                                    <input type="checkbox" name="correct{{ i }}" checked>
-                                {% else %}
-                                    <input type="checkbox" name="correct{{ i }}">
-                                {% endif %}
-                                <input type="text" name="text{{ i }}" value='{{ question["answers"][i]["text"] }}'>
                             </div>
                             {% endfor %}
-
                         </div>
-                        <div style="margin-top: 5px;">
-                        <button type="button" class="btn btn-labeled " onclick="addAnswer()">
-                            <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
-                        <input type="submit" class="btn btn-success" value="Confirmer">                
+                        <input type="hidden" name="etiquettes" value="" id="etiquettes">
+                        <div id="add_etiquette">
+                            <input id="input_etiquette" placeholder="Ajouter une étiquette">
+                            <button type="button" class="btn btn-labeled " onclick="addEtiquette()">
+                                <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
                         </div>
+                    </div>
 
+                    <br><br>
+                    
+                    <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="justify-content: center; padding: 10px;">
                         
-                    </form>
+                        {% for i in range(0, nbAnswers) %}
+                        <div id="answer{{ i }}" style="position:relative;">
+                            <button type="button" class="btn btn-labeled btn-danger" style="position:relative; left:27%;" onclick="delAnswer()">
+                                <span class="btn-label"><i class="fa fa-trash"></i></span>
+                            </button>
+                            {% if question['answers'][i]['isCorrect'] %}
+                                <input type="checkbox" name="correct{{ i }}" checked>
+                            {% else %}
+                                <input type="checkbox" name="correct{{ i }}">
+                            {% endif %}
+                            <input type="text" name="text{{ i }}" value='{{ question["answers"][i]["text"] }}'>
+                        </div>
+                        {% endfor %}
+
+                    </div>
                     <div style="margin-top: 5px;">
+                    <button type="button" class="btn btn-labeled " onclick="addAnswer()">
+                        <span class="btn-label "><i class="fa fa-plus-circle" style = "color:white;" aria-hidden="true"></i></span></button>
+                    <input type="submit" class="btn btn-success" value="Confirmer">                
+                    </div>
+                </form>
+                <div style="margin-top: 5px;">
                     <form action="{{ url_for('questions') }}">
                         <input type="submit" class="btn btn-dark" value="Retour">
                         <input type="hidden" name="id_question" value="{{ id_question }}">
                         <input type="hidden" name="nbAnswers" value="{{ nbAnswers }}" id="nbAnswers">
                     </form>             
-                    </div>
-        </section> 
+                </div>
+            </section> 
         </center>
 
      

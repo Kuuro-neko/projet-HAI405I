@@ -68,6 +68,29 @@
                         "isCorrect": false
                     }
                 ]
+            },
+            {
+                "type": "QCM",
+                "text": "Test r\u00e9ponses",
+                "etiquettes": [],
+                "answers": [
+                    {
+                        "text": "o",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "n",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "o",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "n",
+                        "isCorrect": "false"
+                    }
+                ]
             }
         ]
     },
