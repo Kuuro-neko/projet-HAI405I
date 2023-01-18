@@ -91,6 +91,36 @@
                         "isCorrect": "false"
                     }
                 ]
+            },
+            {
+                "type": "QCM",
+                "text": "Est ce que les questions marchent toujours ?",
+                "etiquettes": [
+                    "Spaghetti code",
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "Oui",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Non",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Segmentation fault",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Peut \u00eatre",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "True",
+                        "isCorrect": "true"
+                    }
+                ]
             }
         ]
     },
