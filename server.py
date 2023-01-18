@@ -152,9 +152,10 @@ def add_question():
       data = get_data()
       
       text = request.form['text']
-      try :
+
+      try:
          etiquettes = json.loads(request.form['etiquettes'])
-      except : 
+      except:
          etiquettes = []
 
       majListeEtiquettes(etiquettes)
