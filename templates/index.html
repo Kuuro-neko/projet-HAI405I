@@ -7,9 +7,12 @@
    <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
    <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
    <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
+   <link href="{{ url_for('static', filename = 'style.css') }} " rel="stylesheet">
+
    
 
    </head>
+   <!--
    <nav class="navbar navbar-expand-md navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">QuizzMaker</a>
@@ -19,46 +22,40 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             {% if name != None %}
-            <a class="nav-link" href="{{ url_for('questions') }}">Vos questions</a>
             <a class="nav-link" href="{{ url_for('logout') }}">Se déconnecter</a>
             {% else %}
-            <a class="nav-link" href="{{ url_for('login') }}">Se connecter</a>
+            <a class="nav-link" href="{{ url_for('login') }}">Je suis enseignant</a>
             {% endif %}
           </div>
         </div>
       </div>
-    </nav>
-
-   <!--
-   <body>
-    <center>
-   <div style="margin-top: 35%;" class="container">
-         <div class="row">
-            <div class="col">
-               <div class="card">
-                  <div class="card-header bg-dark text-light">
-                     <h1>Accueil</h1>
-                     <div class="row">
-                        
-                        {% if name != None %}
-                        <div class="row">
-                           <div class="col-sm-12"><a href="{{ url_for('questions') }}">Vos Questions</a></div>
-                        </div>
-                        <div class="row">
-                           <div class="col-sm-12"><a href="{{ url_for('logout') }}">Déconnexion</a></div>                           
-                        </div>
-                        {% else %}
-                          <div class="col-sm-12"><a href="{{ url_for('login') }}">Connexion</a></div>
-                        {% endif %}                     
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-    </center>
-   </body>      
+    </nav>      
    -->
 
+
+    <body class="main-head">
+      <header class=" bg-dark text-light py-2 text-center">
+          <h1 class="display-6" id="logo">QuizzGalaxy</h1> 
+      </header>
+      <section class = "hero">
+         <h2><strong>Bienvenue sur QuizzGalaxy</strong></h2>
+         <h4>Vous êtes enseignant ? Connectez vous ou créez un compte à accèdez à l'espace de <i>Création/Modification des questions</i></h4>
+         <h4>Vous êtes étudiant ? C'est le site parfait pour s'entrainer ! </h4>
+         <div style="display:flex; flex-direction: row ;justify-content: center;align-items: center; margin-top: 20px;">
+            {% if name != None %}
+            <form action="{{ url_for('questions')}}">
+               <button type="submit" class="btn btn-outline-danger btn-lg">Votre Galaxy</button>
+            </form>
+            {% else %}
+            <form action="{{ url_for('login')}}">
+               <button type="submit" class="btn btn-outline-warning btn-lg">Enseignant</button>
+            </form>
+            <form action="">
+               <button type="submit" class="btn btn-outline-info btn-lg" style="margin-left: 20px;">Élève</button>
+            </form>
+            {% endif %}
+         </div>
+      </section>
+  </body>
    
 </html>

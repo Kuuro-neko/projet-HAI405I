@@ -1,6 +1,7 @@
 function addAnswer(text = "", isCorrect = false) {
     // Nouvelle réponse
     let new_answer = document.createElement("div");
+    new_answer.style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;"
     new_answer.className = "answer form-check form-switch";
     // Checkbox
     let answerCheckbox = document.createElement("input");
@@ -25,6 +26,9 @@ function addAnswer(text = "", isCorrect = false) {
     answerText.name = "answer_text";
     answerText.placeholder = "Réponse";
     answerText.value = text;
+    answerText.className="form-control";
+    answerText.style="background-color: #CBFCF0	;";
+
     // Bouton supprimer
     let answerDelete = document.createElement("button");
     answerDelete.type = "button";
@@ -35,7 +39,7 @@ function addAnswer(text = "", isCorrect = false) {
     answerDeleteSpan = document.createElement("span");
     answerDeleteSpan.className = "btn-label";
     answerDeleteSpan_i = document.createElement("i");
-    answerDeleteSpan_i.className = "fa fa-trash"
+    answerDeleteSpan_i.className = "fa fa-trash fa-lg"
     answerDeleteSpan.appendChild(answerDeleteSpan_i)
     answerDelete.appendChild(answerDeleteSpan);
     // Ajout à la réponse des champs
@@ -87,9 +91,9 @@ function addEtiquette() {
     etiquetteButton.data_bs_toggle = "tooltip";
     etiquetteButton.data_bs_placement = "top";
     etiquetteButton.title = "appuyez pour supprimer";
+    etiquetteButton.style="margin: 7px;"
     etiquetteButton.onclick = function() { delEtiquette(texte); };
     etiquetteButton.innerHTML = texte;
-    etiquette.appendChild(etiquetteText);
     etiquette.appendChild(etiquetteButton);
     etiquettes.appendChild(etiquette);
     majInputEtiquettes()
@@ -100,6 +104,7 @@ function delEtiquette(id) {
     etiquettes.removeChild(etiquette);
     majInputEtiquettes();
 };
+
 function majInputEtiquettes() {
     let etiquettes = document.getElementsByClassName("etiquette");
     let inputEtiquettes = document.getElementById("etiquettes");
