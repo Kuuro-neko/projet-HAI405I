@@ -5,6 +5,13 @@ from flask import make_response
 
 from flask import redirect, url_for, request, session
 
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from io import BytesIO
+import base64
+import re
+from matplotlib.texmanager import TexManager
+
 import markdown2
 import json
 
@@ -218,10 +225,20 @@ def edit_question(id_question):
          return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, etiquettes_existantes = etiquettes_existantes)
    return render_template("index.html", name = None)
 
-def highligh_text(text):
-   print(guess_lexer(text))
-   print("salut")
-   return highlight(text, guess_lexer(text), HtmlFormatter())
+def render_latex(latex_expression):
+    fig = plt.figure()
+    plt.text(0, 0, r'${}$'.format(latex_expression), fontsize=14)
+    plt.axis('off')
+    canvas = FigureCanvas(fig)
+    buf = BytesIO()
+    canvas.print_png(buf)
+    data = base64.b64encode(buf.getvalue()).decode('ascii')
+    plt.close(fig)
+    return '<img src="data:image/png;base64,{}"/>'.format(data)
+
+def replace_latex(match):
+    latex_expression = match.group(1)
+    return '<span class="math">' + render_latex(latex_expression) + '</span>'
 
 def traitement_visualiser(text):
    print("BONJOUR")
@@ -237,7 +254,9 @@ def visualiser(id_question):
       questions = get_questions(name)
       texte_a_traiter = questions[id_question]["text"]
       html = traitement_visualiser(texte_a_traiter)
-      print(html)
+      html = re.sub(r'\$\$([^\$]+)\$\$', replace_latex, html)
+      html = re.sub(r'\$([^\$]+)\$', replace_latex, html)
+
       return render_template("visualiser.html", html = html)
    return render_template("index.html", name = None)
 
