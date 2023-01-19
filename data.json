@@ -71,29 +71,6 @@
             },
             {
                 "type": "QCM",
-                "text": "'''\r\n## titre H2\r\n### sous titre H3\r\n**en gras**, *en italique*...\r\n- un item\r\n- un second item\r\n'''",
-                "etiquettes": [],
-                "answers": [
-                    {
-                        "text": "o",
-                        "isCorrect": "true"
-                    },
-                    {
-                        "text": "n",
-                        "isCorrect": "false"
-                    },
-                    {
-                        "text": "o",
-                        "isCorrect": "true"
-                    },
-                    {
-                        "text": "n",
-                        "isCorrect": "false"
-                    }
-                ]
-            },
-            {
-                "type": "QCM",
                 "text": "Est ce que les questions marchent toujours ?",
                 "etiquettes": [
                     "Spaghetti code",
@@ -179,6 +156,33 @@
                     {
                         "text": "Jeune et vert",
                         "isCorrect": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "user": "youssef",
+        "password": "youssef",
+        "questions": [
+            {
+                "type": "QCM",
+                "text": "qu-est ce qui est jaune et qui attend ?",
+                "etiquettes": [
+                    "jonathan"
+                ],
+                "answers": [
+                    {
+                        "text": "jojo",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "bobo",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "encore jojo",
+                        "isCorrect": "true"
                     }
                 ]
             }

@@ -2,8 +2,8 @@
 
    <head>
     <title>Créer question</title>
-      <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
-      <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
+    <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
       <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
       <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
       <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
@@ -31,43 +31,53 @@
    </head>
    
    <body>
-    <center>
-        <h1>Création de question</h1>
-        <form method="post">
+    <div>
+        <div class="container-fluid bg-dark text-light py-3">
+            <header class="text-center">
+                <h1 class="display-6"> Création de question </h1>
+            </header>
+        </div>
+    </div>
+    <center style="display:flex ; flex-direction: row; justify-content: center; margin-top: 5% ;">
+        <section class="container my-2 bg-dark w-60 text-light p-2 col-12" style="box-shadow: 0px 0px 10px white; padding: 5px; display:flex ; flex-direction: column; justify-content: center; ">
+            <form method="post" style="margin-top: 10px;">
+                <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px; display:flex ; flex-direction: column; justify-content: center; margin: 10px;">
+                    <label for="etiquette" class="text-light text-center display-12"><h5>Etiquettes :</h5></label>
+                    <div id="etiquettes-list" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">                        
+                    </div>               
+                        <div id="add_etiquette" >
+                            <input class="form-control form-control-md" style="width: 400px;" id="input_etiquette" placeholder="Ajouter une étiquette">
+                            <button type="button" class="btn btn-labeled " onclick="addEtiquette()">
+                                <span class="btn-label "><i class="fa fa-plus-circle fa-lg" style = "color:white;" aria-hidden="true"></i></span></button>
+                        </div>
+                        <input type="hidden" name="etiquettes" value="" id="etiquettes">
+                    </div>                
+                <div class="card bg-dark" style="width: 30rem; box-shadow: 0px 0px 10px white; padding: 10px;">
+                    <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
+                        <h5 class="card-title">Type : QCM</h5>
+                        <label for="qst">Question :</label>
+                            <textarea class="form-control form" id="qst" name="text" style="background-color: #EBFCCB;" rows="3" cols="33" placeholder="Ex : Qui est Jonathan ?"></textarea>
+                        </div>
 
-            <p>Type : QCM</p>
-
-            <label for="text">Question :</label>
-            <input type="text" name="text" placeholder="Quelle est la capitale de la France ?">            
-
-
-            <br><br><!-- Supprimer les BR et les remplacer par du css -->
-
-            <div id="form-etiquettes" style="border: solid grey 1px; padding: 10px;">
-                <label for="etiquette">Etiquettes :</label>
-                <div id="etiquettes-list">
-                </div>
-                <input type="hidden" name="etiquettes" value="" id="etiquettes">
-                <div id="add_etiquette">
-                    <input id="input_etiquette" placeholder="Ajouter une étiquette">
-                    <button type="button" onclick="addEtiquette()">Ajouter</button>
-                </div>
-            </div>
-            
-            <br><br><!-- Supprimer les BR et les remplacer par du css -->
-
-            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="justify-content: center; padding: 10px;">
-                <!-- Réponses ajoutées avec addAnswer() -->
+            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
+            <!-- Réponses ajoutées avec addAnswer() -->
             </div>
 
             <input type="hidden" name="answers_json" value="" id="answers_json">
-            <button type="button" class="btn btn-labeled btn-lg" onclick="addAnswer()">
-                <span class="btn-label "><i class="fa fa-plus-circle w-100" aria-hidden="true"></i></span></button>
-            <input type="submit" class="btn btn-success" value="créer" onclick="majAnswers()">
+                <div class="card-body">
+                    <button type="button" class="btn btn-labeled " onclick="addAnswer()">
+                        <span class="btn-label "><i class="fa fa-plus-circle fa-lg" style = "color:white;" aria-hidden="true"></i></span></button>
+                    <input type="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()"> 
+                    <input type="hidden" name="id_question" value="{{ id_question }}">
+                </div>
+        </div>
         </form>
-        <form action="{{ url_for('questions') }}">
-            <input type="submit" class="btn btn-dark" value="Retour">
-    </form>
+        <div style="margin-top: 5px;">
+            <form action="{{ url_for('questions') }}">
+                <input type="submit" class="btn btn-dark" value="Retour">
+            </form>             
+        </div>
+    </section> 
     </center>
    </body>
 </html>
