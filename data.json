@@ -105,7 +105,7 @@
             },
             {
                 "type": "QCM",
-                "text": "```python\r\ntext = \"hello world\"\r\nprint(text)\r\n```",
+                "text": "```python\r\ndef split_lines(s):\r\n  return s.split('\\n')\r\nsplit_lines('50\\n python\\n snippets') # ['50', ' python', ' snippets']\r\n```",
                 "etiquettes": [
                     "Python"
                 ],
@@ -145,11 +145,12 @@
             },
             {
                 "type": "QCM",
-                "text": "# Markdown test et couleur code test\r\n## Python\r\n```python\r\ntext = \"Hello world\"\r\nprint(text)\r\n```\r\n\r\n## Javascript\r\n```javascript\r\nlet text = \"Hello world\"\r\nconsole.log(text)\r\n```\r\n\r\n## C++\r\n```c++\r\nstd::cout << \"main function\\n\";\r\n```",
+                "text": "# Markdown test et couleur code test\r\n## Python\r\n```python\r\ndef split_lines(s):\r\n  return s.split('\\n')\r\nsplit_lines('50\\n python\\n snippets') # ['50', ' python', ' snippets']\r\n```\r\n\r\n## Javascript\r\n```javascript\r\nfor(let i=0; i<10 ; i++){\r\n if(i<5){\r\n   if(i===3){\r\n     console.log('rien');\r\n   }else{\r\n     console.log(i);\r\n   }\r\n }\r\n}\r\n// affiche 0,1,2,rien,4\r\n```\r\n\r\n## C++\r\n```c++\r\nstd::cout << \"main function\\n\";\r\n```\r\n\r\n## Latex\r\n$$e^{i\\pi}+1=0$$",
                 "etiquettes": [
                     "Markdown",
                     "Python",
-                    "Spaghetti code"
+                    "Spaghetti code",
+                    "Latex"
                 ],
                 "answers": [
                     {
@@ -161,7 +162,7 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Test markdown et coloration"
+                "titre": "Test markdown et coloration et latex"
             }
         ]
     },

@@ -5,15 +5,6 @@ from flask import make_response
 
 from flask import redirect, url_for, request, session
 
-from pygments import highlight
-from pygments.lexers import guess_lexer
-from pygments.formatters import HtmlFormatter
-import re
-
-from pylatex import Math
-import latex
-from pylatex import Document, NoEscape 
-
 import markdown2
 import json
 
@@ -227,15 +218,17 @@ def edit_question(id_question):
          return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, etiquettes_existantes = etiquettes_existantes)
    return render_template("index.html", name = None)
 
+def highligh_text(text):
+   print(guess_lexer(text))
+   print("salut")
+   return highlight(text, guess_lexer(text), HtmlFormatter())
+
 def traitement_visualiser(text):
+   print("BONJOUR")
    # Markdown
    extras = ["fenced-code-blocks"]
    html = markdown2.markdown(text, extras=extras)
-   # Coloration de code. Cette ligne a été obtenue à l'aide de chatGPT
-   colored_code = re.sub(r'<pre><code class="(.*?)">(.*?)</code></pre>', lambda m: "<pre><code class=\""+m.group(1)+"\" style='background:none;'>"+highlight(m.group(2), guess_lexer(m.group(2)), HtmlFormatter())+"</code></pre>", html, flags=re.DOTALL)
-   # Latex
-
-   return colored_code
+   return html
 
 @app.route("/visualiser/<int:id_question>")
 def visualiser(id_question):
@@ -244,6 +237,7 @@ def visualiser(id_question):
       questions = get_questions(name)
       texte_a_traiter = questions[id_question]["text"]
       html = traitement_visualiser(texte_a_traiter)
+      print(html)
       return render_template("visualiser.html", html = html)
    return render_template("index.html", name = None)
 
