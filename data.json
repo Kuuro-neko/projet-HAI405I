@@ -98,6 +98,59 @@
                         "isCorrect": "true"
                     }
                 ]
+            },
+            {
+                "type": "QCM",
+                "text": "```python\r\ntext = \"hello world\"\r\nprint(text)\r\n```",
+                "etiquettes": [
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "Oui",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Non",
+                        "isCorrect": "false"
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "$$e^{i\\pi}+1=0$$",
+                "etiquettes": [
+                    "Latex"
+                ],
+                "answers": [
+                    {
+                        "text": "Oui",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Non",
+                        "isCorrect": "false"
+                    }
+                ]
+            },
+            {
+                "type": "QCM",
+                "text": "# Markdown test\r\n## Titre 2\r\n```python\r\ntext = \"Hello world\"\r\nprint(text)\r\n```\r\n\r\n## Titre 2\r\n```javascript\r\nlet text = \"Hello world\"\r\nconsole.log(text)\r\n```\r\n\r\n## Titre 2 dsf\r\n```c++\r\nstd::cout << \"main function\\n\";\r\n```",
+                "etiquettes": [
+                    "Markdown",
+                    "Python",
+                    "Spaghetti code"
+                ],
+                "answers": [
+                    {
+                        "text": "Oui",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Non",
+                        "isCorrect": "false"
+                    }
+                ]
             }
         ]
     },
