@@ -41,6 +41,7 @@
     <center style="display:flex ; flex-direction: row; justify-content: center; margin-top: 5% ;">
         <section class="container my-2 bg-dark w-60 text-light p-2 col-12" style="box-shadow: 0px 0px 10px white; padding: 5px; display:flex ; flex-direction: column; justify-content: center; ">
             <form method="post" style="margin-top: 10px;">
+                <input type="text" name="titre" placeholder="Titre de la question" required>
                 <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px; display:flex ; flex-direction: column; justify-content: center; margin: 10px;">
                     <label for="etiquette" class="text-light text-center display-12"><h5>Etiquettes :</h5></label>
                     <div id="etiquettes-list" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">                        
@@ -56,7 +57,7 @@
                     <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
                         <h5 class="card-title">Type : QCM</h5>
                         <label for="qst">Question :</label>
-                            <textarea class="form-control form" id="qst" name="text" style="background-color: #EBFCCB;" rows="3" cols="33" placeholder="Ex : Qui est Jonathan ?"></textarea>
+                            <textarea class="form-control form" id="qst" name="text" style="background-color: #EBFCCB;" rows="3" cols="33" placeholder="Ex : Qui est Jonathan ?" required></textarea>
                         </div>
 
             <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">

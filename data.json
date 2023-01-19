@@ -14,17 +14,18 @@
                 "answers": [
                     {
                         "text": "oui",
-                        "isCorrect": true
+                        "isCorrect": "true"
                     },
                     {
                         "text": "coucou",
-                        "isCorrect": false
+                        "isCorrect": "false"
                     },
                     {
                         "text": "montpellier",
-                        "isCorrect": false
+                        "isCorrect": "false"
                     }
-                ]
+                ],
+                "titre": "Quelle est la capitale de la France ?"
             },
             {
                 "type": "QCM",
@@ -50,7 +51,8 @@
                         "text": "Montpellier",
                         "isCorrect": "false"
                     }
-                ]
+                ],
+                "titre": "Quelle est la capitale de l'espagne"
             },
             {
                 "type": "QCM",
@@ -61,13 +63,14 @@
                 "answers": [
                     {
                         "text": "good",
-                        "isCorrect": true
+                        "isCorrect": "true"
                     },
                     {
                         "text": "non",
-                        "isCorrect": false
+                        "isCorrect": "false"
                     }
-                ]
+                ],
+                "titre": "how are you ?"
             },
             {
                 "type": "QCM",
@@ -97,7 +100,8 @@
                         "text": "True",
                         "isCorrect": "true"
                     }
-                ]
+                ],
+                "titre": "Est ce que les questions marchent toujours ?"
             },
             {
                 "type": "QCM",
@@ -114,7 +118,8 @@
                         "text": "Non",
                         "isCorrect": "false"
                     }
-                ]
+                ],
+                "titre": "Test code python"
             },
             {
                 "type": "QCM",
@@ -130,12 +135,17 @@
                     {
                         "text": "Non",
                         "isCorrect": "false"
+                    },
+                    {
+                        "text": "Peut etre",
+                        "isCorrect": "false"
                     }
-                ]
+                ],
+                "titre": "Test latex"
             },
             {
                 "type": "QCM",
-                "text": "# Markdown test\r\n## Titre 2\r\n```python\r\ntext = \"Hello world\"\r\nprint(text)\r\n```\r\n\r\n## Titre 2\r\n```javascript\r\nlet text = \"Hello world\"\r\nconsole.log(text)\r\n```\r\n\r\n## Titre 2 dsf\r\n```c++\r\nstd::cout << \"main function\\n\";\r\n```",
+                "text": "# Markdown test et couleur code test\r\n## Python\r\n```python\r\ntext = \"Hello world\"\r\nprint(text)\r\n```\r\n\r\n## Javascript\r\n```javascript\r\nlet text = \"Hello world\"\r\nconsole.log(text)\r\n```\r\n\r\n## C++\r\n```c++\r\nstd::cout << \"main function\\n\";\r\n```",
                 "etiquettes": [
                     "Markdown",
                     "Python",
@@ -150,7 +160,8 @@
                         "text": "Non",
                         "isCorrect": "false"
                     }
-                ]
+                ],
+                "titre": "Test markdown et coloration"
             }
         ]
     },
@@ -183,7 +194,8 @@
                         "text": "Pas la bonne r\u00e9ponse",
                         "isCorrect": false
                     }
-                ]
+                ],
+                "titre": "Titre par d\u00e9faut"
             }
         ]
     },
@@ -210,7 +222,8 @@
                         "text": "Jeune et vert",
                         "isCorrect": false
                     }
-                ]
+                ],
+                "titre": "Titre par d\u00e9faut"
             }
         ]
     },
@@ -237,7 +250,8 @@
                         "text": "encore jojo",
                         "isCorrect": "true"
                     }
-                ]
+                ],
+                "titre": "Titre par d\u00e9faut"
             }
         ]
     }
