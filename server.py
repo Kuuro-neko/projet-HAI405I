@@ -161,7 +161,7 @@ def add_question():
       data = get_data()
       
       text = request.form['text']
-
+      titre = request.form['titre']
       try:
          etiquettes = json.loads(request.form['etiquettes'])
       except:
@@ -175,7 +175,8 @@ def add_question():
          "type" : "QCM",
          "text": text,
          "etiquettes" : etiquettes,
-         "answers": answers
+         "answers": answers,
+         "titre": titre
       }
       data[get_user_id(user)]['questions'].append(question)
       majListeEtiquettes(etiquettes)
@@ -193,6 +194,7 @@ def edit_question(id_question):
          data = get_data()
          
          text = request.form['text']
+         titre = request.form['titre']
          try:
             etiquettes = json.loads(request.form['etiquettes'])
          except:
@@ -209,7 +211,8 @@ def edit_question(id_question):
             "type" : "QCM",
             "text": text,
             "etiquettes" : etiquettes,
-            "answers": answers
+            "answers": answers,
+            "titre" : titre
          }
 
          data[user_id]['questions'][id_question] = question
@@ -223,7 +226,15 @@ def edit_question(id_question):
          return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, etiquettes_existantes = etiquettes_existantes)
    return render_template("index.html", name = None)
 
+def traitement_visualiser(text):
+   # Markdown
+   extras = ["fenced-code-blocks"]
+   html = markdown2.markdown(text, extras=extras)
+   # Coloration de code. Cette ligne a été obtenue à l'aide de chatGPT
+   colored_code = re.sub(r'<pre><code class="(.*?)">(.*?)</code></pre>', lambda m: "<pre><code class=\""+m.group(1)+"\" style='background:none;'>"+highlight(m.group(2), guess_lexer(m.group(2)), HtmlFormatter())+"</code></pre>", html, flags=re.DOTALL)
+   # Latex
 
+   return colored_code
 
 @app.route("/visualiser/<int:id_question>")
 def visualiser(id_question):
@@ -231,11 +242,8 @@ def visualiser(id_question):
       name = session['user']
       questions = get_questions(name)
       texte_a_traiter = questions[id_question]["text"]
-      extras = ["fenced-code-blocks"]
-      html = markdown2.markdown(texte_a_traiter, extras=extras)
-      colored_code = re.sub(r'<pre><code class="(.*?)">(.*?)</code></pre>', lambda m: "<pre><code class=\""+m.group(1)+"\" style='background:none;'>"+highlight(m.group(2), guess_lexer(m.group(2)), HtmlFormatter())+"</code></pre>", html, flags=re.DOTALL)
-
-      return render_template("visualiser.html", html = colored_code)
+      html = traitement_visualiser(texte_a_traiter)
+      return render_template("visualiser.html", html = html)
    return render_template("index.html", name = None)
 
 if __name__ == '__main__':
