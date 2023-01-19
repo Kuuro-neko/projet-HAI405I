@@ -163,6 +163,24 @@
                     }
                 ],
                 "titre": "Test markdown et coloration et latex"
+            },
+            {
+                "type": "QCM",
+                "text": "# Latex ??\r\n## Racines equation du 2nd degr\u00e9\r\n$$\\[ x_{1,2} = \\frac{- b \\pm \\sqrt{\\delta}}{2a} \\]$$\r\n\r\n## Une matrice\r\n$\\begin{pmatrix}\r\n   a_1 & b_1 \\\\\r\n   a_2 & b_2 \r\n\\end{pmatrix}$\r\n\r\n## Equivalent\r\n$\\begin{equation}\r\n   f(x) = 0 \\iff x = 1\r\n\\end{equation}$",
+                "etiquettes": [
+                    "Latex"
+                ],
+                "answers": [
+                    {
+                        "text": "Oui",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "a",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Grand test latex"
             }
         ]
     },

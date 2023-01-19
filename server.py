@@ -226,7 +226,7 @@ def edit_question(id_question):
    return render_template("index.html", name = None)
 
 def render_latex(latex_expression):
-    fig = plt.figure()
+    fig = plt.figure(figsize=(5, 1))
     plt.text(0, 0, r'${}$'.format(latex_expression), fontsize=14)
     plt.axis('off')
     canvas = FigureCanvas(fig)
