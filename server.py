@@ -11,7 +11,6 @@ from pygments.formatters import HtmlFormatter
 import re
 
 from pylatex import Math
-import latex
 from pylatex import Document, NoEscape 
 
 import markdown2

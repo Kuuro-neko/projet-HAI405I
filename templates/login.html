@@ -11,6 +11,7 @@
    
    <body id="log">
     <center>
+    <section class="container my-2 text-light p-2 col-12" id="loginSec">
     <div class="login" class="container">
         <h1 class="text-center">Connexion</h1>
         <form method="post">
@@ -20,12 +21,17 @@
             <div class="form-group was-validated">
                 <input class="form-control" type="password" name="password" id="password" placeholder="Mot de pass" required>
             </div>
-            <input class="btn btn-success w-100" type="submit" value="Connexion">           
-        </form>
-        <form action="{{ url_for('inscription') }}">
-            <input type="submit" class="btn btn-dark w-100" value="inscription">
-        </form> 
+            <div>
+                <input class="btn btn-success w-100" type="submit" value="Connexion">           
+                </form>
+                <form action="{{ url_for('inscription') }}">
+                    <input type="submit" class="btn btn-dark w-100" value="inscription">
+                </form>                 
+            </div>
+
+
     </div>
+    </section>
     </center>
    </body>
    
