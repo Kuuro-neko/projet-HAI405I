@@ -1,1 +1,3 @@
 Autocomplétion des etiquettes : Jquery (https://www.w3schools.blog/jquery-ui-autocomplete)
+Visualisation en markdown : Bibliothèque markdown2
+Coloration du code : Bibliothèques pygments et re
