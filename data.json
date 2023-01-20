@@ -141,7 +141,7 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Test latex"
+                "titre": "$e^{i\\pi}+1=0$"
             },
             {
                 "type": "QCM",
@@ -165,7 +165,7 @@
             },
             {
                 "type": "QCM",
-                "text": "```latex\r\n\\begin{verbatim}\r\nText enclosed inside \\texttt{verbatim} environment \r\nis printed directly\r\nand all \\LaTeX{} commands are ignored.\r\n\\end{verbatim}\r\n```",
+                "text": "$$\r\n\\usepackage{verbatim}\r\n\\begin{verbatim}\r\nText enclosed inside \\texttt{verbatim} environment \r\nis printed directly\r\nand all \\LaTeX{} commands are ignored.\r\n\\end{verbatim}\r\n$$",
                 "etiquettes": [
                     "tex"
                 ],
@@ -179,7 +179,7 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "TEXMEX"
+                "titre": "texMex"
             }
         ]
     },
