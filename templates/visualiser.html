@@ -59,13 +59,6 @@
                      {{ question.text | safe }}
                   </div>
               </div>
-              <div class="mermaid">graph LR
-               A((1)) --&gt;|a| B(((2)))
-               B --&gt;|a| A
-               B --&gt; |b| B
-               A --&gt;|b| A
-               </div>
-              
             <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
                {%for reponse in question.answers%}
                <div class = " answer form-check form-switch" style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;" >
