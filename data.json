@@ -119,7 +119,7 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Test code python"
+                "titre": "PYYYYYY"
             },
             {
                 "type": "QCM",
@@ -162,6 +162,24 @@
                     }
                 ],
                 "titre": "Test markdown et coloration"
+            },
+            {
+                "type": "QCM",
+                "text": "```latex\r\n\\begin{verbatim}\r\nText enclosed inside \\texttt{verbatim} environment \r\nis printed directly\r\nand all \\LaTeX{} commands are ignored.\r\n\\end{verbatim}\r\n```",
+                "etiquettes": [
+                    "tex"
+                ],
+                "answers": [
+                    {
+                        "text": "oui",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "non",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "TEXMEX"
             }
         ]
     },
