@@ -254,8 +254,8 @@ def visualiser(id_question):
       questions = get_questions(name)
       texte_a_traiter = questions[id_question]["text"]
       html = traitement_visualiser(texte_a_traiter)
-      html = re.sub(r'\$\$([^\$]+)\$\$', replace_latex, html)
-      html = re.sub(r'\$([^\$]+)\$', replace_latex, html)
+      #html = re.sub(r'\$\$([^\$]+)\$\$', replace_latex, html)
+      #html = re.sub(r'\$([^\$]+)\$', replace_latex, html)
 
       return render_template("visualiser.html", html = html)
    return render_template("index.html", name = None)
