@@ -5,19 +5,9 @@ from flask import make_response
 
 from flask import redirect, url_for, request, session
 
-from pygments import highlight
-from pygments.lexers import PythonLexer
-from pygments.formatters import HtmlFormatter
-import re
-
-from pylatex import Math
-import latex
-from pylatex import Document, NoEscape 
-
 from bs4 import BeautifulSoup
 
 import markdown2
-from markdown2 import Markdown
 import json
 
 
