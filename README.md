@@ -4,7 +4,7 @@
 
 ## Installation
 
-- Création d'un envirronement virtuel
+- Création d'un environnement virtuel
 ```
 python3 -m venv venv
 ```
