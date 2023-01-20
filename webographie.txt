@@ -1,3 +1,0 @@
-Autocomplétion des etiquettes : Jquery (https://www.w3schools.blog/jquery-ui-autocomplete)
-background images : https://unsplash.com/fr
-Visualisation en markdown et coloration du code : Bibliothèque markdown2

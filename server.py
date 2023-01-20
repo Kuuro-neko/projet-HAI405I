@@ -6,15 +6,18 @@ from flask import make_response
 from flask import redirect, url_for, request, session
 
 from pygments import highlight
-from pygments.lexers import guess_lexer
+from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
 import re
 
 from pylatex import Math
+import latex
 from pylatex import Document, NoEscape 
+
 from bs4 import BeautifulSoup
 
 import markdown2
+from markdown2 import Markdown
 import json
 
 
@@ -228,25 +231,32 @@ def edit_question(id_question):
    return render_template("index.html", name = None)
 
 def traitement_visualiser(texte):
-   # Markdown
-   extras = ["fenced-code-blocks"]
-   html = markdown2.markdown(texte, extras=extras)
-   # Coloration de code. Cette ligne a été obtenue à l'aide de chatGPT
-   colored_code = re.sub(r'<pre><code class="(.*?)">(.*?)</code></pre>', lambda m: "<pre><code class=\""+m.group(1)+"\" style='background:none;'>"+highlight(m.group(2), guess_lexer(m.group(2)), HtmlFormatter())+"</code></pre>", html, flags=re.DOTALL)
-   # Latex     
-   
-   return colored_code
-
+   # Markdown et code coloré
+   html = markdown2.markdown(texte, extras=["fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
+   soup = BeautifulSoup(html, 'html.parser')
+   for code_block in soup.find_all('code'):
+      try:
+         code_block.parent.parent["class"]
+      except:
+         # Mermaid
+         new_div = soup.new_tag("div")
+         new_div['class'] = "mermaid"
+         for line in code_block.contents:
+            new_div.append(line)
+         code_block.replace_with(new_div)
+   return soup.prettify()
 
 
 @app.route("/visualiser/<int:id_question>")
 def visualiser(id_question):
    if 'user' in session:
       name = session['user']
-      questions = get_questions(name)
-      texte_a_traiter = questions[id_question]["text"]
-      html = traitement_visualiser(texte_a_traiter)
-      return render_template("visualiser.html", question = questions[id_question], html = html)
+      question = get_questions(name)[id_question]
+      question['text'] = traitement_visualiser(question['text'])
+
+      for answer in question['answers']:
+         answer['text'] = traitement_visualiser(answer['text'])
+      return render_template("visualiser.html", question = question)
    return render_template("index.html", name = None)
 
 if __name__ == '__main__':
