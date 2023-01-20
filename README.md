@@ -1,10 +1,37 @@
-# projet-HAI405I
+# Projet de programmation - GuizzGalaxy
+
+[![Python 3.9.2](https://img.shields.io/badge/python-3.9.2-blue.svg)](https://www.python.org/downloads/release/python-392/)
 
 ## Installation
 
-TO DO
-
+- Création d'un envirronement virtuel
+```
 python3 -m venv venv
+```
+
+- Activation l'environnement virtuel
+```
+source venv/bin/activate
+```
+
+- Installation des bibliothèques
+```
+pip install flask
+pip install bs4
+pip install markdown2
+```
+
+## Lancement du serveur web
+
+- Activation l'environnement virtuel
+```
+source venv/bin/activate
+```
+
+- Exécution de server.py
+```
+python3 server.py
+```
 
 ## Webographie
 
