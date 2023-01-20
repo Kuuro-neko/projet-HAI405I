@@ -1,2 +1,0 @@
-Autocomplétion des etiquettes : Jquery (https://www.w3schools.blog/jquery-ui-autocomplete)
-background images : https://unsplash.com/fr
