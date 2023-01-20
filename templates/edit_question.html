@@ -48,9 +48,8 @@
         <center style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">
             <section class="container my-2 bg-dark w-60 text-light p-2 col-12" style="box-shadow: 0px 0px 10px white; padding: 5px; display:flex ; flex-direction: column; justify-content: center; ">
                 <form method="post" style="margin-top: 10px;">
-                    <input type="text" name="titre" placeholder="Titre de la question" value="{{ question.titre }}" required>
                     <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px; display:flex ; flex-direction: column; justify-content: center; margin: 10px;">
-                        <label for="etiquette" class="text-light text-center display-12">Etiquettes :</label>
+                        <label for="etiquette" class="text-light text-center display-12"><strong>Etiquettes</strong></label>
                         <div id="etiquettes-list" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">
                             {% for etiquette in question.etiquettes %}
                             <div id="{{ etiquette }}" class="etiquette">
@@ -72,8 +71,9 @@
 
                     <div class="card bg-dark" style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px;">
                         <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
-                            <h5 class="card-title">Type : {{ question.type }}</h5>
-                            <label for="qst">Question :</label>
+                            <h5 class="card-title"><strong>Type : {{ question.type }}</strong></h5>
+                            <input class="form-control" style="background-color: rgb(255, 208, 243);" name="titre" placeholder="Titre de la question" value="{{ question.text }}" required>
+                            <label for="qst"><strong>Question :</strong></label>
                             <textarea class="form-control" id="qst" name="text" style="background-color: #EBFCCB;" rows="3" cols="33" required>{{ question.text }}</textarea>
                         </div>
 
