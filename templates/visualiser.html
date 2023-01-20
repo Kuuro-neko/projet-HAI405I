@@ -2,8 +2,8 @@
 
    <head>
     <title>Visualisation</title>
-      <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
-      <link href="{{ url_for('static', filename = 'pygments.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'pygments.css') }}" rel="stylesheet">
       <!-- Bootstrap 5 CSS -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
       <!-- Font Awesome CSS -->
@@ -31,7 +31,43 @@
    </head>
    
    <body>
-        {{ html | safe }}
+      <div>
+         <div class="container-fluid bg-dark text-light py-3">
+             <header class="text-center">
+                 <h1 class="display-6">Visualisation</h1> 
+             </header>
+         </div>
+     </div>
+   <center>
+   <section class="container my-2 bg-dark w-60 text-light p-2 col-12" style="box-shadow: 0px 0px 10px white; padding: 5px; display:flex ; flex-direction: column; justify-content: center; ">
+      <form method="post" style="margin-top: 10px;">
+         <div class="card bg-dark" style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px;">
+               <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
+                  <h5 class="card-title"><strong>Type : {{ question.type }}</strong></h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{question.titre}}</h6>
+                  <label for="qst"><strong>Question :</strong></label>
+                  <div id="qst" name="text" style="background-color: #EBFCCB; color:black; height: auto; width: 300px;">
+                     {{ html | safe }}
+                  </div>
+              </div>
+              
+            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
+               {%for reponse in question.answers%}
+               <div class = " answer form-check form-switch" style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;" >
+                  <input class="isCorrect form-check-input" type = "checkbox" name="correct" id="flexSwitchCheckDefault">
+                  <input class="form-control" type="text" name="answer_text" value="{{ reponse.text }}" style="background-color: #CBFCF0	;" readonly>
+               </div>
+               {%endfor%}
+            </div>
+            
+         </div>  
+      </form>
+      <div style="margin-top: 5px;">
+         <form action="{{ url_for('questions') }}">
+             <input type="submit" class="btn btn-dark" value="Retour">
+         </form>             
+     </div>       
+      </section>
+     </center>
    </body>
-
 </html>

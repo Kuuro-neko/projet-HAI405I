@@ -41,9 +41,8 @@
     <center style="display:flex ; flex-direction: row; justify-content: center; margin-top: 5% ;">
         <section class="container my-2 bg-dark w-60 text-light p-2 col-12" style="box-shadow: 0px 0px 10px white; padding: 5px; display:flex ; flex-direction: column; justify-content: center; ">
             <form method="post" style="margin-top: 10px;">
-                <input type="text" name="titre" placeholder="Titre de la question" required>
                 <div id="form-etiquettes" style="box-sizing: solid white 1px; padding: 10px; display:flex ; flex-direction: column; justify-content: center; margin: 10px;">
-                    <label for="etiquette" class="text-light text-center display-12"><h5>Etiquettes :</h5></label>
+                    <label for="etiquette" class="text-light text-center display-12"><h5><strong>Etiquettes</strong></h5></label>
                     <div id="etiquettes-list" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px;">                        
                     </div>               
                         <div id="add_etiquette" >
@@ -55,8 +54,10 @@
                     </div>                
                 <div class="card bg-dark" style="width: 30rem; box-shadow: 0px 0px 10px white; padding: 10px;">
                     <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
-                        <h5 class="card-title">Type : QCM</h5>
-                        <label for="qst">Question :</label>
+                        <h5 class="card-title"><strong>Type : QCM</strong></h5>
+                        <input class="form-control" style="background-color: rgb(255, 208, 243);" name="titre" placeholder="Titre de la question" required>
+                        
+                        <h5 style="margin: 10px;"><strong>Question :</strong></h5>
                             <textarea class="form-control form" id="qst" name="text" style="background-color: #EBFCCB;" rows="3" cols="33" placeholder="Ex : Qui est Jonathan ?" required></textarea>
                         </div>
 
