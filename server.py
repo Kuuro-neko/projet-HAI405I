@@ -225,10 +225,7 @@ def traitement_visualiser(texte):
    html = markdown2.markdown(texte, extras=["fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
    soup = BeautifulSoup(html, 'html.parser')
    for code_block in soup.find_all('code'):
-      try:
-         code_block.parent.parent["class"]
-      except:
-         # Mermaid
+      if "class" not in code_block.parent.parent.attrs:
          new_div = soup.new_tag("div")
          new_div['class'] = "mermaid"
          for line in code_block.contents:
