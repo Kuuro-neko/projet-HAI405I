@@ -7,6 +7,8 @@ from flask import redirect, url_for, request, session
 
 from bs4 import BeautifulSoup
 
+import mermaid as mmd
+import markdown
 import markdown2
 import json
 
@@ -223,6 +225,7 @@ def edit_question(id_question):
 def traitement_visualiser(texte):
    # Markdown et code coloré
    html = markdown2.markdown(texte, extras=["fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
+   # Mermaid
    soup = BeautifulSoup(html, 'html.parser')
    for code_block in soup.find_all('code'):
       if "class" not in code_block.parent.parent.attrs:
@@ -245,6 +248,37 @@ def visualiser(id_question):
          answer['text'] = traitement_visualiser(answer['text'])
       return render_template("visualiser.html", question = question)
    return render_template("index.html", name = None)
+
+@app.route('/generation', methods=['GET'])
+def generation():
+    if 'user' in session:
+      name = session['user']
+      questions = get_questions(name)
+      return render_template('generation.html', name=name, questions=questions, length = len(questions))
+    return render_template("index.html", name = None)
+
+
+
+@app.route('/show', methods=['POST'])
+def show():
+   if 'user' in session:
+      name = session['user']
+      questions = get_questions(name)
+      if request.method == 'POST':
+         tabChoix = request.form.getlist('choisi')
+         questions_a_generer = []
+         htmlTraite = []
+         for id in tabChoix :
+            questions_a_generer.append(questions[int(id)]) 
+            texte_a_traiter = questions[int(id)]['text']
+            html = traitement_visualiser(texte_a_traiter)
+            htmlTraite.append(html) 
+
+      print(htmlTraite)
+      return render_template("SHOW.html",name=name, questions_a_generer = questions_a_generer, length = len(questions_a_generer), htmlTraite = htmlTraite)
+   return render_template("index.html", name = None)
+
+
 
 if __name__ == '__main__':
   #app.run(host=host, port=port)
