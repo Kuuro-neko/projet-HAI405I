@@ -89,7 +89,7 @@
             },
             {
                 "type": "QCM",
-                "text": "```mermaid \r\nGraph TB\r\nA --- B\r\nA --- C\r\n ```",
+                "text": "```mermaid \r\ngraph TB\r\nA --- B\r\nA --- C\r\n ```",
                 "etiquettes": [],
                 "answers": [
                     {
