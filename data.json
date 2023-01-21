@@ -69,7 +69,7 @@
             },
             {
                 "type": "QCM",
-                "text": "# Markdown test et couleur code test\r\n## Python\r\n```python\r\ntext = \"Hello world\"\r\nprint(text)\r\n```\r\n\r\n## Javascript\r\n```javascript\r\nlet text = \"Hello world\"\r\nconsole.log(text)\r\n```\r\n\r\n## C++\r\n```c++\r\nstd::cout << \"main function\\n\";\r\n```",
+                "text": "# Markdown test et couleur code test\r\n## Python\r\n```python\r\ntext = \"Hello world\"\r\nprint(text)\r\n```\r\n\r\n## Javascript\r\n```javascript\r\nlet text = \"Hello world\"\r\nconsole.log(text)\r\n```\r\n\r\n## C++\r\n```c++\r\nstd::cout << \"main function\\n\";\r\n```\r\n\r\n## Latex\r\n$$e^{i\\\\pi}+1=0$$\r\n\r\n## Mermaid\r\n```mermaid\r\ngraph LR\r\nA((1)) -->|a| B(((2)))\r\nB -->|a| A\r\nB --> |b| B\r\nA -->|b| A\r\n```",
                 "etiquettes": [
                     "Markdown",
                     "Python",
