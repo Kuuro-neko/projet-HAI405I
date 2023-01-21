@@ -12,6 +12,8 @@
       <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
       <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
       <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
+      <script src="{{ url_for('static', filename = 'questions_functions.js') }} "></script>
+
    </head>
    
    <body style="background:url('/static/bg.jpeg');">
@@ -27,6 +29,7 @@
                   {% if name != None %}
                   <a class="nav-link text-light" href="{{ url_for('logout') }}">Se déconnecter</a>
                   {% endif %}
+                  <a class="nav-link text-light" href="generation">Générer un QCM</a>
                 </div>
               </div>
             </div>

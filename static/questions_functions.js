@@ -114,3 +114,10 @@ function majInputEtiquettes() {
     }
     inputEtiquettes.value = JSON.stringify(liste);
 }
+
+
+function imprimer_page(){
+  window.print();
+}
+
+

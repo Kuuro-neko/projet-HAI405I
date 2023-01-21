@@ -29,82 +29,6 @@
             },
             {
                 "type": "QCM",
-                "text": "Quelle est la capitale de l'espagne",
-                "etiquettes": [
-                    "Spaghetti code",
-                    "Javascript"
-                ],
-                "answers": [
-                    {
-                        "text": "Barcelone",
-                        "isCorrect": "false"
-                    },
-                    {
-                        "text": "Madrid",
-                        "isCorrect": "true"
-                    },
-                    {
-                        "text": "Paris",
-                        "isCorrect": "false"
-                    },
-                    {
-                        "text": "Montpellier",
-                        "isCorrect": "false"
-                    }
-                ],
-                "titre": "Quelle est la capitale de l'espagne"
-            },
-            {
-                "type": "QCM",
-                "text": "how are you ?",
-                "etiquettes": [
-                    "tomatte"
-                ],
-                "answers": [
-                    {
-                        "text": "good",
-                        "isCorrect": "true"
-                    },
-                    {
-                        "text": "non",
-                        "isCorrect": "false"
-                    }
-                ],
-                "titre": "how are you ?"
-            },
-            {
-                "type": "QCM",
-                "text": "Est ce que les questions marchent toujours ?",
-                "etiquettes": [
-                    "Spaghetti code",
-                    "Python"
-                ],
-                "answers": [
-                    {
-                        "text": "Oui",
-                        "isCorrect": "true"
-                    },
-                    {
-                        "text": "Non",
-                        "isCorrect": "false"
-                    },
-                    {
-                        "text": "Segmentation fault",
-                        "isCorrect": "false"
-                    },
-                    {
-                        "text": "Peut \u00eatre",
-                        "isCorrect": "false"
-                    },
-                    {
-                        "text": "True",
-                        "isCorrect": "true"
-                    }
-                ],
-                "titre": "Est ce que les questions marchent toujours ?"
-            },
-            {
-                "type": "QCM",
                 "text": "```python\r\ntext = \"hello world\"\r\nprint(text)\r\n```",
                 "etiquettes": [
                     "Python"
@@ -123,7 +47,7 @@
             },
             {
                 "type": "QCM",
-                "text": "$$e^{i\\pi}+1=0$$",
+                "text": "$$e^{i\\pi}+1=0$$\r\n$e^{i\\pi}+1=0$\r\n",
                 "etiquettes": [
                     "Latex"
                 ],
@@ -141,7 +65,7 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "$e^{i\\pi}+1=0$"
+                "titre": "texMath"
             },
             {
                 "type": "QCM",
@@ -161,14 +85,12 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Test markdown et coloration"
+                "titre": "coloration"
             },
             {
                 "type": "QCM",
-                "text": "$$\r\n\\usepackage{verbatim}\r\n\\begin{verbatim}\r\nText enclosed inside \\texttt{verbatim} environment \r\nis printed directly\r\nand all \\LaTeX{} commands are ignored.\r\n\\end{verbatim}\r\n$$",
-                "etiquettes": [
-                    "tex"
-                ],
+                "text": "```mermaid \r\nGraph TB\r\nA --- B\r\nA --- C\r\n ```",
+                "etiquettes": [],
                 "answers": [
                     {
                         "text": "oui",
@@ -179,7 +101,7 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "texMex"
+                "titre": "mmd"
             }
         ]
     },

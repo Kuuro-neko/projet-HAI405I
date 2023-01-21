@@ -11,9 +11,11 @@ from pygments.formatters import HtmlFormatter
 import re
 
 from pylatex import Math
-import latex
+#import latex
 from pylatex import Document, NoEscape 
 
+import mermaid as mmd
+import markdown
 import markdown2
 import json
 
@@ -230,25 +232,11 @@ def edit_question(id_question):
 def traitement_visualiser(texte):
    # Markdown
    extras = ["fenced-code-blocks"]
-   html = markdown2.markdown(texte, extras=extras, safe_mode='escape')   # Coloration de code. Cette ligne a été obtenue à l'aide de chatGPT
+   html = markdown2.markdown(texte, extras=extras, safe_mode='escape')
+   # Coloration de code. Cette ligne a été obtenue à l'aide de chatGPT
    colored_code = re.sub(r'<pre><code class="(.*?)">(.*?)</code></pre>', lambda m: "<pre><code class=\""+m.group(1)+"\" style='background:none;'>"+highlight(m.group(2), guess_lexer(m.group(2)), HtmlFormatter())+"</code></pre>", html, flags=re.DOTALL)
-   # Latex     
-
+   # Mermaid
    return colored_code
-# @app.route("/code_latex/<int:id_question>")
-# def code_latex(id_question):
- #if 'user' in session:
-  #      name = session['user']
-   #     questions = get_questions(name)
-    #    code_en_latex = questions[id_question]["latex_code"]
-     #   code_math = Math()
-      #  code_math.append(code_en_latex)
-       # latex = code_math.dumps()
-        #return render_template("code_latex.html",latex=latex)
-
-# append() ajoute la ques a l'objet code_math
-#  dumps() genere code LaTeX sous forme de chaine de caractères (text normal)
-
 
 
 @app.route("/visualiser/<int:id_question>")
@@ -256,10 +244,41 @@ def visualiser(id_question):
    if 'user' in session:
       name = session['user']
       questions = get_questions(name)
-      texte_a_traiter = questions[id_question]["text"]
+      texte_a_traiter = questions[id_question]["text"] 
       html = traitement_visualiser(texte_a_traiter)
       return render_template("visualiser.html", question = questions[id_question], html = html)
    return render_template("index.html", name = None)
+
+@app.route('/generation', methods=['GET'])
+def generation():
+    if 'user' in session:
+      name = session['user']
+      questions = get_questions(name)
+      return render_template('generation.html', name=name, questions=questions, length = len(questions))
+    return render_template("index.html", name = None)
+
+
+
+@app.route('/show', methods=['POST'])
+def show():
+   if 'user' in session:
+      name = session['user']
+      questions = get_questions(name)
+      if request.method == 'POST':
+         tabChoix = request.form.getlist('choisi')
+         questions_a_generer = []
+         htmlTraite = []
+         for id in tabChoix :
+            questions_a_generer.append(questions[int(id)]) 
+            texte_a_traiter = questions[int(id)]['text']
+            html = traitement_visualiser(texte_a_traiter)
+            htmlTraite.append(html) 
+
+      print(htmlTraite)
+      return render_template("SHOW.html",name=name, questions_a_generer = questions_a_generer, length = len(questions_a_generer), htmlTraite = htmlTraite)
+   return render_template("index.html", name = None)
+
+
 
 if __name__ == '__main__':
   #app.run(host=host, port=port)
