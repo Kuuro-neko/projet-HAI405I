@@ -366,5 +366,38 @@
                 "titre": "Capitale P\u00e9rou"
             }
         ]
+    },
+    {
+        "user": "Testtest",
+        "password": "test",
+        "questions": [
+            {
+                "type": "QCM",
+                "text": "## Latex\r\n$$A & = \\frac{\\pi r^2}{2} \\\\\r\n\t & = \\frac{1}{2} \\pi r^2$$\r\n## Code (Python)\r\n```python\r\ndef test():\r\n    print(\"Hello World\")\r\n```\r\n## Code (PHP)\r\n```php\r\nfor($i = 0; i < 10; $i++) {\r\n    echo $i;\r\n}\r\n```\r\n\r\n## Mermaid\r\n```mermaid\r\ngraph LR\r\n    A((1)) -->|a| B(((2)))\r\n    B -->|a| A\r\n    B --> |b| B\r\n    A -->|b| A\r\n```",
+                "etiquettes": [
+                    "Python",
+                    "Markdown"
+                ],
+                "answers": [
+                    {
+                        "text": "$$e^{i\\pi}+1=0$$",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "```python\ndef fact(n):\n    if n<2:\n        return ...\n    else:\n        return ...\n```",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "## Bonjour",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "```mermaid\ngraph TB\nr --- g\nr --- d\ng --- gg\ng --- gd\nd --- dg\nd --- dd\n```",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Est-ce que cette question fonctionne ?"
+            }
+        ]
     }
 ]
