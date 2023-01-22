@@ -4,7 +4,6 @@
 <head>
  <title>Générer un Quizz</title>
  <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
- <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
  <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
   <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
   <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
@@ -28,9 +27,10 @@
          <div class="container-fluid">
            </button>
            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-             <div class="navbar-nav" style="display:flex ; flex-direction: row; justify-content: center;">
-                 <a class="nav-link text-light" href="{{ url_for('logout') }}">Se déconnecter</a>
-                 <a class="nav-link text-light"  href="{{ url_for('questions') }}" > Vos questions</a>
+             <div  class="btn-group" style="display: flex; justify-content: space-between;">
+                 <a class="btn btn-dark text-light" href="{{ url_for('logout') }}" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Se déconnecter</a>  
+                 <a class="btn btn-dark text-light" href="{{ url_for('questions') }}" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Vos questions</a>  
+
               </div>
            </div>
          </div>
@@ -49,10 +49,23 @@
               <i class="fa fa-search"></i>
             </button>
             </div>
-            <div id="liste-filtre" style="width: 100%; margin-top: 10px;">
+            <div id="liste-filtre" style="width: 100%; margin-top: 10px; display:flex; flex-direction:row; justify-content:center;">
               {% if filtres != None %}
                 {% for filtre in filtres %}
-                  <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres" style="width: fit-content;" readonly>
+                <!--
+                  <div id="{{ etiquette }}" class="etiquette">
+                    <button type="button" onclick="delEtiquette('{{ etiquette }}')" class="btn btn-primary btn-sm" style="margin: 7px;" data-bs-toggle="tooltip" data-bs-placement="top" title="appuyez pour supprimer">
+                        {{ etiquette }}
+                        </button>
+                        <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres" style="width: fit-content;" readonly>
+                </div>                  
+                -->
+                <div id="{{filtre}}" class="filtre">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="delFiltre('{{ filtre }}')" name="filtres" style="margin: 7px; width: fit-content;" data-bs-toggle="tooltip" data-bs-placement="top" title="appuyez pour supprimer">
+                    {{ filtre }}
+                  </button>                  
+                </div>
+
                 {% endfor %}
               {% endif %}
             </div>

@@ -133,6 +133,11 @@ function majInputEtiquettes() {
     inputEtiquettes.value = JSON.stringify(liste);
 }
 
+function delFiltre(id) {
+    let filtres = document.getElementById("liste-filtre");
+    let filtre = document.getElementById(id);
+    filtres.removeChild(filtre);
+};
 
 function imprimer_page(){
   window.print();

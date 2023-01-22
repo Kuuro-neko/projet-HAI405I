@@ -2,7 +2,7 @@
 
    <head>
     <title>Questions</title>
-      <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
+      <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
       <!-- Bootstrap 5 CSS -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
       <!-- Font Awesome CSS -->
@@ -16,7 +16,7 @@
 
    </head>
    
-   <body style="background:url('/static/bg.jpeg');">
+   <body>
     <center>
         <nav class="navbar navbar-expand-md navbar-light bg-dark">
             <div class="container-fluid">
@@ -27,9 +27,9 @@
               <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                   {% if name != None %}
-                  <a class="nav-link text-light" href="{{ url_for('logout') }}">Se déconnecter</a>
+                  <a class="btn btn-dark text-light" href="{{ url_for('logout') }}" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Se déconnecter</a>  
                   {% endif %}
-                  <a class="nav-link text-light" href="generation">Générer un QCM</a>
+                  <a class="btn btn-dark text-light" href="generation" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Générer un QCM</a>  
                 </div>
               </div>
             </div>

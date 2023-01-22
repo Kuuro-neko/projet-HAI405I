@@ -16,8 +16,9 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    background:linear-gradient(rgb(0,0,0), transparent),  url(logBg.jpg);
-    background-position: cover;
+    background:linear-gradient(rgba(0, 47, 2, 0.664), transparent),  url(bg2.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
 } 
 
 .login{
