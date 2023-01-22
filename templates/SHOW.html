@@ -55,26 +55,25 @@
             </div>
           </nav>
           <div class="row container" >
-            {%for i in range(0, length)%}       
+              {%for question in questions %}       
             <div class="card bg-dark col-4" style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;">
                 <div class="card-body" style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
-                   <h5 class="card-title text-light"><strong>Type : {{ questions_a_generer[i].type }}</strong></h5>
-                   <h6 class="card-subtitle mb-2 text-muted">{{questions_a_generer[i].titre}}</h6>
+                   <h5 class="card-title text-light"><strong>Type : {{ question.type }}</strong></h5>
+                   <h6 class="card-subtitle mb-2 text-muted">{{ question.titre }}</h6>
                    <label for="qst"><strong class="text-light">Question :</strong></label>
                    <div id="qst" name="text" style="background-color: #EBFCCB; border-radius: 15px; color:black; height: auto; min-height: 100px; width: 300px; display: flex; text-align: center; justify-content: center; flex-direction:column;">
-                      {{ htmlTraite[i] | safe }}
+                      {{ question.text | safe }}
                    </div>
                </div>
                <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
-                    {%  for reponse in questions_a_generer[i].answers%}
+                    {%  for answer in question.answers %}
                 <div class = " answer form-check form-switch" style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;" >
                    <input class="isCorrect form-check-input" type = "checkbox" name="correct" id="flexSwitchCheckDefault">
                    <div style="border-radius: 30px; background-color:#CBFCF0; overflow: auto; display: inline-block; min-width: 300px; color: black; justify-content: center;">
-                    <p> {{ reponse.text | safe }} </p> 
-                    <!--<input class="form-control" type="text" name="answer_text" value="{{ reponse.text | safe }}" style="background-color: #CBFCF0 ;" readonly>--> 
+                    <p> {{ answer.text | safe }} </p> 
                  </div>
                 </div>
-                    {%  endfor%}
+              {%  endfor%}
              </div>
              
 

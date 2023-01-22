@@ -118,3 +118,19 @@
 body{
     font-family: "Rockwell" ,sans-serif;
 }
+
+/*********************PAGE GENERER************************/
+
+.etiquette-filtre {
+    pointer-events:none;
+    margin: 5px;
+    border: 1px solid grey;
+    border-radius: 25px;
+    background-color: #ffffff;
+    text-align: center;
+    width: fit-content;
+}
+
+code {
+    display: table;
+}
