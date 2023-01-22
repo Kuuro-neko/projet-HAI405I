@@ -202,7 +202,7 @@ def questions():
          questions = get_questions(name)
       except:
          session.pop('user', None)
-         return redirect(url_for('index'), name = None)
+         return redirect(url_for('index'))
       return render_template("questions.html", name = name, questions = questions, length = len(questions))
    return render_template("index.html", name = None)
 
