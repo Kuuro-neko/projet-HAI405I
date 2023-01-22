@@ -7,7 +7,6 @@ from flask import redirect, url_for, request, session
 
 from bs4 import BeautifulSoup
 
-import markdown
 import markdown2
 import json
 
@@ -296,7 +295,11 @@ def visualiser(id_question, question = None):
       name = session['user']
       if question == None:
          question = get_questions(name)[id_question]
+         print("AVANT++++++++++++++++++++++++++")
+         print(question)
          question = traiter_question(question)
+         print("APRES++++++++++++++++++++++++++")
+         print(question)
       return render_template("visualiser.html", question = question)
    return render_template("index.html", name = None)
 

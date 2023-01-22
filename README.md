@@ -19,6 +19,7 @@ source venv/bin/activate
 pip install flask
 pip install bs4
 pip install markdown2
+pip install pygments
 ```
 
 ## Lancement du serveur web
