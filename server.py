@@ -7,7 +7,6 @@ from flask import redirect, url_for, request, session
 
 from bs4 import BeautifulSoup
 
-import mermaid as mmd
 import markdown
 import markdown2
 import json
