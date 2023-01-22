@@ -195,10 +195,17 @@ def add_question():
          "answers": answers,
          "titre": titre
       }
-      data[get_user_id(user)]['questions'].append(question)
-      majListeEtiquettes(etiquettes)
-      write_data(data)
-      return redirect(url_for('questions'))
+
+      if request.form['submit'] == "Visualiser":
+         question["text"] = traitement_visualiser(question["text"])
+         for answer in question["answers"]:
+            answer["text"] = traitement_visualiser(answer["text"])
+         return render_template("visualiser.html", question = question)
+      else:
+         data[get_user_id(user)]['questions'].append(question)
+         majListeEtiquettes(etiquettes)
+         write_data(data)
+         return redirect(url_for('questions'))
    else:
       etiquettes_existantes = get_etiquettes()
       return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes)
@@ -232,10 +239,16 @@ def edit_question(id_question):
             "titre" : titre
          }
 
-         data[user_id]['questions'][id_question] = question
-         write_data(data)
-         majListeEtiquettes(etiquettes)
-         return redirect(url_for('questions'))
+         if request.form['submit'] == "Visualiser":
+            question["text"] = traitement_visualiser(question["text"])
+            for answer in question["answers"]:
+               answer["text"] = traitement_visualiser(answer["text"])
+            return render_template("visualiser.html", question = question)
+         else:
+            data[user_id]['questions'][id_question] = question
+            write_data(data)
+            majListeEtiquettes(etiquettes)
+            return redirect(url_for('questions'))
       else:
          name = session['user']
          questions = get_questions(name)
