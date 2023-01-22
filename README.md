@@ -44,7 +44,7 @@ Markdown et coloration de code : [Markdown2](https://github.com/trentm/python-ma
 
 Latex : [MathJax](https://www.mathjax.org/)
 
-Graphes : [Mermaid](https://mermaid.js.org/)
+Graphes : [Mermaid](https://mermaid.js.org/) et [BeautifulSoup4](https://pypi.org/project/beautifulsoup4/) (Pour préparer les div afin de les utiliser avec Mermaid)
 
 ### Autres sources
 
