@@ -40,11 +40,15 @@ python3 server.py
 
 Autocomplétion des etiquettes : [Jquery](https://www.w3schools.blog/jquery-ui-autocomplete)
 
-Markdown et coloration de code : [Markdown2](https://github.com/trentm/python-markdown2)
+Framework CSS [Bootstrap](https://getbootstrap.com/)
+
+Markdown : [Markdown2](https://github.com/trentm/python-markdown2)
+
+Coloration de code : [Markdown2](https://github.com/trentm/python-markdown2) et [Pygments](https://pygments.org/)
 
 Latex : [MathJax](https://www.mathjax.org/)
 
-Graphes : [Mermaid](https://mermaid.js.org/)
+Graphes : [Mermaid](https://mermaid.js.org/) et [BeautifulSoup4](https://pypi.org/project/beautifulsoup4/) (Pour préparer les div afin de les utiliser avec Mermaid)
 
 ### Autres sources
 
