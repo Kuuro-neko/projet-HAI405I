@@ -2,7 +2,7 @@
 <html>
 
 <head>
- <title>Visualisation</title>
+ <title>Generation</title>
  <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
  <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
   <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
@@ -29,17 +29,17 @@
            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
              <div class="navbar-nav" style="display:flex ; flex-direction: row; justify-content: center;">
                  <a class="nav-link text-light" href="{{ url_for('logout') }}">Se déconnecter</a>
-                 <a class="nav-link text-light"  href="{{ url_for('questions') }}" > vos question</a>
-                 <form action="">
-                  <div class="input-group">
+                 <a class="nav-link text-light"  href="{{ url_for('questions') }}" > Vos questions</a>
+                 <form class="d-flex" action="{{ url_for('show') }}" method="GET">
+                  <div class="input-group" style="margin-left: 10px;">
                     <div class="form-outline" style="display:flex ; flex-direction: row; justify-content: center;">
-                      <input id="search-focus" type="search" id="form1" class="form-control" placeholder="Etiquette"/>
-                      <button type="button" class="btn btn-success">
+                      <input id="search-focus" type="search" id="form1" class="form-control" placeholder="Etiquette..." name="filtre"/>
+                      <button type="submit" style="margin-left: 10px;" class="btn btn-success">
                       <i class="fa fa-search"></i>
-                    </button>
+                      </button>
                     </div>
                   </div>
-              </form>
+                </form>
               </div>
            </div>
          </div>
@@ -47,20 +47,19 @@
        <div> 
         <h3 class="text-light" style="margin: 10px;">Selectionnez les questions souhaitées :</h3>
        </div>
-       {% for i in range(0, length) %}
-
+      {% for i in range(0, length) %}
       <div class="container">
-      <form action="{{ url_for('show') }}" method="POST">
-            <div class=" bg-dark text-light " style="margin: 30px; box-shadow: 5px 5px 7px red ; padding: 5px; display:flex ; flex-direction: row; justify-content: center;" id="{{ i }}" >
-                  <div class="questions" style="display:flex ; flex-direction: row; justify-content: center;">
-                      <h5 id="text">{{ questions[i].titre }}</h5>
-                      <div class="form-check form-switch" style="margin-left: 10px;">
-                        <input class="form-check-input" type="checkbox" name="choisi" id="flexSwitchCheckDefault" value="{{ i }}">
-                      </div><!--<input class="isCorrect form-check-input" type="checkbox" name="correct" id="flexSwitchCheckDefault" value="{{ id_question }}">--> 
-                  </div>
+        <form action="{{ url_for('show') }}" method="POST">
+              <div class=" bg-dark text-light " id="check{{i}}" style="margin: 30px; box-shadow: 5px 5px 7px red ; padding: 5px; display:flex ; flex-direction: row; justify-content: center;">
+                    <div class="questions" style="display:flex ; flex-direction: row; justify-content: center;">
+                        <h5 id="text">{{ questions[i].titre }}</h5>
+                        <div class="form-check form-switch" style="margin-left: 10px;">
+                          <input class="form-check-input" type="checkbox" onchange="toGreen(this, '{{i}}')" name="choisi" value="{{ i }}">
+                        </div>
+                    </div>
+              </div>
             </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
           <div>
             <input type="submit" class="btn btn-success" value="Créer QCM"> 
           </div>

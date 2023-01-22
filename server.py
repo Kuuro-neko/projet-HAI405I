@@ -272,11 +272,11 @@ def show():
             questions_a_generer.append(questions[int(id)]) 
             texte_a_traiter = questions[int(id)]['text']
             html = traitement_visualiser(texte_a_traiter)
-            htmlTraite.append(html) 
-
-      print(htmlTraite)
+            htmlTraite.append(html)
+         print(questions_a_generer) 
       return render_template("SHOW.html",name=name, questions_a_generer = questions_a_generer, length = len(questions_a_generer), htmlTraite = htmlTraite)
    return render_template("index.html", name = None)
+
 
 
 
