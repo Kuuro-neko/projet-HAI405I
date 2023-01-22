@@ -2,7 +2,7 @@ function addAnswer(text = "", isCorrect = false) {
     // Nouvelle réponse
     let new_answer = document.createElement("div");
     new_answer.style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;"
-    new_answer.className = "answer form-check form-switch";
+    new_answer.className = "answer form-check form-switch ";
     // Checkbox
     let answerCheckbox = document.createElement("input");
     answerCheckbox.type = "checkbox";
@@ -21,6 +21,21 @@ function addAnswer(text = "", isCorrect = false) {
         }
     };
     // Champ de texte
+    //<textarea class="form-control form" id="qst" name="text" style="background-color: #EBFCCB;" rows="3" cols="26" placeholder="Ex : Qui est Jonathan ?" required></textarea>
+    let answerText = document.createElement("textarea");
+    answerText.type = "text";
+    answerText.name = "answer_text";
+    answerText.placeholder = "Réponse";
+    answerText.value = text;
+    answerText.className="form-control form";
+    answerText.rows = "1";
+    answerText.cols = "23";
+    answerText.style="background-color: #CBFCF0	; margin-left: 5px";
+    answerText.addEventListener("input", function (e) {
+        this.style.height = "auto";
+        this.style.height = this.scrollHeight + "px";
+      });
+    /*
     let answerText = document.createElement("input");
     answerText.type = "text";
     answerText.name = "answer_text";
@@ -28,6 +43,7 @@ function addAnswer(text = "", isCorrect = false) {
     answerText.value = text;
     answerText.className="form-control";
     answerText.style="background-color: #CBFCF0	;";
+    */
 
     // Bouton supprimer
     let answerDelete = document.createElement("button");
@@ -39,7 +55,9 @@ function addAnswer(text = "", isCorrect = false) {
     answerDeleteSpan = document.createElement("span");
     answerDeleteSpan.className = "btn-label";
     answerDeleteSpan_i = document.createElement("i");
-    answerDeleteSpan_i.className = "fa fa-trash fa-lg"
+    answerDeleteSpan_i.className = "fa fa-trash fa-lg";
+    answerDelete.style = "margin : 7px;";
+
     answerDeleteSpan.appendChild(answerDeleteSpan_i)
     answerDelete.appendChild(answerDeleteSpan);
     // Ajout à la réponse des champs
@@ -120,4 +138,13 @@ function imprimer_page(){
   window.print();
 }
 
+function toGreen(checkbox, x) {
+    let box = document.getElementById('check'+x);
+    console.log('check'+x)
+    if (checkbox.checked) {
+      box.style = "margin: 30px; box-shadow: 5px 5px 7px green ; padding: 5px; display:flex ; flex-direction: row; justify-content: center;";
+    } else {
+      box.style= "margin: 30px; box-shadow: 5px 5px 7px red ; padding: 5px; display:flex ; flex-direction: row; justify-content: center;";
+    }
+  }
 

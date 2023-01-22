@@ -80,14 +80,14 @@
                         
                         <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;"></div>
                         
-                        <input type="hidden" name="answers_json" value="" id="answers_json">
-                            <div class="card-body">
-                                <button type="button" class="btn btn-labeled " onclick="addAnswer()">
-                                    <span class="btn-label "><i class="fa fa-plus-circle fa-lg" style = "color:white;" aria-hidden="true"></i></span></button>
-                                <input type="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()"> 
-                                <input type="hidden" name="id_question" value="{{ id_question }}">
-                            </div>
-                    
+                            <input type="hidden" name="answers_json" value="" id="answers_json">
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-labeled " onclick="addAnswer()">
+                                        <span class="btn-label "><i class="fa fa-plus-circle fa-lg" style = "color:white;" aria-hidden="true"></i></span></button>
+                                    <input type="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()"> 
+                                    <input type="hidden" name="id_question" value="{{ id_question }}">
+                                </div>
+                        </div>
                     </div>
                 </form>
                 <div style="margin-top: 5px;">
