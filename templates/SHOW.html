@@ -57,7 +57,7 @@
           <div class="row container" >
             {%for i in range(0, length)%}       
             <div class="card bg-dark col-4" style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;">
-                <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
+                <div class="card-body" style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
                    <h5 class="card-title text-light"><strong>Type : {{ questions_a_generer[i].type }}</strong></h5>
                    <h6 class="card-subtitle mb-2 text-muted">{{questions_a_generer[i].titre}}</h6>
                    <label for="qst"><strong class="text-light">Question :</strong></label>
