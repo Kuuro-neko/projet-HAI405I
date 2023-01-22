@@ -66,7 +66,7 @@
                {%for reponse in question.answers%}
                <div class = " answer form-check form-switch" style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;" >
                   <input class="isCorrect form-check-input" type = "checkbox" name="correct" id="flexSwitchCheckDefault">
-                  <input class="form-control" type="text" name="answer_text" value="{{ reponse.text }}" style="background-color: #CBFCF0	;" readonly>
+                  <input class="form-control" type="text" name="answer_text" value="" style="background-color: #CBFCF0	;" readonly>
                </div>
                {%endfor%}
             </div>
