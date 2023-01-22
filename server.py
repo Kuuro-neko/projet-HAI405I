@@ -19,34 +19,42 @@ app.secret_key = "super secret key"
 host = '0.0.0.0'
 port = 8888
 
-# Retourne le contenu du fichier data.json
-# Out : data (dict)
 def get_data():
+   """
+   Retourne le contenu du fichier data.json
+   Out : data (dict)
+   """
    with open('data.json', 'r') as fp:
       data = json.load(fp)
    return data
 
-# Ecrit dans le fichier data.json
-# In : data (dict)
 def write_data(data):
+   """
+   Ecrit dans le fichier data.json
+   In : data (dict)
+   """
    with open('data.json', 'w') as fp:
       json.dump(data, fp, indent=4)
 
-# Retourne l'id de l'utilisateur dans le fichier data.json
-# In : user (str)
-# Out : id (int)
 def get_user_id(user):
+   """
+   Retourne l'id de l'utilisateur dans le fichier data.json
+   In : user (str)
+   Out : id (int)
+   """
    data = get_data()
    for i in range(len(data)):
       if data[i]['user'] == user:
          return i
    return None
 
-# Retourne la liste des questions de l'utilisateur ayant une etiquette filtre
-# In : user (str)
-# In : filtre (list (str))
-# Out : questions (list (dict)))
 def get_questions(user, filtre = None):
+   """
+   Retourne la liste des questions de l'utilisateur ayant une etiquette filtre
+   In : user (str)
+   In : filtre (list (str)), optionnel : None par défaut
+   Out : questions (list (dict)))
+   """
    data = get_data()
    if filtre != None:
       questions = []
@@ -62,6 +70,11 @@ def get_questions(user, filtre = None):
 # In : questions (list (dict)) (optionnel, si non renseigné, on prend toutes les etiquettes utilisées dans toutes les questions)
 # Out : etiquettes (list)
 def get_etiquettes(questions = None):
+   """
+   Retourne la liste des etiquettes utilisées dans des questions
+   In : questions (list (dict)) (optionnel, si non renseigné, on prend toutes les etiquettes utilisées dans toutes les questions)
+   Out : etiquettes (list)
+   """
    if questions == None:
       with open('etiquettes.json', 'r') as fp:
          data = json.load(fp)
@@ -73,8 +86,10 @@ def get_etiquettes(questions = None):
                data.append(etiquette)
    return data
 
-# Met à jour la liste des etiquettes utilisées
 def majListeEtiquettes(listeEtiquettes):
+   """
+   Met à jour la liste des etiquettes utilisées dans etiquettes.json
+   """
    data = get_etiquettes()
    for etiquette in listeEtiquettes:
       if etiquette not in data:
@@ -82,8 +97,10 @@ def majListeEtiquettes(listeEtiquettes):
    with open('etiquettes.json', 'w') as fp:
       json.dump(data, fp, indent=4)
 
-# Supprime les etiquettes non utilisées
 def clear_etiquettes_non_utilisees():
+   """
+   Supprime les etiquettes non utilisées dans etiquettes.json
+   """
    data = get_etiquettes()
    data2 = get_data()
       
@@ -103,10 +120,12 @@ def clear_etiquettes_non_utilisees():
    with open('etiquettes.json', 'w') as fp:
       json.dump(data, fp, indent=4)
 
-# Traite une chaine de caractère pour la visualiser
-# In : texte (str)
-# Out : html (str)
 def traiter_texte(texte):
+   """
+   Traite une chaine de caractère pour la visualiser
+   In : texte (str)
+   Out : html (str)
+   """
    # Markdown et code coloré
    html = markdown2.markdown(texte, extras=["fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
    # Mermaid
@@ -120,10 +139,12 @@ def traiter_texte(texte):
          code_block.replace_with(new_div)
    return soup.prettify()
 
-# Traite une question avant de l'envoyer à la template
-# In : question (dict) : question à traiter
-# Out : question (dict) : question traitée, contenant le code html
 def traiter_question(question):
+   """
+   Traite une question pour la visualiser
+   In : question (dict)
+   Out : question (dict)
+   """
    question["text"] = traiter_texte(question["text"])
    for answer in question["answers"]:
       answer["text"] = traiter_texte(answer["text"])
