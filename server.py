@@ -42,18 +42,35 @@ def get_user_id(user):
          return i
    return None
 
-# Retourne la liste des questions de l'utilisateur
+# Retourne la liste des questions de l'utilisateur ayant une etiquette filtre
 # In : user (str)
-# Out : questions (list)
-def get_questions(user):
+# In : filtre (list (str))
+# Out : questions (list (dict)))
+def get_questions(user, filtre = None):
    data = get_data()
+   if filtre != None:
+      questions = []
+      for question in data[get_user_id(user)]['questions']:
+         for etiquette in question['etiquettes']:
+            if etiquette in filtre:
+               questions.append(question)
+               break
+      return questions
    return data[get_user_id(user)]['questions']
 
-# Retourne la liste des etiquettes utilisées
+# Retourne la liste des etiquettes utilisées dans des questions
+# In : questions (list (dict)) (optionnel, si non renseigné, on prend toutes les etiquettes utilisées dans toutes les questions)
 # Out : etiquettes (list)
-def get_etiquettes():
-   with open('etiquettes.json', 'r') as fp:
-      data = json.load(fp)
+def get_etiquettes(questions = None):
+   if questions == None:
+      with open('etiquettes.json', 'r') as fp:
+         data = json.load(fp)
+   else:
+      data = []
+      for question in questions:
+         for etiquette in question['etiquettes']:
+            if etiquette not in data:
+               data.append(etiquette)
    return data
 
 # Met à jour la liste des etiquettes utilisées
@@ -136,7 +153,11 @@ def inscription():
 def questions():
    if 'user' in session:
       name = session['user']
-      questions = get_questions(name)
+      try:
+         questions = get_questions(name)
+      except:
+         session.pop('user', None)
+         return redirect(url_for('index'), name = None)
       return render_template("questions.html", name = name, questions = questions, length = len(questions))
    return render_template("index.html", name = None)
 
@@ -249,12 +270,20 @@ def visualiser(id_question):
       return render_template("visualiser.html", question = question)
    return render_template("index.html", name = None)
 
-@app.route('/generation', methods=['GET'])
+@app.route('/generation', methods=['GET', 'POST'])
 def generation():
     if 'user' in session:
       name = session['user']
-      questions = get_questions(name)
-      return render_template('generation.html', name=name, questions=questions, length = len(questions))
+      if request.method == 'POST':
+         filtres = request.form.getlist('filtres')
+         questions = get_questions(name, filtres)
+      else:
+         filtres = []
+         questions = get_questions(name)
+      liste_filtre = get_etiquettes(questions)
+      for filtre_applique in filtres:
+         liste_filtre.remove(filtre_applique)
+      return render_template('generation.html', name=name, questions=questions, length = len(questions), filtres = filtres, liste_filtre = liste_filtre)
     return render_template("index.html", name = None)
 
 
