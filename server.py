@@ -259,14 +259,15 @@ def traitement_visualiser(texte):
 
 
 @app.route("/visualiser/<int:id_question>")
-def visualiser(id_question):
+def visualiser(id_question, question = None):
    if 'user' in session:
       name = session['user']
-      question = get_questions(name)[id_question]
-      question['text'] = traitement_visualiser(question['text'])
+      if question == None:
+         question = get_questions(name)[id_question]
+         question['text'] = traitement_visualiser(question['text'])
 
-      for answer in question['answers']:
-         answer['text'] = traitement_visualiser(answer['text'])
+         for answer in question['answers']:
+            answer['text'] = traitement_visualiser(answer['text'])
       return render_template("visualiser.html", question = question)
    return render_template("index.html", name = None)
 
@@ -274,13 +275,14 @@ def visualiser(id_question):
 def generation():
     if 'user' in session:
       name = session['user']
+      all_questions = get_questions(name)
       if request.method == 'POST':
          filtres = request.form.getlist('filtres')
          questions = get_questions(name, filtres)
       else:
          filtres = []
-         questions = get_questions(name)
-      liste_filtre = get_etiquettes(questions)
+         questions = all_questions
+      liste_filtre = get_etiquettes(all_questions)
       for filtre_applique in filtres:
          liste_filtre.remove(filtre_applique)
       return render_template('generation.html', name=name, questions=questions, length = len(questions), filtres = filtres, liste_filtre = liste_filtre)
@@ -296,14 +298,13 @@ def show():
       if request.method == 'POST':
          tabChoix = request.form.getlist('choisi')
          questions_a_generer = []
-         htmlTraite = []
          for id in tabChoix :
-            questions_a_generer.append(questions[int(id)]) 
-            texte_a_traiter = questions[int(id)]['text']
-            html = traitement_visualiser(texte_a_traiter)
-            htmlTraite.append(html)
-         print(questions_a_generer) 
-      return render_template("SHOW.html",name=name, questions_a_generer = questions_a_generer, length = len(questions_a_generer), htmlTraite = htmlTraite)
+            new_question = questions[int(id)]
+            new_question['text'] = traitement_visualiser(new_question['text'])
+            for answer in new_question['answers']:
+               answer['text'] = traitement_visualiser(answer['text'])
+            questions_a_generer.append(new_question)
+      return render_template("SHOW.html",name=name, questions = questions_a_generer)
    return render_template("index.html", name = None)
 
 

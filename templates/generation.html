@@ -4,6 +4,7 @@
 <head>
  <title>Générer un Quizz</title>
  <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
+ <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
  <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
   <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
   <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
@@ -39,7 +40,7 @@
         <form action="" method="post">
           <div class="input-group" style="justify-content: center">
             <div class="form-outline" style="display:flex ; flex-direction: row; justify-content: center;">
-              <select id="search-focus" type="select" id="form1" class="form-control" placeholder="Etiquette" name="filtres">
+              <select id="search-focus" type="select" id="form1" class="form-select" placeholder="Etiquette" name="filtres">
                 {% for filtre in liste_filtre %}
                   <option value="{{ filtre }}">{{ filtre }}</option>
                 {% endfor %}
@@ -48,10 +49,10 @@
               <i class="fa fa-search"></i>
             </button>
             </div>
-            <div id="liste-filtre" style="width: 100%;">
+            <div id="liste-filtre" style="width: 100%; margin-top: 10px;">
               {% if filtres != None %}
                 {% for filtre in filtres %}
-                  <input type="text" class="form-control" value="{{ filtre }}" name="filtres" style="width: fit-content;" readonly>
+                  <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres" style="width: fit-content;" readonly>
                 {% endfor %}
               {% endif %}
             </div>
