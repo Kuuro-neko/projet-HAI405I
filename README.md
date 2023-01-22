@@ -40,7 +40,9 @@ python3 server.py
 
 Autocomplétion des etiquettes : [Jquery](https://www.w3schools.blog/jquery-ui-autocomplete)
 
-Markdown et coloration de code : [Markdown2](https://github.com/trentm/python-markdown2)
+Markdown : [Markdown2](https://github.com/trentm/python-markdown2)
+
+Coloration de code : [Markdown2](https://github.com/trentm/python-markdown2) et [Pygments](https://pygments.org/)
 
 Latex : [MathJax](https://www.mathjax.org/)
 
