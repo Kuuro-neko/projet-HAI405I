@@ -4,6 +4,7 @@
 <head>
  <title>Générer un Quizz</title>
  <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
+ <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
  <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
   <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
   <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
@@ -60,12 +61,12 @@
                         <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres" style="width: fit-content;" readonly>
                 </div>                  
                 -->
-                <div id="{{filtre}}" class="filtre">
+                <!--<div id="{{filtre}}" class="filtre">
                   <button type="button" class="btn btn-primary btn-sm" onclick="delFiltre('{{ filtre }}')" name="filtres" style="margin: 7px; width: fit-content;" data-bs-toggle="tooltip" data-bs-placement="top" title="appuyez pour supprimer">
                     {{ filtre }}
                   </button>                  
-                </div>
-
+                </div>-->
+                  <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres" style="width: fit-content;" readonly>
                 {% endfor %}
               {% endif %}
             </div>
@@ -78,7 +79,7 @@
        <div> 
         <h3 class="text-light" style="margin: 10px;">Selectionnez les questions souhaitées :</h3>
        </div>
-      {% for i in range(0, length) %}
+      {% for i in range(0, questions | length) %}
       <div class="container">
         <form action="{{ url_for('show') }}" method="POST">
               <div class=" bg-dark text-light " id="check{{i}}" style="margin: 30px; box-shadow: 5px 5px 7px red ; padding: 5px; display:flex ; flex-direction: row; justify-content: center;">

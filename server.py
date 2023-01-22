@@ -323,7 +323,7 @@ def generation():
       liste_filtre = get_etiquettes(all_questions)
       for filtre_applique in filtres:
          liste_filtre.remove(filtre_applique)
-      return render_template('generation.html', name=name, questions=questions, length = len(questions), filtres = filtres, liste_filtre = liste_filtre)
+      return render_template('generation.html', name=name, questions=questions, filtres = filtres, liste_filtre = liste_filtre)
     return render_template("index.html", name = None)
 
 @app.route('/show', methods=['POST'])
