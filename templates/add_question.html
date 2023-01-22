@@ -55,7 +55,7 @@
                 <div class="card bg-dark" style="width: 30rem; box-shadow: 0px 0px 10px white; padding: 10px;">
                     <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
                         <h5 class="card-title"><strong>Type : QCM</strong></h5>
-                        <input class="form-control" style="background-color: rgb(255, 208, 243);" name="titre" placeholder="Titre de la question" required>
+                        <input class="form-control" style="background-color: rgb(255, 208, 243);" id="titre" name="titre" placeholder="Titre de la question" required>
                         
                         <h5 style="margin: 10px;"><strong>Question :</strong></h5>
                             <textarea class="form-control form" id="qst" name="text" style="background-color: #EBFCCB;" rows="3" cols="33" placeholder="Ex : Qui est Jonathan ?" required></textarea>
@@ -69,13 +69,16 @@
                 <div class="card-body">
                     <button type="button" class="btn btn-labeled " onclick="addAnswer()">
                         <span class="btn-label "><i class="fa fa-plus-circle fa-lg" style = "color:white;" aria-hidden="true"></i></span></button>
-                    <input type="submit" name="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()"> 
-                    <input type="submit" name="submit" class="btn btn-success" value="Visualiser" onclick="majAnswers()">  
+                    <input type="submit" name="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()">  
                     <input type="hidden" name="id_question" value="{{ id_question }}">
                 </div>
         </div>
         </form>
         <div style="margin-top: 5px;">
+            <form action="{{ url_for('visualiser_temp') }}" method='post' target="_blank">
+                <input type="hidden" name="question_json" id="question_json">
+                <input type="submit" name="submit" class="btn btn-success" value="Visualiser" onclick="visualiser()"> 
+            </form>
             <form action="{{ url_for('questions') }}">
                 <input type="submit" class="btn btn-dark" value="Retour">
             </form>             

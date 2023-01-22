@@ -103,6 +103,32 @@ def clear_etiquettes_non_utilisees():
    with open('etiquettes.json', 'w') as fp:
       json.dump(data, fp, indent=4)
 
+# Traite une chaine de caractère pour la visualiser
+# In : texte (str)
+# Out : html (str)
+def traiter_texte(texte):
+   # Markdown et code coloré
+   html = markdown2.markdown(texte, extras=["fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
+   # Mermaid
+   soup = BeautifulSoup(html, 'html.parser')
+   for code_block in soup.find_all('code'):
+      if "class" not in code_block.parent.parent.attrs:
+         new_div = soup.new_tag("div")
+         new_div['class'] = "mermaid"
+         for line in code_block.contents:
+            new_div.append(line)
+         code_block.replace_with(new_div)
+   return soup.prettify()
+
+# Traite une question avant de l'envoyer à la template
+# In : question (dict) : question à traiter
+# Out : question (dict) : question traitée, contenant le code html
+def traiter_question(question):
+   question["text"] = traiter_texte(question["text"])
+   for answer in question["answers"]:
+      answer["text"] = traiter_texte(answer["text"])
+   return question
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -196,16 +222,10 @@ def add_question():
          "titre": titre
       }
 
-      if request.form['submit'] == "Visualiser":
-         question["text"] = traitement_visualiser(question["text"])
-         for answer in question["answers"]:
-            answer["text"] = traitement_visualiser(answer["text"])
-         return render_template("visualiser.html", question = question)
-      else:
-         data[get_user_id(user)]['questions'].append(question)
-         majListeEtiquettes(etiquettes)
-         write_data(data)
-         return redirect(url_for('questions'))
+      data[get_user_id(user)]['questions'].append(question)
+      majListeEtiquettes(etiquettes)
+      write_data(data)
+      return redirect(url_for('questions'))
    else:
       etiquettes_existantes = get_etiquettes()
       return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes)
@@ -239,16 +259,10 @@ def edit_question(id_question):
             "titre" : titre
          }
 
-         if request.form['submit'] == "Visualiser":
-            question["text"] = traitement_visualiser(question["text"])
-            for answer in question["answers"]:
-               answer["text"] = traitement_visualiser(answer["text"])
-            return render_template("visualiser.html", question = question)
-         else:
-            data[user_id]['questions'][id_question] = question
-            write_data(data)
-            majListeEtiquettes(etiquettes)
-            return redirect(url_for('questions'))
+         data[user_id]['questions'][id_question] = question
+         write_data(data)
+         majListeEtiquettes(etiquettes)
+         return redirect(url_for('questions'))
       else:
          name = session['user']
          questions = get_questions(name)
@@ -256,31 +270,22 @@ def edit_question(id_question):
          return render_template("edit_question.html", name = name, question = questions[id_question], id_question = id_question, etiquettes_existantes = etiquettes_existantes)
    return render_template("index.html", name = None)
 
-def traitement_visualiser(texte):
-   # Markdown et code coloré
-   html = markdown2.markdown(texte, extras=["fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
-   # Mermaid
-   soup = BeautifulSoup(html, 'html.parser')
-   for code_block in soup.find_all('code'):
-      if "class" not in code_block.parent.parent.attrs:
-         new_div = soup.new_tag("div")
-         new_div['class'] = "mermaid"
-         for line in code_block.contents:
-            new_div.append(line)
-         code_block.replace_with(new_div)
-   return soup.prettify()
-
-
 @app.route("/visualiser/<int:id_question>")
 def visualiser(id_question, question = None):
    if 'user' in session:
       name = session['user']
       if question == None:
          question = get_questions(name)[id_question]
-         question['text'] = traitement_visualiser(question['text'])
+         question = traiter_question(question)
+      return render_template("visualiser.html", question = question)
+   return render_template("index.html", name = None)
 
-         for answer in question['answers']:
-            answer['text'] = traitement_visualiser(answer['text'])
+@app.route("/visualiser_temp", methods = ['POST'])
+def visualiser_temp():
+   if 'user' in session and request.method == 'POST':
+      name = session['user']
+      question = json.loads(request.form['question_json'])
+      question = traiter_question(question)
       return render_template("visualiser.html", question = question)
    return render_template("index.html", name = None)
 
@@ -313,9 +318,7 @@ def show():
          questions_a_generer = []
          for id in tabChoix :
             new_question = questions[int(id)]
-            new_question['text'] = traitement_visualiser(new_question['text'])
-            for answer in new_question['answers']:
-               answer['text'] = traitement_visualiser(answer['text'])
+            new_question = traiter_question(new_question)
             questions_a_generer.append(new_question)
       return render_template("SHOW.html",name=name, questions = questions_a_generer)
    return render_template("index.html", name = None)

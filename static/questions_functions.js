@@ -148,3 +148,17 @@ function toGreen(checkbox, x) {
     }
   }
 
+function visualiser() {
+    majAnswers();
+    var answers = JSON.parse(document.getElementById("answers_json").value);
+    var question = {
+        "titre": document.getElementById("titre").value,
+        "text": document.getElementById("qst").value,
+        "type": "QCM",
+        "answers": answers,
+        "etiquettes": document.getElementById("etiquettes").value.split(",")
+    }
+    var question_json = JSON.stringify(question);
+    console.log(question_json);
+    document.getElementById("question_json").value = question_json;
+}

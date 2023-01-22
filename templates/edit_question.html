@@ -72,7 +72,7 @@
                     <div class="card bg-dark" style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px;">
                         <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
                             <h5 class="card-title"><strong>Type : {{ question.type }}</strong></h5>
-                            <input class="form-control" style="background-color: rgb(255, 208, 243);" name="titre" placeholder="Titre de la question" value="{{ question.titre }}" required>
+                            <input class="form-control" style="background-color: rgb(255, 208, 243);" id="titre" name="titre" placeholder="Titre de la question" value="{{ question.titre }}" required>
                             <label for="qst"><strong>Question :</strong></label>
                             <textarea class="form-control" id="qst" name="text" style="background-color: #EBFCCB;" rows="3" cols="33" required>{{ question.text }}</textarea>
                         </div>
@@ -85,13 +85,16 @@
                                     <button type="button" class="btn btn-labeled " onclick="addAnswer()">
                                         <span class="btn-label "><i class="fa fa-plus-circle fa-lg" style = "color:white;" aria-hidden="true"></i></span></button>
                                     <input type="submit" name="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()"> 
-                                    <input type="submit" name="submit" class="btn btn-success" value="Visualiser" onclick="majAnswers()"> 
                                     <input type="hidden" name="id_question" value="{{ id_question }}">
                                 </div>
                         </div>
                     </div>
                 </form>
                 <div style="margin-top: 5px;">
+                    <form action="{{ url_for('visualiser_temp') }}" method='post' target="_blank">
+                        <input type="hidden" name="question_json" id="question_json">
+                        <input type="submit" name="submit" class="btn btn-success" value="Visualiser" onclick="visualiser()"> 
+                    </form>
                     <form action="{{ url_for('questions') }}">
                         <input type="submit" class="btn btn-dark" value="Retour">
                     </form>             
