@@ -202,7 +202,7 @@ def questions():
          questions = get_questions(name)
       except:
          session.pop('user', None)
-         return redirect(url_for('index'), name = None)
+         return redirect(url_for('index'))
       return render_template("questions.html", name = name, questions = questions, length = len(questions))
    return render_template("index.html", name = None)
 
@@ -295,11 +295,7 @@ def visualiser(id_question, question = None):
       name = session['user']
       if question == None:
          question = get_questions(name)[id_question]
-         print("AVANT++++++++++++++++++++++++++")
-         print(question)
          question = traiter_question(question)
-         print("APRES++++++++++++++++++++++++++")
-         print(question)
       return render_template("visualiser.html", question = question)
    return render_template("index.html", name = None)
 
