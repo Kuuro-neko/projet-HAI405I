@@ -63,7 +63,7 @@
                 <div class="card-body" style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
                    <h5 class="card-title text-light"><strong>Type : {{ question.type }}</strong></h5>
                    <h6 class="card-subtitle mb-2 text-muted">{{ question.titre }}</h6>
-                   <label for="qst"><strong class="text-light">Question :</strong></label>
+                   <label for="qst"><strong class="text-light">Question {{questions.index(question)+1}} :</strong></label>
                    <div id="qst" name="text" style="background-color: #EBFCCB; border-radius: 15px; color:black; height: auto; min-height: 100px; width: 300px; display: flex; text-align: center; justify-content: center; flex-direction:column;">
                       {{ question.text | safe }}
                    </div>
