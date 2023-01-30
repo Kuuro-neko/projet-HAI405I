@@ -35,15 +35,6 @@ function addAnswer(text = "", isCorrect = false) {
         this.style.height = "auto";
         this.style.height = this.scrollHeight + "px";
       });
-    /*
-    let answerText = document.createElement("input");
-    answerText.type = "text";
-    answerText.name = "answer_text";
-    answerText.placeholder = "Réponse";
-    answerText.value = text;
-    answerText.className="form-control";
-    answerText.style="background-color: #CBFCF0	;";
-    */
 
     // Bouton supprimer
     let answerDelete = document.createElement("button");

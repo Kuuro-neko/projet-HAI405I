@@ -53,19 +53,6 @@
             <div id="liste-filtre" style="width: 100%; margin-top: 10px; display:flex; flex-direction:row; justify-content:center;">
               {% if filtres != None %}
                 {% for filtre in filtres %}
-                <!--
-                  <div id="{{ etiquette }}" class="etiquette">
-                    <button type="button" onclick="delEtiquette('{{ etiquette }}')" class="btn btn-primary btn-sm" style="margin: 7px;" data-bs-toggle="tooltip" data-bs-placement="top" title="appuyez pour supprimer">
-                        {{ etiquette }}
-                        </button>
-                        <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres" style="width: fit-content;" readonly>
-                </div>                  
-                -->
-                <!--<div id="{{filtre}}" class="filtre">
-                  <button type="button" class="btn btn-primary btn-sm" onclick="delFiltre('{{ filtre }}')" name="filtres" style="margin: 7px; width: fit-content;" data-bs-toggle="tooltip" data-bs-placement="top" title="appuyez pour supprimer">
-                    {{ filtre }}
-                  </button>                  
-                </div>-->
                   <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres" style="width: fit-content;" readonly>
                 {% endfor %}
               {% endif %}
