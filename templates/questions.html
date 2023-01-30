@@ -18,23 +18,7 @@
    
    <body>
     <center>
-        <nav class="navbar navbar-expand-md navbar-light bg-dark">
-            <div class="container-fluid">
-              <h3 class="navbar-brand text-light">Bonjour, {{ name }} !</h3>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                  {% if name != None %}
-                  <a class="btn btn-dark text-light" href="{{ url_for('logout') }}" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Se déconnecter</a>  
-                  {% endif %}
-                  <a class="btn btn-dark text-light" href="generation" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Générer un QCM</a>
-                  <a class="btn btn-dark text-light" href="creation-comptes-etudiants" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Créer comptes étudiants</a>  
-                </div>
-              </div>
-            </div>
-          </nav>
+        {% include 'includes/navbar.html' %}
         
         {% for i in range(0, length) %}
 

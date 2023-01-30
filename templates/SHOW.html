@@ -38,26 +38,10 @@
    
    <body>
     <center>
-        <nav class="navbar navbar-expand-md navbar-light bg-dark">
-            <div class="container-fluid">
-                <h3 class="navbar-brand text-light ml-auto" style="font-family: Pacifico, cursive;">QuizzGalaxy</h3>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                  {%if name != None%}
-                  <a class="nav-link text-light" href="{{ url_for('logout') }}">Se déconnecter</a>
-                  {%endif%}
-                  <a class="nav-link text-light" href="generation">Générer un autre QCM</a>
-                  <a class="nav-link text-light" href="questions">Vos questions</a>
-                    <button type="button" class="btn btn-labeled btn-success " style="margin: 5px; ;" onclick="imprimer_page()">
-                    <span class="btn-label navbar-nav ml-auto"><i class="bi bi-printer-fill bi-lg"></i></span>
-                    </button>                
-                </div>
-              </div>
-            </div>
-          </nav>
+      {% include 'includes/navbar.html' %}
+          <button type="button" class="btn btn-labeled btn-success " style="margin: 5px; ;" onclick="imprimer_page()">
+            <span class="btn-label navbar-nav ml-auto"><i class="bi bi-printer-fill bi-lg"></i></span>
+            </button> 
           <div class="row container" >
               {%for question in questions %}       
             <div class="card bg-dark col-4" style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;">
