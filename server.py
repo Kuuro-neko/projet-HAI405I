@@ -35,6 +35,15 @@ def get_data():
       data = json.load(fp)
    return data
 
+def get_etudiants():
+   """
+   Retourne le contenu du fichier etudiants.json
+   Out : data (dict)
+   """
+   with open('etudiants.json', 'r') as fp:
+      data = json.load(fp)
+   return data
+
 def write_data(data):
    """
    Ecrit dans le fichier data.json
@@ -179,6 +188,8 @@ def creer_comptes_etudiant(filename):
    for row in rows:
       if row['numero_etudiant'] not in num_existants:
          row["password"] = ""
+         row["prenom"] = row["prenom"].replace(" ", "_").replace("'", "_").lower()
+         row["nom"] = row["nom"].replace(" ", "_").replace("'", "_").lower()
          data.append(row)
 
    with open('etudiants.json', 'w') as f:
@@ -210,6 +221,37 @@ def login():
       return render_template("login.html", error = "Login ou mot de passe incorrect")
    else:
       return render_template("login.html")
+
+def try_login_etudiant(login, password, etudiant):
+   if etudiant['prenom'] + "." + etudiant['nom'] == login:
+      if etudiant['password'] == "":
+         if password == etudiant['numero_etudiant']:
+            return True
+      else:
+         if password == etudiant['password']:
+            return True
+   return False
+
+@app.route("/login-etudiant", methods = ['POST', 'GET'])
+def login_etudiant():
+   if request.method == 'POST':
+      data = get_etudiants()
+      login = request.form['login']
+      password = request.form['password']
+      for etudiant in data:
+         if try_login_etudiant(login, password, etudiant):
+            session['etudiant'] = json.dumps(etudiant)
+            return redirect(url_for('wait'))
+      return render_template("login_etudiant.html", error = "Login ou mot de passe incorrect")
+   else:
+      return render_template("login_etudiant.html")
+
+@app.route("/wait", methods = ['POST', 'GET'])
+def wait():
+   if 'etudiant' in session:
+      etudiant = json.loads(session['etudiant'])
+      return render_template("wait.html", etudiant = etudiant)
+   return redirect(url_for('index'))
 
 @app.route("/inscription", methods = ['POST', 'GET'])
 def inscription():
