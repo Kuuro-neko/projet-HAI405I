@@ -1,10 +1,12 @@
 <html>
 
 <head>
+
  <title>createAcc</title>
  <script type="module" src="//unpkg.com/@grafikart/drop-files-element"></script>
 
  <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
+ <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
  <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
   <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
   <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
@@ -24,7 +26,6 @@
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.css" integrity="sha512-7uSoC3grlnRktCWoO4LjHMjotq8gf9XDFQerPuaph+cqR7JC9XKGdvN+UwZMC14aAaBDItdRj3DcSDs4kMWUgg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.js" integrity="sha512-9e9rr82F9BPzG81+6UrwWLFj8ZLf59jnuIA/tIf8dEGoQVu7l5qvr02G/BiAabsFOYrIUTMslVN+iDYuszftVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 </head>
 
 <body>
@@ -78,6 +79,7 @@
         </div>
 
         <div id="file-container" >
+
         <h3 class="text-light" style="margin: 10px;">Ajouter des des étudiants</h3>
         <form method="post" enctype="multipart/form-data">
           <div class="input-group" style="justify-content: center">

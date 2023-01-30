@@ -423,6 +423,21 @@ def cree_etu() :
    return render_template("cree_etu.html")
 
 
+@app.route('/creation-comptes-etudiants', methods=['GET', 'POST'])
+def creation_comptes_etudiants():
+   if 'user' in session:
+      if request.method == 'POST':
+         csv_file = request.files['csv_file']
+         if csv_file.filename == '':
+            return redirect(request.url)
+         filename = csv_file.filename
+         if filename.rsplit('.', 1)[1].lower() != 'csv':
+            return redirect(request.url)
+         csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+         creer_comptes_etudiant(filename)
+         return redirect(url_for('index'))
+      return render_template('creation_comptes_etudiants.html')
+   return render_template("index.html", name = None)
 
 @app.route('/creation-comptes-etudiants', methods=['GET', 'POST'])
 def creation_comptes_etudiants():
