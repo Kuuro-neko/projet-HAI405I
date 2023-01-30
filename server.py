@@ -1,3 +1,4 @@
+import io
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -7,15 +8,23 @@ from flask import redirect, url_for, request, session
 
 from bs4 import BeautifulSoup
 
+from hashlib import sha256
+
 import markdown2
 import json
-
+import csv
+import os
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
+UPLOAD_FOLDER = './uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 host = '0.0.0.0'
 port = 8888
+
+def create_unique_id(id, string):
+   return sha256(str(id).encode() + string.encode()).hexdigest()[:8]
 
 def get_data():
    """
@@ -147,6 +156,33 @@ def traiter_question(question):
    for answer in question["answers"]:
       answer["text"] = traiter_texte(answer["text"])
    return question
+
+def creer_comptes_etudiant(filename):
+   with open((UPLOAD_FOLDER + "/" + filename), 'r') as f:
+      reader = csv.DictReader(f)
+      rows = list(reader)
+
+   try:
+      with open('etudiants.json', 'r') as f:
+         data = json.load(f)
+   except:
+      data = []
+      
+   def get_all_num_etu(json_data):
+      num_etu = []
+      for etu in json_data:
+         num_etu.append(etu['numero_etudiant'])
+      return num_etu
+
+   num_existants = get_all_num_etu(data)
+
+   for row in rows:
+      if row['numero_etudiant'] not in num_existants:
+         row["password"] = ""
+         data.append(row)
+
+   with open('etudiants.json', 'w') as f:
+      json.dump(data, f, indent=4)
 
 @app.route("/")
 @app.route("/index")
@@ -342,6 +378,21 @@ def show():
 
 
 
+@app.route('/creation-comptes-etudiants', methods=['GET', 'POST'])
+def creation_comptes_etudiants():
+   if 'user' in session:
+      if request.method == 'POST':
+         csv_file = request.files['csv_file']
+         if csv_file.filename == '':
+            return redirect(request.url)
+         filename = csv_file.filename
+         if filename.rsplit('.', 1)[1].lower() != 'csv':
+            return redirect(request.url)
+         csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+         creer_comptes_etudiant(filename)
+         return redirect(url_for('index'))
+      return render_template('creation_comptes_etudiants.html')
+   return render_template("index.html", name = None)
 
 if __name__ == '__main__':
   #app.run(host=host, port=port)
