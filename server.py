@@ -31,7 +31,7 @@ def write_data(data):
    Ecrit dans le fichier prof.json
    In : data (dict)
    """
-   with open('prof.json', 'w') as fp:
+   with open('data.json', 'w') as fp:
       json.dump(data, fp, indent=4)
 
 def get_user_id(user):
