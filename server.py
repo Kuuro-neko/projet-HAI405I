@@ -28,7 +28,7 @@ def create_unique_id(id, string):
 
 def get_data():
    """
-   Retourne le contenu du fichier data.json
+   Retourne le contenu du fichier prof.json
    Out : data (dict)
    """
    with open('prof.json', 'r') as fp:
@@ -46,7 +46,7 @@ def get_etudiants():
 
 def write_data(data):
    """
-   Ecrit dans le fichier data.json
+   Ecrit dans le fichier prof.json
    In : data (dict)
    """
    with open('data.json', 'w') as fp:
@@ -54,7 +54,7 @@ def write_data(data):
 
 def get_user_id(user):
    """
-   Retourne l'id de l'utilisateur dans le fichier data.json
+   Retourne l'id de l'utilisateur dans le fichier prof.json
    In : user (str)
    Out : id (int)
    """
@@ -418,6 +418,9 @@ def show():
       return render_template("SHOW.html",name=name, questions = questions_a_generer)
    return render_template("index.html", name = None)
 
+@app.route('/cree_etu')
+def cree_etu() : 
+   return render_template("cree_etu.html")
 
 
 @app.route('/creation-comptes-etudiants', methods=['GET', 'POST'])
@@ -436,7 +439,22 @@ def creation_comptes_etudiants():
       return render_template('creation_comptes_etudiants.html')
    return render_template("index.html", name = None)
 
-if __name__ == '__main__':
-  #app.run(host=host, port=port)
-  app.run(host=host, port=port, debug=True)
+@app.route('/creation-comptes-etudiants', methods=['GET', 'POST'])
+def creation_comptes_etudiants():
+   if 'user' in session:
+      if request.method == 'POST':
+         print(request.files)
+         csv_file = request.files['csv_file']
+         if csv_file.filename == '':
+            return redirect(request.url)
+         filename = csv_file.filename
+         if filename.rsplit('.', 1)[1].lower() != 'csv':
+            return redirect(request.url)
+         csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+         creer_comptes_etudiant(filename)
+         return redirect(url_for('index'))
+      return render_template('creation_comptes_etudiants.html')
+   return render_template("index.html", name = None)
 
+if __name__ == '__main__':
+  app.run(host=host, port=port, debug=True)
