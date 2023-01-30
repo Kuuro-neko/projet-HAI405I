@@ -8,6 +8,8 @@ from flask import redirect, url_for, request, session
 
 from bs4 import BeautifulSoup
 
+from hashlib import sha256
+
 import markdown2
 import json
 import csv
@@ -20,6 +22,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 host = '0.0.0.0'
 port = 8888
+
+def create_unique_id(id, string):
+   return sha256(str(id).encode() + string.encode()).hexdigest()[:8]
 
 def get_data():
    """

@@ -38,6 +38,8 @@ python3 server.py
 
 ### Bibliothèques utilisées
 
+#### Partie 1
+
 Autocomplétion des etiquettes : [Jquery](https://www.w3schools.blog/jquery-ui-autocomplete)
 
 Framework CSS [Bootstrap](https://getbootstrap.com/)
@@ -49,6 +51,12 @@ Coloration de code : [Markdown2](https://github.com/trentm/python-markdown2) et 
 Latex : [MathJax](https://www.mathjax.org/)
 
 Graphes : [Mermaid](https://mermaid.js.org/) et [BeautifulSoup4](https://pypi.org/project/beautifulsoup4/) (Pour préparer les div afin de les utiliser avec Mermaid)
+
+#### Partie 2
+
+Génération d'ID uniques : sha256
+
+Lecture de fichier csv : csv
 
 ### Autres sources
 
