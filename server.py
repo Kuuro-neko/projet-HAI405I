@@ -22,7 +22,7 @@ def get_data():
    Retourne le contenu du fichier data.json
    Out : data (dict)
    """
-   with open('data.json', 'r') as fp:
+   with open('prof.json', 'r') as fp:
       data = json.load(fp)
    return data
 
@@ -31,7 +31,7 @@ def write_data(data):
    Ecrit dans le fichier data.json
    In : data (dict)
    """
-   with open('data.json', 'w') as fp:
+   with open('prof.json', 'w') as fp:
       json.dump(data, fp, indent=4)
 
 def get_user_id(user):
