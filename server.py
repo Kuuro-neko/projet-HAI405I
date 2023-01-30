@@ -19,7 +19,7 @@ port = 8888
 
 def get_data():
    """
-   Retourne le contenu du fichier data.json
+   Retourne le contenu du fichier prof.json
    Out : data (dict)
    """
    with open('prof.json', 'r') as fp:
@@ -28,7 +28,7 @@ def get_data():
 
 def write_data(data):
    """
-   Ecrit dans le fichier data.json
+   Ecrit dans le fichier prof.json
    In : data (dict)
    """
    with open('prof.json', 'w') as fp:
@@ -36,7 +36,7 @@ def write_data(data):
 
 def get_user_id(user):
    """
-   Retourne l'id de l'utilisateur dans le fichier data.json
+   Retourne l'id de l'utilisateur dans le fichier prof.json
    In : user (str)
    Out : id (int)
    """
@@ -340,10 +340,12 @@ def show():
       return render_template("SHOW.html",name=name, questions = questions_a_generer)
    return render_template("index.html", name = None)
 
+@app.route('/cree_etu')
+def cree_etu() : 
+   return render_template("cree_etu.html")
+
 
 
 
 if __name__ == '__main__':
-  #app.run(host=host, port=port)
   app.run(host=host, port=port, debug=True)
-

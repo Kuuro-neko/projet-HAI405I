@@ -31,57 +31,26 @@
              <div  class="btn-group" style="display: flex; justify-content: space-between;">
                  <a class="btn btn-dark text-light" href="{{ url_for('logout') }}" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Se déconnecter</a>  
                  <a class="btn btn-dark text-light" href="{{ url_for('questions') }}" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Vos questions</a>  
-                 <a class="btn btn-dark text-light" href="{{ url_for('cree_etu') }}" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Créer compte étudiant</a>
 
               </div>
            </div>
          </div>
        </nav>
-       <div id="filtre-container">
-        <h3 class="text-light" style="margin: 10px;">Filtrer par étiquette :</h3>
+       <div id="file-container">
+        <h3 class="text-light" style="margin: 10px;">Ajouter des des étudiants</h3>
         <form action="" method="post">
           <div class="input-group" style="justify-content: center">
             <div class="form-outline" style="display:flex ; flex-direction: row; justify-content: center;">
-              <select id="search-focus" type="select" id="form1" class="form-select" placeholder="Etiquette" name="filtres">
-                {% for filtre in liste_filtre %}
-                  <option value="{{ filtre }}">{{ filtre }}</option>
-                {% endfor %}
-              </select>
+                <label for="fichier">Fichier</label>
+                <input type="file" class="form-control-file" id="fichier">
               <button type="submit" class="btn btn-success" onclick>
               <i class="fa fa-search"></i>
             </button>
             </div>
-            <div id="liste-filtre" style="width: 100%; margin-top: 10px; display:flex; flex-direction:row; justify-content:center;">
-              {% if filtres != None %}
-                {% for filtre in filtres %}
-                  <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres" style="width: fit-content;" readonly>
-                {% endfor %}
-              {% endif %}
-            </div>
           </div>
       </form>
-        {% if filtres | length > 0 %}
-          <a href="{{ url_for('generation') }}" class="btn btn-success" style="margin: 10px;">Réinitialiser</a>
-        {% endif %}
-       </div>
-       <div> 
-        <h3 class="text-light" style="margin: 10px;">Selectionnez les questions souhaitées :</h3>
-       </div>
-      {% for i in range(0, questions | length) %}
-      <div class="container">
-        <form action="{{ url_for('show') }}" method="POST">
-              <div class=" bg-dark text-light " id="check{{i}}" style="margin: 30px; box-shadow: 5px 5px 7px red ; padding: 5px; display:flex ; flex-direction: row; justify-content: center;">
-                    <div class="questions" style="display:flex ; flex-direction: row; justify-content: center;">
-                        <h5 id="text">{{ questions[i].titre }}</h5>
-                        <div class="form-check form-switch" style="margin-left: 10px;">
-                          <input class="form-check-input" type="checkbox" onchange="toGreen(this, '{{i}}')" name="choisi" value="{{ i }}">
-                        </div>
-                    </div>
-              </div>
-            </div>
-            {% endfor %}
           <div>
-            <input type="submit" class="btn btn-success" value="Créer QCM"> 
+            <input type="submit" class="btn btn-success" value="Créer Comptes"> 
           </div>
       </form>
      </center>
