@@ -30,7 +30,7 @@
             <form action="{{ url_for('login')}}">
                <button type="submit" class="btn btn-outline-warning btn-lg">Enseignant</button>
             </form>
-            <form action="">
+            <form action="{{ url_for('login_etudiant')}}">
                <button type="submit" class="btn btn-outline-info btn-lg" style="margin-left: 20px;">Élève</button>
             </form>
             {% endif %}
