@@ -2,11 +2,7 @@
 
    <head>
     <title>Créer question</title>
-    <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
-    <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
-      <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
-      <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
-      <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
+    {% includes 'includes/head_common.html' %}
       <!-- Bootstrap 5 CSS -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
       <!-- Font Awesome CSS -->

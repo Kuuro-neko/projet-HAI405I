@@ -1,16 +1,9 @@
 <html>
 
-   <head>
-      
-    <title>QuizzGalaxy</title>
-
-   <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
-   <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
-   <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
-   <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
-   <link href="{{ url_for('static', filename = 'style.css') }} " rel="stylesheet">
-
-   </head>
+<head>
+<title>QuizzGalaxy</title>
+{% includes 'includes/head_common.html' %}
+</head>
 
 
     <body class="main-head">
