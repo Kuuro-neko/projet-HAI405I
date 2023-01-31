@@ -11,16 +11,13 @@
    
    <body id="log">
     <center>
-    <section class="container my-2 text-light p-2 col-12" id="loginSec">
-    <div class="login" class="container">
+    <section class="container my-2 text-light p-2 col-12" id="loginSec" style="width: 400px;">
+    <div class="login" class="container" style="display:flex ; flex-direction: column; justify-content: center;">
         <h1 class="text-center">Connexion</h1>
         <form method="post">
             <div class="form-group">
               <label for="login">Identifiant</label>
               <input type="text" class="form-control" id="login" placeholder="nom.prenom" name="login">
-              <small id="loginHelpBlock" class="form-text text-muted">
-                Votre identifiant est de la forme "nom.prénom". Par exemple, pour "Valery Giscard d'Estaing", votre identifiant est "valery.giscarddestaing".
-              </small>
             </div>
             <div class="form-group">
               <label for="password">Mot de passe</label>

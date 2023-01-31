@@ -10,12 +10,8 @@ body {
     background-attachment: fixed;
     color: white;
 }
-/*
-  .dropzone p {
-    font-size: 18px;
-    color: #aaa;
-  }
-  */
+
+
   .drop-files{
     border-radius: 5px;
     width: 500px;
