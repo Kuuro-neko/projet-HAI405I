@@ -25,6 +25,26 @@ port = 8888
 
 ################################## Fonctions ##################################
 
+class SequenceDeQuestions:
+    def __init__(self, id_unique, prof, questions):
+        if type(questions) != list:
+            self.questions = [].append(questions)
+        else:
+            self.questions = questions
+        id_string = ""
+        for question in self.questions:
+            id_string += question["id"]
+        self.id_unique = create_unique_id(get_prof_id(prof), id_string)
+        self.prof = prof
+        self.etudiants = []
+        self.estTerminee = False
+    
+    def terminerSequence(self):
+        self.estTerminee = True
+
+    def ajouterEtudiant(self, etudiant):
+        self.etudiants.append(etudiant)
+
 def create_unique_id(id, string):
     return sha256(str(id).encode() + string.encode()).hexdigest()[:8]
 
