@@ -325,7 +325,7 @@ def add_question():
       text = request.form['text']
       titre = request.form['titre']
       type = request.form['types']
-      question_id = create_unique_id(get_questions(session['user']).length(), session['user'])
+      question_id = create_unique_id(len(get_questions(session['user'])), session['user'])
       try:
          etiquettes = json.loads(request.form['etiquettes'])
       except:
