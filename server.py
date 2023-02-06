@@ -510,7 +510,7 @@ def changePass():
                   write_data_etudiant(data) 
                   return redirect(url_for('wait'))
          else: 
-            return render_template("changePass.html", newConfirmErr = 0) # tester cote client si newConfirmErr n'est pas none et pas 0
+            return render_template("changePass.html", error = "Vous avez la mémoire courte dis donc ! Veuillez réessayer.")
       else:
          return render_template("changePass.html")  
 
