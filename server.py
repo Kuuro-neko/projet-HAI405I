@@ -293,7 +293,7 @@ def questions():
         except:
             session.pop('user', None)
             return redirect(url_for('index'))
-        return render_template("questions.html", name=name, questions=questions, length=len(questions))
+        return render_template("questions.html", name=name, questions=questions, length=len(questions), message=request.args.get('message') or "")
     return render_template("index.html", name=None)
 
 
@@ -305,7 +305,7 @@ def del_question(id_question):
         user_id = get_prof_id(name)
         data[user_id]['questions'].pop(id_question)
         write_data(data)
-        return redirect(url_for('questions'))
+        return redirect(url_for('questions', message="Question supprimée avec succès"))
     return render_template("index.html", name=None)
 
 
@@ -352,7 +352,7 @@ def add_question():
       data[get_prof_id(user)]['questions'].append(question)
       majListeEtiquettes(etiquettes)
       write_data(data)
-      return redirect(url_for('questions'))
+      return redirect(url_for('questions', message="Question créée avec succès"))
    else:
       etiquettes_existantes = get_etiquettes()
       return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes)
@@ -389,7 +389,7 @@ def edit_question(id_question):
             data[user_id]['questions'][id_question] = question
             write_data(data)
             majListeEtiquettes(etiquettes)
-            return redirect(url_for('questions'))
+            return redirect(url_for('questions', message="Question modifiée avec succès"))
         else:
             name = session['user']
             questions = get_questions(name)

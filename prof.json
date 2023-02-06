@@ -125,6 +125,14 @@
                 "etiquettes": [],
                 "answers": "testici",
                 "titre": "dsqqsdsqd"
+            },
+            {
+                "type": "Alphanumerique",
+                "id": "8c0b18bb",
+                "text": "dsdsds",
+                "etiquettes": [],
+                "answers": "dsd",
+                "titre": "sdsdsdsds"
             }
         ]
     },
