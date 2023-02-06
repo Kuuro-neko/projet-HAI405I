@@ -324,7 +324,7 @@ def del_question(id_question):
 @app.route("/traiter_type", methods = ['POST', 'GET'])
 def traiter_type():
    if request.method == 'POST':
-      type = request.form['types']
+      type = request.form['type']
       etiquettes_existantes = get_etiquettes()
       return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes, type = type)
    else: 
@@ -336,25 +336,25 @@ def add_question():
       data = get_data()
       text = request.form['text']
       titre = request.form['titre']
-      type = request.form['types']
+      type_question = request.form['type']
       question_id = create_unique_id(len(get_questions(session['user'])), session['user'])
       try:
          etiquettes = json.loads(request.form['etiquettes'])
       except:
          etiquettes = []
-      if type == "ChoixMultiple":
+      if type_question == "ChoixMultiple":
          try:
             answers = json.loads(request.form['answers_json'])
          except:
             answers = []
-      elif type == "Alphanumerique" :
+      elif type_question == "Alphanumerique" :
          try:
             answers = request.form['rep']
          except:
             answers = ""
       user = session['user']
       question = {
-         "type" : type,
+         "type" : type_question,
          "text": text,
          "etiquettes" : etiquettes,
          "answers": answers,
@@ -382,20 +382,29 @@ def edit_question(id_question):
                 etiquettes = json.loads(request.form['etiquettes'])
             except:
                 etiquettes = []
-            try:
-                answers = json.loads(request.form['answers_json'])
-            except:
-                answers = []
+            type_question = request.form['type']
+            if type_question == "ChoixMultiple":
+                try:
+                    answers = json.loads(request.form['answers_json'])
+                except:
+                    answers = []
+            elif type_question == "Alphanumerique":
+                try:
+                    answers = request.form['rep']
+                except:
+                    answers = ""
 
             user = session['user']
             user_id = get_prof_id(user)
             id_question = int(request.form['id_question'])
+            id_question_unique = request.form['id_question_unique']
             question = {
-                "type": "QCM",
+                "type": type_question,
                 "text": text,
                 "etiquettes": etiquettes,
                 "answers": answers,
-                "titre": titre
+                "titre": titre,
+                "id" : id_question_unique
             }
 
             data[user_id]['questions'][id_question] = question
