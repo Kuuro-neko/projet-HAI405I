@@ -26,7 +26,7 @@ port = 8888
 ################################## Fonctions ##################################
 
 class SequenceDeQuestions:
-    def __init__(self, id_unique, prof, questions):
+    def __init__(self, prof, questions):
         if type(questions) != list:
             self.questions = [].append(questions)
         else:
