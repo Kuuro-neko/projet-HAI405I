@@ -167,6 +167,15 @@ def generer_id_question():
     write_data(data)
 
 
+def update_type_question():
+    # Met à jour le type des questions. Si c'est QCM Rempalcer par ChoixMultiple
+    data = get_data()
+    for i in range(len(data)):
+        for j in range(len(data[i]['questions'])):
+            if data[i]['questions'][j]['type'] == "QCM":
+                data[i]['questions'][j]['type'] = "ChoixMultiple"
+    write_data(data)
+
 def traiter_texte(texte):
     """
     Traite une chaine de caractère pour la visualiser
@@ -547,4 +556,8 @@ def wait():
 
 
 if __name__ == '__main__':
+  # Fonctions pour mettre à jour les bases de données qui n'ont pas suivi les màj du code
+  generer_id_question()
+  update_type_question()
+  # Lancement du serveur
   app.run(host=host, port=port, debug=True)
