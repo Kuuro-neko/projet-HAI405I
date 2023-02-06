@@ -145,12 +145,17 @@ function toGreen(checkbox, x) {
   }
 
 function visualiser() {
-    majAnswers();
-    var answers = JSON.parse(document.getElementById("answers_json").value);
+    var type_question = document.getElementById("type_question").value;
+    if (type_question == "ChoixMultiple") {
+        majAnswers();
+        var answers = JSON.parse(document.getElementById("answers_json").value);
+    } else if (type_question == "Alphanumerique") {
+        var answers = document.getElementById("rep").value
+    }
     var question = {
         "titre": document.getElementById("titre").value,
         "text": document.getElementById("qst").value,
-        "type": "QCM",
+        "type": type_question,
         "answers": answers,
         "etiquettes": document.getElementById("etiquettes").value.split(",")
     }
