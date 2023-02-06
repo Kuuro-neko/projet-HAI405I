@@ -355,11 +355,11 @@ def add_question():
       user = session['user']
       question = {
          "type" : type,
-         "id": question_id,
          "text": text,
          "etiquettes" : etiquettes,
          "answers": answers,
-         "titre": titre
+         "titre": titre,
+         "id": question_id
       }
       data[get_prof_id(user)]['questions'].append(question)
       majListeEtiquettes(etiquettes)

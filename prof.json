@@ -105,8 +105,7 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "mmd",
-                "id": "9e274120"
+                "titre": "mmd"
             },
             {
                 "type": "QCM",
@@ -124,22 +123,6 @@
                 ],
                 "titre": "Markdown",
                 "id": "383d1870"
-            },
-            {
-                "type": "Alphanumerique",
-                "text": "sqdsdqsdqqsd",
-                "etiquettes": [],
-                "answers": "testici",
-                "titre": "dsqqsdsqd",
-                "id": "29001ce8"
-            },
-            {
-                "type": "Alphanumerique",
-                "id": "8c0b18bb",
-                "text": "dsdsds",
-                "etiquettes": [],
-                "answers": "dsd",
-                "titre": "sdsdsdsds"
             }
         ]
     },
