@@ -325,48 +325,34 @@ def add_question():
       text = request.form['text']
       titre = request.form['titre']
       type = request.form['types']
+      question_id = create_unique_id(get_questions(session['user'].length(), session['user']))
+      try:
+         etiquettes = json.loads(request.form['etiquettes'])
+      except:
+         etiquettes = []
       if type == "ChoixMultiple":
-         try:
-            etiquettes = json.loads(request.form['etiquettes'])
-         except:
-            etiquettes = []
          try:
             answers = json.loads(request.form['answers_json'])
          except:
             answers = []
-         user = session['user']
-         question = {
-            "type" : type,
-            "text": text,
-            "etiquettes" : etiquettes,
-            "answers": answers,
-            "titre": titre
-         }
-
-         data[get_prof_id(user)]['questions'].append(question)
-         majListeEtiquettes(etiquettes)
-         write_data(data)
-         return redirect(url_for('questions'))
-      
       elif type == "Alphanumerique" :
          try:
-            etiquettes = json.loads(request.form['etiquettes'])
+            answers = request.form['rep']
          except:
-            etiquettes = []
-         user = session['user']
-         question = {
-            "type" : type,
-            "text": text,
-            "etiquettes" : etiquettes,
-            "answers": request.form['rep'],
-            "titre": titre
-         }
-
-         data[get_prof_id(user)]['questions'].append(question)
-         majListeEtiquettes(etiquettes)
-         write_data(data)
-         return redirect(url_for('questions'))
-         
+            answers = ""
+      user = session['user']
+      question = {
+         "type" : type,
+         "id": question_id,
+         "text": text,
+         "etiquettes" : etiquettes,
+         "answers": answers,
+         "titre": titre
+      }
+      data[get_prof_id(user)]['questions'].append(question)
+      majListeEtiquettes(etiquettes)
+      write_data(data)
+      return redirect(url_for('questions'))
    else:
       etiquettes_existantes = get_etiquettes()
       return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes)
