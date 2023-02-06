@@ -1,20 +1,19 @@
 <html>
 
 <head>
-<title>QuizzGalaxy</title>
-{% includes 'includes/head_common.html' %}
+   <title>QuizzGalaxy</title>
+   {% include 'includes/head_common.html' %}
 </head>
 
+<body class="main-head">
+   <header class=" bg-dark text-light py-2 text-center">
+      <h1 class="display-6" id="logo">QuizzGalaxy</h1>
+   </header>
+   <section class="hero">
+      <h2><strong>Bienvenue sur QuizzGalaxy, {{ etudiant.nom }} {{ etudiant.prenom }}</strong></h2>
+      TO DO : PAGE POUR ENTRER LE CODE DU QUIZZ
+      TO DO : PAGE POUR MODIF SON MDP
+   </section>
+</body>
 
-    <body class="main-head">
-      <header class=" bg-dark text-light py-2 text-center">
-          <h1 class="display-6" id="logo">QuizzGalaxy</h1> 
-      </header>
-      <section class = "hero">
-         <h2><strong>Bienvenue sur QuizzGalaxy, {{ etudiant.nom }} {{ etudiant.prenom }}</strong></h2>
-         TO DO : PAGE POUR ENTRER LE CODE DU QUIZZ
-         TO DO : PAGE POUR MODIF SON MDP
-      </section>
-  </body>
-   
 </html>
