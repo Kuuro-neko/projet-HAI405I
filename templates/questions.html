@@ -41,13 +41,10 @@
          </div>
       </div>
 
-      {% endfor %}
-      
-      <form action="{{ url_for('add_question') }}">
-         <button type="submit" class="btn btn-labeled btn-lg" style="color: white;">
-            <span class="btn-label "><i class="fa fa-plus-circle fa-lg fa-4x" aria-hidden="true"></i></span></button>
-      </form>
-   </center>
-</body>
+        {% endfor %}
+        <form action="{{ url_for('traiter_type') }}">
+            <button type="submit" class="btn btn-labeled btn-lg" style="color: white;">
+                <span class="btn-label "><i class="fa fa-plus-circle fa-lg fa-4x" aria-hidden="true"></i></span></button>
+        </form>
 
 </html>

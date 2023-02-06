@@ -54,7 +54,7 @@ def write_data(data):
     Ecrit dans le fichier prof.json
     In : data (dict)
     """
-    with open('data.json', 'w') as fp:
+    with open('prof.json', 'w') as fp:
         json.dump(data, fp, indent=4)
 
 def write_data_etudiant(data):
@@ -309,38 +309,67 @@ def del_question(id_question):
     return render_template("index.html", name=None)
 
 
-@app.route("/add_question", methods=['POST', 'GET'])
+@app.route("/traiter_type", methods = ['POST', 'GET'])
+def traiter_type():
+   if request.method == 'POST':
+      type = request.form['types']
+      etiquettes_existantes = get_etiquettes()
+      return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes, type = type)
+   else: 
+      return render_template("choixType.html")
+      
+@app.route("/add_question", methods = ['POST', 'GET'])
 def add_question():
-    if request.method == 'POST':
-        data = get_data()
-
-        text = request.form['text']
-        titre = request.form['titre']
-        try:
+   if request.method == 'POST':
+      data = get_data()
+      text = request.form['text']
+      titre = request.form['titre']
+      type = request.form['types']
+      if type == "ChoixMultiple":
+         try:
             etiquettes = json.loads(request.form['etiquettes'])
-        except:
+         except:
             etiquettes = []
-        try:
+         try:
             answers = json.loads(request.form['answers_json'])
-        except:
+         except:
             answers = []
-        user = session['user']
-        question = {
-            "type": "QCM",
+         user = session['user']
+         question = {
+            "type" : type,
             "text": text,
-            "etiquettes": etiquettes,
+            "etiquettes" : etiquettes,
             "answers": answers,
             "titre": titre
-        }
+         }
 
-        data[get_prof_id(user)]['questions'].append(question)
-        majListeEtiquettes(etiquettes)
-        write_data(data)
-        return redirect(url_for('questions'))
-    else:
-        etiquettes_existantes = get_etiquettes()
-        return render_template("add_question.html", etiquettes_existantes=etiquettes_existantes)
+         data[get_prof_id(user)]['questions'].append(question)
+         majListeEtiquettes(etiquettes)
+         write_data(data)
+         return redirect(url_for('questions'))
+      
+      elif type == "Alphanumerique" :
+         try:
+            etiquettes = json.loads(request.form['etiquettes'])
+         except:
+            etiquettes = []
+         user = session['user']
+         question = {
+            "type" : type,
+            "text": text,
+            "etiquettes" : etiquettes,
+            "answers": request.form['rep'],
+            "titre": titre
+         }
 
+         data[get_prof_id(user)]['questions'].append(question)
+         majListeEtiquettes(etiquettes)
+         write_data(data)
+         return redirect(url_for('questions'))
+         
+   else:
+      etiquettes_existantes = get_etiquettes()
+      return render_template("add_question.html", etiquettes_existantes = etiquettes_existantes)
 
 @app.route("/edit_question/<int:id_question>", methods=['POST', 'GET'])
 def edit_question(id_question):
