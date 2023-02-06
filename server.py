@@ -155,6 +155,18 @@ def clear_etiquettes_non_utilisees():
         json.dump(data, fp, indent=4)
 
 
+def generer_id_question():
+    """
+    Genere un ID à toutes les questions de tous les utilisateurs si elles n'en ont pas
+    A supprimer quand les ID fonctionneront parfaitement à la création et modification des questions et que toutes les questions auront un ID
+    """
+    data = get_data()
+    for i in range(len(data)):
+        for j in range(len(data[i]['questions'])):
+            data[i]['questions'][j]['id'] = create_unique_id(j, data[i]["user"])
+    write_data(data)
+
+
 def traiter_texte(texte):
     """
     Traite une chaine de caractère pour la visualiser

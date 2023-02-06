@@ -25,7 +25,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Quelle est la capitale de la France ?"
+                "titre": "Quelle est la capitale de la France ?",
+                "id": "6fe08a1c"
             },
             {
                 "type": "QCM",
@@ -43,7 +44,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "PYYYYYY"
+                "titre": "PYYYYYY",
+                "id": "fcd972b4"
             },
             {
                 "type": "QCM",
@@ -65,7 +67,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "texMath"
+                "titre": "texMath",
+                "id": "0ac8ff32"
             },
             {
                 "type": "QCM",
@@ -85,7 +88,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "coloration"
+                "titre": "coloration",
+                "id": "920e32eb"
             },
             {
                 "type": "QCM",
@@ -101,7 +105,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "mmd"
+                "titre": "mmd",
+                "id": "9e274120"
             },
             {
                 "type": "QCM",
@@ -117,14 +122,16 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Markdown"
+                "titre": "Markdown",
+                "id": "383d1870"
             },
             {
                 "type": "Alphanumerique",
                 "text": "sqdsdqsdqqsd",
                 "etiquettes": [],
                 "answers": "testici",
-                "titre": "dsqqsdsqd"
+                "titre": "dsqqsdsqd",
+                "id": "29001ce8"
             },
             {
                 "type": "Alphanumerique",
@@ -166,7 +173,8 @@
                         "isCorrect": false
                     }
                 ],
-                "titre": "Titre par d\u00e9faut"
+                "titre": "Titre par d\u00e9faut",
+                "id": "6f95021f"
             }
         ]
     },
@@ -194,7 +202,8 @@
                         "isCorrect": false
                     }
                 ],
-                "titre": "Titre par d\u00e9faut"
+                "titre": "Titre par d\u00e9faut",
+                "id": "d6295672"
             }
         ]
     },
@@ -222,7 +231,8 @@
                         "isCorrect": "true"
                     }
                 ],
-                "titre": "Titre par d\u00e9faut"
+                "titre": "Titre par d\u00e9faut",
+                "id": "3935c29d"
             }
         ]
     },
@@ -254,7 +264,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Python print()"
+                "titre": "Python print()",
+                "id": "d752a495"
             },
             {
                 "type": "QCM",
@@ -276,7 +287,8 @@
                         "isCorrect": "true"
                     }
                 ],
-                "titre": "Math"
+                "titre": "Math",
+                "id": "922a30f6"
             },
             {
                 "type": "QCM",
@@ -302,7 +314,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Graphe Mermaid"
+                "titre": "Graphe Mermaid",
+                "id": "f0a801ed"
             },
             {
                 "type": "QCM",
@@ -328,7 +341,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Capitale France"
+                "titre": "Capitale France",
+                "id": "640fa008"
             },
             {
                 "type": "QCM",
@@ -352,7 +366,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Classe chat Python"
+                "titre": "Classe chat Python",
+                "id": "e20287d8"
             },
             {
                 "type": "QCM",
@@ -378,7 +393,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Capitale P\u00e9rou"
+                "titre": "Capitale P\u00e9rou",
+                "id": "f01a6362"
             }
         ]
     },
@@ -411,7 +427,8 @@
                         "isCorrect": "false"
                     }
                 ],
-                "titre": "Est-ce que cette question fonctionne ?"
+                "titre": "Est-ce que cette question fonctionne ?",
+                "id": "9e4b1aba"
             }
         ]
     }
