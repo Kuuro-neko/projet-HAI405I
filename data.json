@@ -104,27 +104,11 @@
                 "titre": "mmd"
             },
             {
-                "type": "QCM",
-                "text": "## titre H2\r\n### sous titre H3\r\n**en gras**, *en italique*...\r\n- un item\r\n- un second item",
-                "etiquettes": [],
-                "answers": [
-                    {
-                        "text": "oui",
-                        "isCorrect": "false"
-                    },
-                    {
-                        "text": "non",
-                        "isCorrect": "false"
-                    }
-                ],
-                "titre": "Markdown"
-            },
-            {
                 "type": "Alphanumerique",
-                "text": "sqdsdqsdqqsd",
+                "text": "hh",
                 "etiquettes": [],
-                "answers": "testici",
-                "titre": "dsqqsdsqd"
+                "answers": "nnn",
+                "titre": "vv"
             }
         ]
     },

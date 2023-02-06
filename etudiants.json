@@ -1,5 +1,11 @@
 [
     {
+        "nom": "test",
+        "prenom": "test",
+        "numero_etudiant": "00000000",
+        "password": "t"
+    },
+    {
         "nom": "karylin",
         "prenom": "chandra",
         "numero_etudiant": "86118630",

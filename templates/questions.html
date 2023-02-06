@@ -1,68 +1,45 @@
 <html>
 
-   <head>
-    <title>Questions</title>
-      <link href="{{ url_for('static', filename = 'modif.css') }}" rel="stylesheet">
-      <!-- Bootstrap 5 CSS -->
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-      <!-- Font Awesome CSS -->
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">    
-      <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }} "></script>
-      <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js.map') }} " ></script>
-      <link href="{{ url_for('static', filename = 'bootstrap.min.css.map') }} " rel="stylesheet">
-      <link href="{{ url_for('static', filename = 'bootstrap.min.css') }} " rel="stylesheet">
-      <script src="{{ url_for('static', filename = 'questions_functions.js') }} "></script>
+<head>
+   <title>Questions</title>
+   {% include 'includes/head_common.html' %}
+</head>
 
-   </head>
-   
-   <body>
-    <center>
-        <nav class="navbar navbar-expand-md navbar-light bg-dark">
-            <div class="container-fluid">
-              <h3 class="navbar-brand text-light">Bonjour, {{ name }} !</h3>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                  {% if name != None %}
-                  <a class="btn btn-dark text-light" href="{{ url_for('logout') }}" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Se déconnecter</a>  
-                  {% endif %}
-                  <a class="btn btn-dark text-light" href="generation" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Générer un QCM</a>
-                  <a class="btn btn-dark text-light" href="creation-comptes-etudiants" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Créer comptes étudiants</a>  
-                </div>
-              </div>
+<body>
+   <center>
+      {% include 'includes/navbar_prof.html' %}
+
+      {% for i in range(0, length) %}
+
+      <div class="container">
+         <div class=" bg-dark text-light "
+            style="margin: 30px;box-shadow: 5px 5px 7px #01cc71 ; padding: 5px; display:flex ; flex-direction: row; justify-content: center;"
+            id="{{ i }} ">
+            <div class="questions" style="display:flex ; flex-direction: row; justify-content: center;">
+               <h5 id="text" style="margin-top: 5px">{{ questions[i].titre }}</h5>
+
+               <div class="boutons" style="display:flex ; flex-direction: row; justify-content: center;">
+                  <!-- Boutons edit et suppr et visualiser -->
+                  <form action="{{ url_for('edit_question', id_question = i) }}">
+                     <button type="submit" class="btn btn-link" style="margin-left: 7px; margin-top: 3px;"><span
+                           class="bi bi-pencil-fill"></span></button>
+                  </form>
+                  <form action="{{ url_for('del_question', id_question = i) }}">
+                     <button type="submit" class="btn btn-labeled btn-danger"
+                        style="margin-left: 7px; margin-top: 3px;">
+                        <span class="btn-label"><i class="fa fa-trash"></i></span></button>
+                  </form>
+                  <form action="{{ url_for('visualiser', id_question = i) }}">
+                     <button type="submit" class="btn btn-labeled btn-success"
+                        style="margin-left: 7px; margin-top: 3px;">
+                        <span class="btn-label"><i class="fa fa-eye"></i></span>
+                     </button>
+                  </form>
+               </div>
+
             </div>
-          </nav>
-        
-        {% for i in range(0, length) %}
-
-        <div class="container">
-            <div class=" bg-dark text-light " style="margin: 30px;box-shadow: 5px 5px 7px #01cc71 ; padding: 5px; display:flex ; flex-direction: row; justify-content: center;" id="{{ i }} " >
-                <div class="questions" style="display:flex ; flex-direction: row; justify-content: center;">
-                    <h5 id="text" style="margin-top: 5px">{{ questions[i].titre }}</h5>
-                
-                <div class="boutons" style="display:flex ; flex-direction: row; justify-content: center;">
-                <!-- Boutons edit et suppr -->
-                    <form action="{{ url_for('edit_question', id_question = i) }}">
-                    <button type="submit" class="btn btn-link" style="margin-left: 7px; margin-top: 3px;"><span class="bi bi-pencil-fill"></span></button>
-                    </form>
-                    <form action="{{ url_for('del_question', id_question = i) }}">
-                        <button type="submit" class="btn btn-labeled btn-danger" style="margin-left: 7px; margin-top: 3px;" >
-                            <span class="btn-label"><i class="fa fa-trash"></i></span></button>                  
-                    </form> 
-                    <form action="{{ url_for('visualiser', id_question = i) }}">
-                      <button type="submit" class="btn btn-labeled btn-success" style="margin-left: 7px; margin-top: 3px;">
-                          <span class="btn-label"><i class="fa fa-eye"></i></span>
-                      </button>
-                    </form>
-
-                </div> 
-                </div>
-                </div>
-            </div>            
-        </div>
+         </div>
+      </div>
 
         {% endfor %}
         <form action="{{ url_for('traiter_type') }}">
@@ -70,7 +47,4 @@
                 <span class="btn-label "><i class="fa fa-plus-circle fa-lg fa-4x" aria-hidden="true"></i></span></button>
         </form>
 
-    </center>
-   </body>
-   
 </html>
