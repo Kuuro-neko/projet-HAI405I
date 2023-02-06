@@ -29,16 +29,22 @@
          </div>
          <div id="answers" class="container my-2 bg-dark w-80 text-light p-2"
             style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
-            {% for answer in question.answers %}
-            <div class=" answer form-check form-switch"
-               style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;">
-               <input class="isCorrect form-check-input" type="checkbox" name="correct" id="flexSwitchCheckDefault">
-               <div
-                  style="border-radius: 30px; background-color:#CBFCF0; overflow: auto; display: inline-block; min-width: 300px; color: black; justify-content: center;">
-                  <p> {{ answer.text | safe }} </p>
+
+            {% if question.type == "ChoixMultiple" %}
+               {% for answer in question.answers %}
+               <div class=" answer form-check form-switch"
+                  style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;">
+                  <input class="isCorrect form-check-input" type="checkbox" name="correct" id="flexSwitchCheckDefault">
+                  <div
+                     style="border-radius: 30px; background-color:#CBFCF0; overflow: auto; display: inline-block; min-width: 300px; color: black; justify-content: center;">
+                     <p> {{ answer.text | safe }} </p>
+                  </div>
                </div>
-            </div>
-            {% endfor%}
+               {% endfor%}
+            {% elif question.type == "Alphanumerique" %}
+               <input type="text" class="form-control" id="reponse" name="reponse" readonly placeholder="Réponse...">
+            {% endif %}
+
          </div>
       </div>
       {%endfor%}

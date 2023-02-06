@@ -195,8 +195,9 @@ def traiter_question(question):
     Out : question (dict)
     """
     question["text"] = traiter_texte(question["text"])
-    for answer in question["answers"]:
-        answer["text"] = traiter_texte(answer["text"])
+    if question["type"] == "ChoixMultiple":
+        for answer in question["answers"]:
+            answer["text"] = traiter_texte(answer["text"])
     return question
 
 
