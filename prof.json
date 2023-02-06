@@ -118,6 +118,13 @@
                     }
                 ],
                 "titre": "Markdown"
+            },
+            {
+                "type": "Alphanumerique",
+                "text": "hh",
+                "etiquettes": [],
+                "answers": "nnn",
+                "titre": "vv"
             }
         ]
     },
