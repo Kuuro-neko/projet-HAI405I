@@ -6,34 +6,30 @@
 </head>
 
 <body id="log">
-<center>
-   <section class="container my-2 text-light p-2 col-12" id="loginSec">
-      <div class="login" class="container">
-         <h1 class="text-center">Connexion</h1>
-         <form method="post">
-            <div class="form-group">
-               <label for="login">Identifiant</label>
-               <input type="text" class="form-control" id="login" placeholder="nom.prenom" name="login">
-               <small id="loginHelpBlock" class="form-text text-muted">
-                  Votre identifiant est de la forme "nom.prénom". Par exemple, pour "Valery Giscard d'Estaing", votre
-                  identifiant est "valery.giscarddestaing".
-               </small>
-            </div>
-            <div class="form-group">
-               <label for="password">Mot de passe</label>
-               <input type="password" class="form-control" id="password" name="password">
-               <small id="passwordHelpBlock" class="form-text text-muted">
-                  Votre mot de passe par défaut est votre numéro d'étudiant. Veuillez le changer dès votre première
-                  connexion.
-               </small>
-            </div>
-            <input class="btn btn-success w-100" type="submit" value="Connexion">
-         </form>
+   <center>
+      <section class="container my-2 text-light p-2 col-12" id="loginSec" style="width: 400px;">
+         <div class="login" class="container" style="display:flex ; flex-direction: column; justify-content: center;">
+            <h1 class="text-center">Connexion</h1>
+            <form method="post">
+               <div class="form-group">
+                  <label for="login">Identifiant</label>
+                  <input type="text" class="form-control" id="login" placeholder="nom.prenom" name="login">
+               </div>
+               <div class="form-group">
+                  <label for="password">Mot de passe</label>
+                  <input type="password" class="form-control" id="password" name="password">
+                  <small id="passwordHelpBlock" class="form-text text-muted">
+                     Votre mot de passe par défaut est votre numéro d'étudiant. Veuillez le changer dès votre première
+                     connexion.
+                  </small>
+               </div>
+               <input class="btn btn-success w-100" type="submit" value="Connexion">
+            </form>
 
 
-      </div>
-   </section>
-</center>
+         </div>
+      </section>
+   </center>
 </body>
 
 </html>

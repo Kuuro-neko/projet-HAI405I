@@ -23,6 +23,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 host = '0.0.0.0'
 port = 8888
 
+################################## Fonctions ##################################
 
 def create_unique_id(id, string):
     return sha256(str(id).encode() + string.encode()).hexdigest()[:8]
@@ -181,35 +182,45 @@ def traiter_question(question):
 
 
 def creer_comptes_etudiant(filename):
-    with open((UPLOAD_FOLDER + "/" + filename), 'r') as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
+   with open((UPLOAD_FOLDER + "/" + filename), 'r') as f:
+      reader = csv.DictReader(f)
+      rows = list(reader)
 
-    try:
-        with open('etudiants.json', 'r') as f:
-            data = json.load(f)
-    except:
-        data = []
+   try:
+      with open('etudiants.json', 'r') as f:
+         data = json.load(f)
+   except:
+      data = []
+      
+   def get_all_num_etu(json_data):
+      num_etu = []
+      for etu in json_data:
+         num_etu.append(etu['numero_etudiant'])
+      return num_etu
 
-    def get_all_num_etu(json_data):
-        num_etu = []
-        for etu in json_data:
-            num_etu.append(etu['numero_etudiant'])
-        return num_etu
+   num_existants = get_all_num_etu(data)
 
-    num_existants = get_all_num_etu(data)
+   for row in rows:
+      if row['numero_etudiant'] not in num_existants:
+         row["password"] = ""
+         row["prenom"] = row["prenom"].replace(" ", "_").replace("'", "_").lower()
+         row["nom"] = row["nom"].replace(" ", "_").replace("'", "_").lower()
+         data.append(row)
 
-    for row in rows:
-        if row['numero_etudiant'] not in num_existants:
-            row["password"] = ""
-            row["prenom"] = row["prenom"].replace(
-                " ", "_").replace("'", "_").lower()
-            row["nom"] = row["nom"].replace(" ", "_").replace("'", "_").lower()
-            data.append(row)
-
-    with open('etudiants.json', 'w') as f:
-        json.dump(data, f, indent=4)
-
+   with open('etudiants.json', 'w') as f:
+      json.dump(data, f, indent=4)
+      
+def try_login_etudiant(login, password, etudiant):
+   if etudiant['nom'] + "." + etudiant['prenom'] == login:
+      if etudiant['password'] == "":
+         if password == etudiant['numero_etudiant']:
+            return True
+      else:
+         if password == etudiant['password']:
+            return True
+   return False
+      
+############################################### ROUTES ###############################################
 
 @app.route("/")
 @app.route("/index")
@@ -226,7 +237,8 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/login", methods=['POST', 'GET'])
+
+@app.route("/login", methods = ['POST', 'GET'])
 def login():
     if request.method == 'POST':
         data = get_data()
@@ -241,38 +253,8 @@ def login():
         return render_template("login.html")
 
 
-def try_login_etudiant(login, password, etudiant):
-    if etudiant['prenom'] + "." + etudiant['nom'] == login:
-        if etudiant['password'] == "":
-            if password == etudiant['numero_etudiant']:
-                return True
-        else:
-            if password == etudiant['password']:
-                return True
-    return False
 
 
-@app.route("/login-etudiant", methods=['POST', 'GET'])
-def login_etudiant():
-    if request.method == 'POST':
-        data = get_etudiants()
-        login = request.form['login']
-        password = request.form['password']
-        for etudiant in data:
-            if try_login_etudiant(login, password, etudiant):
-                session['etudiant'] = json.dumps(etudiant)
-                return redirect(url_for('wait'))
-        return render_template("login_etudiant.html", error="Login ou mot de passe incorrect")
-    else:
-        return render_template("login_etudiant.html")
-
-
-@app.route("/wait", methods=['POST', 'GET'])
-def wait():
-    if 'etudiant' in session:
-        etudiant = json.loads(session['etudiant'])
-        return render_template("wait.html", etudiant=etudiant)
-    return redirect(url_for('index'))
 
 
 @app.route("/inscription", methods=['POST', 'GET'])
@@ -451,21 +433,74 @@ def show():
 
 @app.route('/creation-comptes-etudiants', methods=['GET', 'POST'])
 def creation_comptes_etudiants():
-    if 'user' in session:
-        if request.method == 'POST':
-            csv_file = request.files['csv_file']
-            if csv_file.filename == '':
-                return redirect(request.url)
-            filename = csv_file.filename
-            if filename.rsplit('.', 1)[1].lower() != 'csv':
-                return redirect(request.url)
-            csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            creer_comptes_etudiant(filename)
-            return redirect(url_for('index'))
-        return render_template('creation_comptes_etudiants.html')
-    return render_template("index.html", name=None)
+   if 'user' in session:
+      if request.method == 'POST':
+         print(request.files)
+         csv_file = request.files['csv_file']
+         if csv_file.filename == '':
+            return redirect(request.url)
+         filename = csv_file.filename
+         if filename.rsplit('.', 1)[1].lower() != 'csv':
+            return redirect(request.url)
+         csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+         creer_comptes_etudiant(filename)
+         return redirect(url_for('index'))
+      return render_template('creation_comptes_etudiants.html')
+   return render_template("index.html", name = None)
+
+
+################################################ ELEVES ################################################
+
+
+@app.route("/login-etudiant", methods = ['POST', 'GET'])
+def login_etudiant():
+   if request.method == 'POST':
+      data = get_etudiants()
+      login = request.form['login']
+      password = request.form['password']
+      for etudiant in data:
+         if try_login_etudiant(login, password, etudiant):
+            session['etudiant'] = json.dumps(etudiant)
+            print(session['etudiant'])
+            return redirect(url_for('wait'))
+      return render_template("login_etudiant.html", error = "Login ou mot de passe incorrect")
+   else:
+      return render_template("login_etudiant.html")
+   
+@app.route("/logoutEtd")
+def logoutEtd():
+   session.pop('etudiant', None)
+   return redirect(url_for('index'))
+   
+
+@app.route("/changePass", methods = ['POST', 'GET'])
+def changePass():
+   if 'etudiant' in session:
+      if request.method == 'POST':
+         etudiant = json.loads(session['etudiant'])
+         nouveau = request.form['nouveau']
+         confirmer = request.form['confirmer']
+         if nouveau == confirmer:
+            data = get_etudiants()
+            for etd in data:
+               if etd['nom'] + "." + etd['prenom'] == etudiant['nom'] + "." + etudiant['prenom']:
+                  etd['password'] = nouveau
+                  write_data_etudiant(data) 
+                  return redirect(url_for('wait'))
+         else: 
+            return render_template("changePass.html", newConfirmErr = 0) # tester cote client si newConfirmErr n'est pas none et pas 0
+      else:
+         return render_template("changePass.html")  
+
+
+@app.route("/wait", methods = ['POST', 'GET'])
+def wait():
+   if 'etudiant' in session:
+      etudiant = json.loads(session['etudiant'])
+      return render_template("wait.html", etudiant = etudiant)
+   return redirect(url_for('index'))
+
 
 
 if __name__ == '__main__':
-    # app.run(host=host, port=port)
-    app.run(host=host, port=port, debug=True)
+  app.run(host=host, port=port, debug=True)
