@@ -1,7 +1,10 @@
+
 from fonctions import *
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_socketio import SocketIO
+
 import os
+
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
@@ -43,7 +46,6 @@ def login():
         return render_template("login.html", error="Login ou mot de passe incorrect")
     else:
         return render_template("login.html")
-
 
 @app.route("/inscription", methods=['POST', 'GET'])
 def inscription():
@@ -260,6 +262,25 @@ def creation_comptes_etudiants():
       return render_template('creation_comptes_etudiants.html')
    return render_template("index.html", name = None)
 
+@app.route('/sequence', methods=['GET', 'POST'])
+def sequence():
+    if 'user' in session :
+        prof = session['user']
+        questions = get_questions(prof)
+        if request.method == 'POST':
+            tabChoix = request.form.getlist('choisi')
+            questions_a_generer = []
+            for id in tabChoix:
+                new_question = questions[int(id)]
+                new_question = traiter_question(new_question)
+                questions_a_generer.append(new_question)
+
+            sequence = SequenceDeQuestions(questions_a_generer, prof)
+            idSequence = sequence.id_unique
+            return render_template('live.html',idSequence = idSequence)
+        return render_template('diffusion.html', questions=questions)
+            
+            
 
 ################################################ ELEVES ################################################
 
