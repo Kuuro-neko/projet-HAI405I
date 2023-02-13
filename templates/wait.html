@@ -30,13 +30,13 @@
 <body class="main-head">
   <section class="hero">
     <h2><strong>Bienvenue sur QuizzGalaxy, {{ etudiant.nom }} {{ etudiant.prenom }}</strong></h2>
-    <form>
+    <form action="/live" method="post">
       <div class="input-group">
         <div class="form-outline">
           <input type="search" id="form1" class="form-control" placeholder="Identifiant quizz .." maxlength="8"
             pattern="[a-zA-Z0-9]+" required />
         </div>
-        <button type="button" class="btn btn-success">
+        <button type="submit" class="btn btn-success">
           <i class="fa fa-search"></i>
         </button>
       </div>

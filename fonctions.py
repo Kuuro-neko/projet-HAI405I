@@ -23,7 +23,7 @@ class SequenceDeQuestions:
             self.id_unique = create_unique_id(get_prof_id(prof), id_string)
         self.prof = prof
         self.etudiants = []
-        self.etat = -1
+        self.etat = 0
         self.reponsesOuvertes = False
         self.reponses = {}
         for question in questions:
@@ -34,13 +34,19 @@ class SequenceDeQuestions:
             self.etat = -2
             self.archiverSequence()
         self.etat += 1
-        self.reponsesOuvertes = True
+        self.ouvrirReponses()
 
     def fermerReponses(self):
         self.reponsesOuvertes = False
+    
+    def ouvrirReponses(self):
+        self.reponsesOuvertes = True
 
     def getQuestionCourante(self):
         return self.questions[self.etat]
+    
+    def getAllQuestions(self):
+        return self.questions
     
     def getReponsesCourantes(self):
         return self.reponses[self.etat]
@@ -61,6 +67,9 @@ class SequenceDeQuestions:
         data.append({self.id_unique: self.reponses})
         with open("archive.json", "w") as fp:
             json.dump(data, fp, indent=4)
+
+    def __str__(self) -> str:
+        return "SequenceDeQuestions de " + self.prof + " avec " + str(len(self.questions)) + " questions"
 
 def create_unique_id(id, string):
     return sha256(str(id).encode() + string.encode()).hexdigest()[:8]

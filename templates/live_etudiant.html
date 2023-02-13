@@ -1,0 +1,53 @@
+<html>
+
+<head>
+   <title>Live etudiant</title>
+   {% include 'includes/head_common.html' %}
+   {% include 'includes/head_visualiser.html' %}
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" rel="stylesheet" />
+   <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+      integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+   <script>
+         var socket;
+         window.onload = function() {
+            socket = io.connect('https://' + location.host);
+            num = "{{ etudiant.numero_etudiant }}"
+            console.log(num)
+            id = "{{ sequence.id_unique }}"
+            console.log(id)
+            socket.emit('connect-etu', {"numero_etudiant": num, "sequence_id": id});
+         
+            socket.on('display-question', function(data) {
+               console.log(data)
+               $('#display_question').html(data);
+            });
+         };
+         
+   </script>
+
+</head>
+
+<body>
+   <div>
+      <div class="container-fluid bg-dark text-light py-3">
+         <header class="text-center">
+            <h1 class="display-6">Live etudiant</h1>
+         </header>
+      </div>
+   </div>
+   <center>
+      <div id="display_question">
+
+      </div>
+   </center>
+   <script>
+      mermaid.initialize({
+         startOnLoad: true
+      });
+   </script>
+</body>
+
+</html>

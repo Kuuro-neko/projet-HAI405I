@@ -1,7 +1,6 @@
-
 from fonctions import *
 from flask import Flask, render_template, redirect, url_for, request, session
-from flask_socketio import SocketIO
+from flask_socketio import *
 
 import os
 
@@ -13,7 +12,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 socketio = SocketIO(app)
 
 host = '0.0.0.0'
-port = 8888
+port = 9999
+sequencesCourantes = {}
 
 ############################################### ROUTES ###############################################
 
@@ -269,17 +269,15 @@ def sequence():
         questions = get_questions(prof)
         if request.method == 'POST':
             tabChoix = request.form.getlist('choisi')
-            questions_a_generer = []
+            questions_sequence = []
             for id in tabChoix:
-                new_question = questions[int(id)]
-                new_question = traiter_question(new_question)
-                questions_a_generer.append(new_question)
-
-            sequence = SequenceDeQuestions(questions_a_generer, prof)
-            idSequence = sequence.id_unique
-            return render_template('live.html',idSequence = idSequence)
+                questions_sequence.append(questions[int(id)])
+            print(questions_sequence)
+            sequence = SequenceDeQuestions(prof, questions_sequence)
+            sequencesCourantes[sequence.id_unique] = sequence
+            return redirect(url_for('live', id_sequence=sequence.id_unique))
         return render_template('diffusion.html', questions=questions)
-            
+    return render_template("index.html", name=None) 
             
 
 ################################################ ELEVES ################################################
@@ -287,6 +285,7 @@ def sequence():
 
 @app.route("/login-etudiant", methods = ['POST', 'GET'])
 def login_etudiant():
+   
    if request.method == 'POST':
       data = get_etudiants()
       login = request.form['login']
@@ -334,31 +333,57 @@ def wait():
    return redirect(url_for('index'))
 
 ################################################ SOCKET ################################################
-sequencesCourantes = []
-"""
-@app.route('/creer-sequence', methods=['POST'])
-def creer_sequence():
-    if 'user' in session:
-        if request.method == 'POST':
-            sequence = json.loads(request.form['sequence_json'])
-            sequence = traiter_sequence(sequence)
-            sequencesCourantes.append(sequence)
-            return render_template("visualiser.html", question=sequence)
-        else:
 
-    return render_template("index.html", name=None)
 
-@app.route('/sequence/<int:id_sequence>')
-def sequence(id_sequence):
+@app.route('/live/<string:id_sequence>')
+def live(id_sequence):
+    for sequence in sequencesCourantes.values():
+       print(sequence)
+    if id_sequence not in sequencesCourantes:
+        return redirect(url_for('index', error="Cette séquence n'existe pas."))
+    sequence = sequencesCourantes[id_sequence]
     if 'etudiant' in session:
-        # affichage pour etudiant
-        pass
+        etudiant=json.loads(session['etudiant'])
+        return render_template('live_etudiant.html', etudiant=etudiant, sequence=sequence)
     elif 'user' in session:
-        # affichage pour prof
-        pass
-    return redirect(url_for('index'))
+        return render_template('live_prof.html', etudiant=False, sequence=sequence, questions=sequence.getAllQuestions())
+    return redirect(url_for('index', name=None, error="Vous devez être connecté pour accéder à cette page."))
+
+@socketio.on('connect-prof')
+def connect_prof(data):
+    sid = data["sequence_id"]
+    print(f"Prof connecté à la séquence {sid}")
+    join_room(sid)
+
+@socketio.on('connect-etu')
+def connect_etu(data):
+    sid = data["sequence_id"]
+    num = data["numero_etudiant"]
+    sequencesCourantes[sid].ajouterEtudiant(num)
+    print(f"Etudiant {num} connecté à la séquence {sid}")
+    question = sequencesCourantes[sid].getQuestionCourante()
+    question = traiter_question(question)
+    for answer in question["answers"]:
+        answer["isCorrect"] = "Bien essayé :)"
+    emit('display-question', {'numero_etudiant': num, 'question': question})
+    emit('connect-etu', {'numero_etudiant': num}, room=sid)
 
 """
+Socket pour envoyer les stats à chaque réponse d'un étudiant
+    - 1 socket emit côté eleve
+    - 1 socket onmessage côté prof
+    - 1 socket ici
+Socket pour stopper les réponses + js côté client prof pour afficher la réponse + blocage des réponses côté client eleve :
+   - 1 bouton + socket sur la page du prof pour stopper les réponses
+   - 1 socket côté eleve pour bloquer les réponses
+   - 1 socket ici pour bloquer les réponses au niveau de la classe
+Socket pour passer à la question suivante + bouton côté client prof + rafraichir les lcients eleve
+   - 1 socket onmessage côté eleve
+   - 1 socket emit + bouton côté prof
+   - 1 socket ici
+Et tout le côté client (voir diapo)
+"""
+
 if __name__ == '__main__':
   # Fonctions pour mettre à jour les bases de données qui n'ont pas suivi les màj du code
   generer_id_question()
