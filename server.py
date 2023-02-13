@@ -45,10 +45,6 @@ def login():
         return render_template("login.html")
 
 
-
-
-
-
 @app.route("/inscription", methods=['POST', 'GET'])
 def inscription():
     if request.method == 'POST':
@@ -316,8 +312,32 @@ def wait():
       return render_template("wait.html", etudiant = etudiant)
    return redirect(url_for('index'))
 
+################################################ SOCKET ################################################
+sequencesCourantes = []
+"""
+@app.route('/creer-sequence', methods=['POST'])
+def creer_sequence():
+    if 'user' in session:
+        if request.method == 'POST':
+            sequence = json.loads(request.form['sequence_json'])
+            sequence = traiter_sequence(sequence)
+            sequencesCourantes.append(sequence)
+            return render_template("visualiser.html", question=sequence)
+        else:
 
+    return render_template("index.html", name=None)
 
+@app.route('/sequence/<int:id_sequence>')
+def sequence(id_sequence):
+    if 'etudiant' in session:
+        # affichage pour etudiant
+        pass
+    elif 'user' in session:
+        # affichage pour prof
+        pass
+    return redirect(url_for('index'))
+
+"""
 if __name__ == '__main__':
   # Fonctions pour mettre à jour les bases de données qui n'ont pas suivi les màj du code
   generer_id_question()

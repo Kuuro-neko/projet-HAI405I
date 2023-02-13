@@ -4,6 +4,7 @@ import markdown2
 from bs4 import BeautifulSoup
 from hashlib import sha256
 from server import UPLOAD_FOLDER
+import re
 
 ################################## Fonctions ##################################
 
@@ -13,19 +14,53 @@ class SequenceDeQuestions:
             self.questions = [].append(questions)
         else:
             self.questions = questions
-        id_string = ""
-        for question in self.questions:
-            id_string += question["id"]
-        self.id_unique = create_unique_id(get_prof_id(prof), id_string)
+        if len(questions) == 1:
+            self.id_unique = questions[0]["id"]
+        else:
+            id_string = ""
+            for question in self.questions:
+                id_string += question["id"]
+            self.id_unique = create_unique_id(get_prof_id(prof), id_string)
         self.prof = prof
         self.etudiants = []
-        self.estTerminee = False
+        self.etat = -1
+        self.reponsesOuvertes = False
+        self.reponses = {}
+        for question in questions:
+            self.reponses[question["id"]] = {}
     
-    def terminerSequence(self):
-        self.estTerminee = True
+    def questionSuivante(self):
+        if self.etat == len(self.questions) - 1:
+            self.etat = -2
+            self.archiverSequence()
+        self.etat += 1
+        self.reponsesOuvertes = True
 
+    def fermerReponses(self):
+        self.reponsesOuvertes = False
+
+    def getQuestionCourante(self):
+        return self.questions[self.etat]
+    
+    def getReponsesCourantes(self):
+        return self.reponses[self.etat]
+    
+    def getAllReponses(self):
+        return self.reponses
+
+    def setReponseEtudiant(self, etudiant, reponse):
+        if re.match("^[a-zA-Z0-9]{8}$", etudiant) and self.reponsesOuvertes:
+            self.reponses[self.questions[self.etat]["id"]][etudiant] = reponse
+    
     def ajouterEtudiant(self, etudiant):
         self.etudiants.append(etudiant)
+
+    def archiverSequence(self):
+        with open("archive.json", "r") as fp:
+            data = json.load(fp)
+        data.append({self.id_unique: self.reponses})
+        with open("archive.json", "w") as fp:
+            json.dump(data, fp, indent=4)
 
 def create_unique_id(id, string):
     return sha256(str(id).encode() + string.encode()).hexdigest()[:8]
