@@ -1,10 +1,8 @@
-from ServerFunc import *
 
-#import io
+from fonctions import *
+from flask import Flask, render_template, redirect, url_for, request, session
+from flask_socketio import SocketIO
 
-from flask import Flask, redirect, url_for, request, session, render_template
-
-import json
 import os
 
 
@@ -12,46 +10,11 @@ app = Flask(__name__)
 app.secret_key = "super secret key"
 UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+socketio = SocketIO(app)
 
 host = '0.0.0.0'
 port = 8888
 
-################################## Fonctions ##################################
-
-# Une sequence peut ne contenir qu'une seule question
-# Si une seule question, l'id de la seq est celui de la question
-# si plusieurs un id unique identifie la sequence et permet d'accèder aux questions
-# doit donner accés aux réponses à la demande de l'utilisateur 
-# Contenir plusieurs 
-
-class SequenceDeQuestions:
-    def __init__(self, prof, questions):
-        if type(questions) != list:
-            self.questions = [].append(questions)
-        else:
-            self.questions = questions
-        
-        id_string = ""
-        for question in self.questions:
-            id_string += question["id"]
-            if question[type] == "QCM":
-                for answer in question["answers"]:
-                    self.reponses=[].append(answer)
-            else:
-                self.reponses = question["answers"]
-        self.id_unique = create_unique_id(get_prof_id(prof), id_string)
-        self.prof = prof
-        self.etudiants = []
-        self.estTerminee = False
-        
-    
-    def terminerSequence(self):
-        self.estTerminee = True
-
-    def ajouterEtudiant(self, etudiant):
-        self.etudiants.append(etudiant)
-
-      
 ############################################### ROUTES ###############################################
 
 @app.route("/")
@@ -370,11 +333,35 @@ def wait():
       return render_template("wait.html", etudiant = etudiant)
    return redirect(url_for('index'))
 
+################################################ SOCKET ################################################
+sequencesCourantes = []
+"""
+@app.route('/creer-sequence', methods=['POST'])
+def creer_sequence():
+    if 'user' in session:
+        if request.method == 'POST':
+            sequence = json.loads(request.form['sequence_json'])
+            sequence = traiter_sequence(sequence)
+            sequencesCourantes.append(sequence)
+            return render_template("visualiser.html", question=sequence)
+        else:
 
+    return render_template("index.html", name=None)
 
+@app.route('/sequence/<int:id_sequence>')
+def sequence(id_sequence):
+    if 'etudiant' in session:
+        # affichage pour etudiant
+        pass
+    elif 'user' in session:
+        # affichage pour prof
+        pass
+    return redirect(url_for('index'))
+
+"""
 if __name__ == '__main__':
   # Fonctions pour mettre à jour les bases de données qui n'ont pas suivi les màj du code
   generer_id_question()
   update_type_question()
   # Lancement du serveur
-  app.run(host=host, port=port, debug=True)
+  socketio.run(app, host=host, port=port, debug=True)

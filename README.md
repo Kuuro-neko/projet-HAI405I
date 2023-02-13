@@ -16,10 +16,7 @@ source venv/bin/activate
 
 - Installation des bibliothèques
 ```
-pip install flask
-pip install bs4
-pip install markdown2
-pip install pygments
+pip install -r requirements.txt
 ```
 
 ## Lancement du serveur web
