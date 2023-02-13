@@ -1,0 +1,5 @@
+flask
+bs4
+markdown2
+pygments
+flask-socketio
