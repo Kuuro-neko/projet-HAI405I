@@ -1,7 +1,7 @@
 <html>
 
 <head>
-   <title>Visualisation</title>
+   <title>VisualisationProf</title>
    {% include 'includes/head_common.html' %}
    {% include 'includes/head_visualiser.html' %}
    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" rel="stylesheet" />
@@ -15,6 +15,7 @@
            socket = io.connect('https://' + location.host);
            socket.emit('connect-prof', {"sequence_id": id});
         };
+
       </script>
 </head>
 
@@ -22,25 +23,91 @@
    <div>
       <div class="container-fluid bg-dark text-light py-3">
          <header class="text-center">
-            <h1 class="display-6">Visualisation</h1>
+            <h1 class="display-6">VisualisationProf</h1>
+            {% if length > 1 %}
+            <h2 class="display-6">Code de la sequence : {{ sequence.id_unique }}</h2>
+            {% else %}
+            <h2 class="display-6">Code de la question : {{ questions[0].id }}</h2>
+            {% endif %}
          </header>
       </div>
    </div>
    <center>
-    {{ sequence.id_unique }}
-    Questions :
-    {% for question in questions %}
-        {{question.id}}. {{question.question}}
-        {% for answer in question.answers %}
-            {{answer.id}}. {{answer.answer}}
-        {% endfor %}
-    {% endfor %}
+      <div class="row-container">
+         {%for question in questions %}
+         {%if questions.index(question)==0%}
+         <div class="card bg-dark col-4" id="card-{{questions.index(question)}}"
+            style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px; display : block">
+            {%else%}
+            <div class="card bg-dark col-4" id="card-{{questions.index(question)+1}}" data-id="{{questions.index(question)+1}}"
+               style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;display : None">
+               {%endif%}
+            <div class="card-body" style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
+               <div style= " align-items: center;  width: 100%">
+                  <h6 class="card-subtitle mb-2 text-muted" style="">{{ question.titre }}</h6>
+                  {%if length>1%}
+                  <button type="button" id="nextBtn" class="btn btn-outline-success" style="float :right; display:block;position: absolute; top:0;right: 0;" ><i class="bi bi-arrow-right-circle"></i> Suivant </button> 
+                  {%endif%}
+               </div>
+               <div>
+                  <label for="qst"><strong class="text-light">Question {{questions.index(question)+1}} :</strong></label>
+               </div>
+               <div id="qst" name="text"
+                  style="background-color: #EBFCCB; border-radius: 15px; color:black; height: auto; min-height: 100px; width: 300px; display: flex; text-align: center; justify-content: center; flex-direction:column;">
+                  <input class="isCorrect form-check-input" type="checkbox" name="correct" id="flexSwitchCheckDefault" style="float :right; display:block;position: relative; top:0;right: 0;" checked>
+                  {{ question.text | safe }}
+               </div>
+            </div>
+            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2"
+               style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
+               <input class="isCorrect form-check-input" type="checkbox" name="correct" id="flexSwitchCheckDefault" style="float :right; display:block;position: relative; top:0;right: 0;" checked>
+   
+               {% if question.type == "ChoixMultiple" %}
+                  {% for answer in question.answers %}
+                  <div class=" answer form-check form-switch"
+                     style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;">
+                     <input class="isCorrect form-check-input" type="checkbox" name="correct" id="flexSwitchCheckDefault">
+                     <div
+                        style="border-radius: 30px; background-color:#CBFCF0; overflow: auto; display: inline-block; min-width: 300px; color: black; justify-content: center;">
+                        <p> {{ answer.text | safe }} </p>
+                     </div>
+                  </div>
+                  {% endfor%}
+               {% elif question.type == "Alphanumerique" %}
+                  <input type="text" class="form-control" id="reponse" name="reponse" readonly placeholder="Réponse...">
+               {% endif %}
+   
+            </div>
+         </div>
+         {%endfor%}
+      </div>   
    </center>
+
    <script>
       mermaid.initialize({
          startOnLoad: true
       });
+
+      var currentContent = 0;
+      var nextBtn = document.getElementById("nextBtn");
+      var prevBtn = document.getElementById("prevBtn");
+      var contentList = document.getElementsByClassName("card");
+
+      nextBtn.addEventListener("click", function() {
+        // Hide current content
+        console.log(contentList);
+        contentList[currentContent].style.display="None";
+        // Show next content
+        currentContent++;
+        if (currentContent == contentList.length) {
+            currentContent = 0;
+         }
+        contentList[currentContent].style.display = "block";
+      });
+
    </script>
+
+
 </body>
 
 </html>

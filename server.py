@@ -313,7 +313,7 @@ def sequence():
                 tabChoix = request.form.getlist('choisi')
                 questions_sequence = []
                 for id in tabChoix:
-                    questions_sequence.append(questions[int(id)])
+                    questions_sequence.append(traiter_question(questions[int(id)]))
                 print(questions_sequence)
                 sequence = SequenceDeQuestions(prof, questions_sequence)
                 sequencesCourantes[sequence.id_unique] = sequence
@@ -394,14 +394,13 @@ def live(id_sequence):
     if id_sequence not in sequencesCourantes:
         return redirect(url_for('index', error="Cette séquence n'existe pas."))
     sequence = sequencesCourantes[id_sequence]
-    try:
-        if session['user_type'] == "etudiant":
-            etudiant = json.loads(session['user'])
-            return render_template('live_etudiant.html', etudiant=etudiant, sequence=sequence)
-        elif session['user_type'] == "prof":
-            return render_template('live_prof.html', etudiant=False, sequence=sequence, questions=sequence.getAllQuestions())
-        return render_template("index.html", name=None, error="Vous devez être connecté pour accéder à cette page")
-    except Exception:
+    print(len(sequence.getAllQuestions()))
+    if session['user_type'] == "etudiant":
+        etudiant = json.loads(session['user'])
+        return render_template('live_etudiant.html', etudiant=etudiant, sequence=sequence)
+    elif session['user_type'] == "prof":
+        return render_template('live_prof.html', etudiant=False, sequence=sequence, questions=sequence.getAllQuestions(), length=len(sequence.getAllQuestions()))
+    else :
         return render_template("index.html", name=None, error="Vous devez être connecté pour accéder à cette page")
 
 
