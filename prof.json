@@ -132,6 +132,14 @@
                 "answers": "ppppp4544",
                 "titre": "Test visualiser libre",
                 "id": "29001ce8"
+            },
+            {
+                "type": "Alphanumerique",
+                "text": "1+1 = ?",
+                "etiquettes": [],
+                "answers": "2",
+                "titre": "alphanum",
+                "id": "8c0b18bb"
             }
         ]
     },

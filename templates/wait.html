@@ -30,10 +30,10 @@
 <body class="main-head">
   <section class="hero">
     <h2><strong>Bienvenue sur QuizzGalaxy, {{ etudiant.nom }} {{ etudiant.prenom }}</strong></h2>
-    <form action="/live" method="get">
+    <form action="" method="GET" id="seq_form">
       <div class="input-group">
         <div class="form-outline">
-          <input type="search" id="form1" class="form-control" placeholder="Identifiant quizz .." maxlength="8"
+          <input type="search" id="seq_input" class="form-control" name="seq_input" placeholder="Identifiant quizz .." maxlength="8"
             pattern="[a-zA-Z0-9]+" required />
         </div>
         <button type="submit" class="btn btn-success">
@@ -42,6 +42,22 @@
       </div>
     </form>
   </section>
+  <script>
+    /*{{ url_for('live', id_sequence = seq_input) }}*/
+      const form = document.getElementById('seq_form');
+      const input = document.getElementById('seq_input');
+      
+      console.log(input);
+      input.addEventListener('input', () => {
+      const value = input.value.trim();
+      console.log(value);
+      if (value) {
+        form.action = `/live/${value}`;
+      } else {
+        form.action = '';
+      }
+    });
+  </script>
 </body>
 
 </html>

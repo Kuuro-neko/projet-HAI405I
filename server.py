@@ -375,10 +375,11 @@ def changePass():
         return render_template("index.html", name=None, error="Vous devez être connecté")
 
 
-@app.route("/wait", methods=['POST', 'GET'])
+@app.route("/wait")
 def wait():
     try:
         if session['user_type'] == "etudiant":
+            print(json.loads(session['user']))
             return render_template("wait.html", etudiant=json.loads(session['user']))
         return render_template("index.html", name=None, error="Vous devez être connecté en tant qu'étudiant pour accéder à cette page")
     except Exception:
@@ -387,7 +388,7 @@ def wait():
 ################################################ SOCKET ################################################
 
 
-@app.route('/live/<string:id_sequence>')
+@app.route('/live/<string:id_sequence>', methods=['GET'])
 def live(id_sequence):
     for sequence in sequencesCourantes.values():
         print(sequence)
