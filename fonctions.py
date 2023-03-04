@@ -62,12 +62,15 @@ class SequenceDeQuestions:
                         self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]].append(num_etu)
                 return True
             elif self.questions[self.etat]["type"] == "Alphanumerique":
-                if reponse not in self.reponses[self.questions[self.etat]["id"]]:
-                    self.reponses[self.questions[self.etat]["id"]][reponse] = [].append(num_etu)
+                reponse = reponse[0]
+                if str(reponse) not in self.reponses[self.questions[self.etat]["id"]].keys():
+                    self.reponses[self.questions[self.etat]["id"]][str(reponse)] = []
+                    self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
                     return True
                 elif num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse]:
-                    self.reponses[self.questions[self.etat]["id"]][reponse].append(num_etu)
+                    self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
                     return True
+                
         return False
     
     def getReponsesCourantes(self):
@@ -75,8 +78,6 @@ class SequenceDeQuestions:
     
     def getNbReponsesCourantes(self):
         reponses = dict(self.reponses[self.questions[self.etat]["id"]])
-        print("Reponses : ")
-        print(reponses)
         retour = {}
         retour["answers"] = {}
         total = 0
@@ -93,9 +94,15 @@ class SequenceDeQuestions:
                 total += len(reponses[reponse])
             alphanumerique = dict(sorted(alphanumerique.items(), key=lambda item: item[1], reverse=True)[:self.nb_max_alphanumerique])
             retour["type"] = "Alphanumerique"
+            retour["answers"] = alphanumerique
         
         retour["total"] = total
+        print(retour)
         return retour
+    
+    def getCorrectionCourante(self):
+        print("Correction : " + str(self.questions[self.etat]["answers"]))
+        return self.questions[self.etat]["answers"]
 
     def getAllReponses(self):
         return self.reponses
@@ -105,8 +112,11 @@ class SequenceDeQuestions:
             self.reponses[self.questions[self.etat]["id"]][etudiant] = reponse
     
     def ajouterEtudiant(self, etudiant):
+        print("Ajout de l'étudiant " + etudiant)
+        print("Etudiants : " + str(self.etudiants))
         if etudiant not in self.etudiants:
             self.etudiants.append(etudiant)
+        print("Etudiants : " + str(self.etudiants))
 
     def supprimerEtudiant(self, etudiant):
         self.etudiants.remove(etudiant)

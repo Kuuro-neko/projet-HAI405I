@@ -184,8 +184,33 @@ code {
 }
 
 .answer-checked {
-    background-color:#4eff89;
-    box-shadow: 0px 0px 10px white;
-    border: 1px solid rgb(0, 0, 0);
+    background-color:#9bdbb0;
+    box-shadow: 0px 0px 15px rgb(0, 155, 160);
+    border: 2px solid rgb(0, 0, 0);
     font-weight: 600;
+}
+
+.d-none {
+    display: none;
+}
+
+.answer-disabled-choixmultiple {
+    pointer-events: none;
+    cursor: default;
+    background-color: lightgray;
+}
+
+.answer-disabled-alphanumeric {
+    pointer-events: none;
+    cursor: default !important;
+    background-color: lightgray;
+    color: rgb(54, 54, 54);
+}
+
+.answer-correct {
+    background-color: #0ead43;
+}
+
+.answer-wrong {
+    background-color: #c72121;
 }

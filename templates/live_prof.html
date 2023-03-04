@@ -70,10 +70,26 @@
 
       function stopReponses() {
          socket.emit('stop-answers', { "sequence_id": "{{ sequence.id_unique }}" });
+         let btnStopReponses = document.getElementById('btn-stop-reponses');
+         let btnShowCorrection = document.getElementById('btn-show-correction');
+         btnStopReponses.classList.add('d-none');
+         btnShowCorrection.classList.remove('d-none');
       }
 
       function nextQuestion() {
          socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
+         let btnStopReponses = document.getElementById('btn-stop-reponses');
+         let btnShowCorrection = document.getElementById('btn-show-correction');
+         btnStopReponses.classList.remove('d-none');
+         btnShowCorrection.classList.add('d-none');
+      }
+
+      function showCorrection() {
+         socket.emit('show-correction', { "sequence_id": "{{ sequence.id_unique }}" });
+         let btnStopReponses = document.getElementById('btn-stop-reponses');
+         let btnShowCorrection = document.getElementById('btn-show-correction');
+         btnStopReponses.classList.add('d-none');
+         btnShowCorrection.classList.add('d-none');
       }
 
       function creerProgressBar(pourcentage, id) {
@@ -96,6 +112,10 @@
       function creerAlphanumeriqueInput(reponse, nb, total) {
          var pourcentage = (nb / total) * 100;
 
+         var wrapper = document.createElement('div');
+         wrapper.className = 'answer form-check form-switch answer-js flex-col-center-center';
+         
+
          var input = document.createElement('input');
          input.type = 'text';
          input.className = 'form-control answer-js';
@@ -103,11 +123,11 @@
          input.name = 'reponse';
          input.readOnly = true;
          input.value = reponse;
-         answers.appendChild(input);
+         wrapper.appendChild(input);
 
-         var progress = creerProgressBar(pourcentage);
-         answers.appendChild(progress, "");
-         return input;
+         var progress = creerProgressBar(pourcentage, "");
+         wrapper.appendChild(progress);
+         return wrapper;
       }
 
       function creerChoixMultipleInput(reponse, id, nb, total) {
@@ -168,7 +188,9 @@
                answers.appendChild(input);
             }
          } else {
-            answers.appendChild(creerAlphanumeriqueInput("Saisissez vos réponses", 0, 100));
+            // AFFICHAGE INITIAL MARCHE PAS JE SAIS PAS POURQUOI
+            var wrapper = creerAlphanumeriqueInput("Saisissez vos réponses", 0, 100);
+            answers.appendChild(wrapper);
          }
          mermaid.init();
       }
@@ -216,7 +238,8 @@
 
             <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
             </div>
-            <button onclick="stopReponses()">Stopper les réponses et afficher la correction</button>
+            <button id="btn-stop-reponses" onclick="stopReponses()">Stopper les réponses</button>
+            <button id="btn-show-correction" class="d-none" onclick="showCorrection()">Afficher la correction</button>
       </div>
    </center>
 

@@ -413,7 +413,7 @@ def connect_prof(data):
     print(f"Prof connecté à la séquence {sid}")
     join_room(sid)
     emit('refresh-connects', {'connects': len(sequencesCourantes[sid].getEtudiants())}, room=sid)
-    question = dict(sequencesCourantes[sid].getQuestionCourante())
+    question = sequencesCourantes[sid].getQuestionCourante().copy()
     emit('display-question', question, room=sid) # Envoie la question courante au prof
     emit('refresh-answers', sequencesCourantes[sid].getNbReponsesCourantes(), room=sid) # Rafraichissement des stats pour le prof
 
@@ -423,9 +423,7 @@ def connect_etu(data):
     num = data["numero_etudiant"]
     sequencesCourantes[sid].ajouterEtudiant(num)
     print(f"Etudiant {num} connecté à la séquence {sid}")
-    question = dict(sequencesCourantes[sid].getQuestionCourante())
-    for answer in question["question"]["answers"]:
-        answer["isCorrect"] = "Bien essayé :)"
+    question = sequencesCourantes[sid].getQuestionCourante().copy()
     emit('display-question', question) # Envoie la question à l'étudiant
     emit('connect-etu', {'count': len(sequencesCourantes[sid].getEtudiants())}, room=sid) # Rafraichissement du nombre d'étudiants connectés côté prof
 
@@ -440,13 +438,19 @@ def send_answer(data):
     emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client
     emit('refresh-answers', sequencesCourantes[sid].getNbReponsesCourantes(), room=sid) # Rafraichissement des stats pour le prof
 
-
 @socketio.on('stop-answers')
 def stop_answers(data):
     sid = data["sequence_id"]
     sequencesCourantes[sid].fermerReponses()
     emit('stop-answers', broadcast=True)
 
+@socketio.on('show-correction')
+def show_correction(data):
+    sid = data["sequence_id"]
+    correction = sequencesCourantes[sid].getCorrectionCourante()
+    print("Correction : ")
+    print(correction)
+    emit('show-correction', correction, broadcast=True)
 
 @socketio.on('next-question')
 def next_question(data):
