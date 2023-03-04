@@ -12,6 +12,10 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
    <script>
          var socket;
+         var num;
+         var id;
+
+         var type;
          window.onload = function() {
             socket = io.connect('https://' + location.host);
             num = "{{ etudiant.numero_etudiant }}"
@@ -19,13 +23,104 @@
             id = "{{ sequence.id_unique }}"
             console.log(id)
             socket.emit('connect-etu', {"numero_etudiant": num, "sequence_id": id});
-         
-            socket.on('display-question', function(data) {
-               console.log(data)
-               $('#display_question').html(data);
+
+            socket.on('display-question', function (data) {
+               console.log(data);
+               display(data);
             });
          };
+
+         function sendAnswer() {
+            if (type == 'ChoixMultiple') {
+               var answers = document.getElementsByClassName('answer-js');
+               var reponses = [];
+               for (var i = 0; i < answers.length; i++) {
+                  if (answers[i].hasAttribute('checked')) {
+                     reponses.push(answers[i].id.split('-')[1]);
+                  }
+               }
+               socket.emit('send-answer', {
+                  'numero_etudiant': num,
+                  'sequence_id': id,
+                  'answers': reponses
+               });
+            } else if (type == 'Alphanumerique') {
+               var reponse = document.getElementById('reponse').value;
+               socket.emit('send-answer', {
+                  'numero_etudiant': num,
+                  'sequence_id': id,
+                  'answers': [reponse]
+               });
+            }
+            console.log('send answer');
+            console.log(reponses);
+         }
+
+         function creerAlphanumeriqueInput(placeholder) {
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'form-control answer-js';
+            input.id = 'reponse';
+            input.name = 'reponse';
+            input.readOnly = true;
+            input.placeholder = placeholder;
+            answers.appendChild(input);
+            return input;
+         }
          
+         function creerChoixMultipleInputEtu(reponse, id) {
+            var div = document.createElement('div');
+            div.className = 'answer form-check form-switch answer-js flex-col-center-center';
+            div.style.padding = '10px';
+            div.id = 'answer-' + id;
+            div.style.cursor = 'pointer';
+
+            var answ = document.createElement('div');
+            answ.className = 'answer-html';
+            answ.innerHTML = reponse;
+            div.appendChild(answ);
+
+            MathJax.typeset([answ]);
+
+            div.addEventListener('click', function () {
+               this.toggleAttribute('checked');
+               if (this.hasAttribute('checked')) {
+                  this.children[0].classList.add('answer-checked');
+               } else {
+                  this.children[0].classList.remove('answer-checked');
+               }
+            });
+
+            return div;
+         }
+
+         function display(question) {
+
+            // Affichage du N° de la question courante
+            var questionNb = document.getElementById('question-nb');
+            questionNb.textContent = question['position'];
+            // Affichage de la question
+            var qst = document.getElementById('qst');
+            qst.innerHTML = question['question']['text'];
+            // Affichage des réponses
+            var answers = document.getElementById('answers');
+
+            answers.innerHTML = '';
+
+            type = question['question']['type'];
+            if (type == "ChoixMultiple") {
+               for (var i = 0; i < question['question']['answers'].length; i++) {
+                  var reponse = question['question']['answers'][i]['text'];
+                  
+                  var input = creerChoixMultipleInputEtu(reponse, i);
+                  answers.appendChild(input);
+               }
+            } else {
+               answers.appendChild(creerAlphanumeriqueInputEtu("Saisissez votre réponse"));
+            }
+
+            mermaid.init();
+         }
    </script>
 
 </head>
@@ -34,20 +129,45 @@
    <div>
       <div class="container-fluid bg-dark text-light py-3">
          <header class="text-center">
-            <h1 class="display-6">Live etudiant</h1>
+            <h1 class="display-6">Sequence Etu</h1>
          </header>
       </div>
    </div>
    <center>
-      <div id="display_question">
+      <div class="row-container">
 
+         <div class="card bg-dark col-4 question" id="card">
+            <div class="card-body flex-col-center-center">
+               <div style="align-items: center;  width: 100%">
+                  <h6 id="question-titre" class="card-subtitle mb-2 text-muted">Titre question ???</h6>
+               </div>
+               <div>
+                  <label for="qst" class="text-light">Question <strong id="question-nb" class="text-light">0</strong> :</label>
+               </div>
+
+               <div id="qst" name="text"
+                  style="background-color: #EBFCCB; border-radius: 15px; color:black; height: auto; min-height: 100px; width: 300px; display: flex; text-align: center; justify-content: center; flex-direction:column;">
+                  <div class="answer form-check form-switch">
+                     <input class="isCorrect form-check-input" type="checkbox" name="correct"
+                        id="flexSwitchCheckDefault"
+                        style="float :right; display:block;position: relative; top:0;right: 0;" checked>
+                  </div>
+               </div>
+            </div>
+
+            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
+            </div>
+            <button class="btn btn-primary" id="submit-btn" onclick="sendAnswer()">Valider</button>
       </div>
    </center>
+
    <script>
       mermaid.initialize({
          startOnLoad: true
       });
    </script>
+
+
 </body>
 
 </html>

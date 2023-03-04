@@ -9,6 +9,8 @@ import re
 ################################## Fonctions ##################################
 
 class SequenceDeQuestions:
+    nb_max_alphanumerique = 5
+
     def __init__(self, prof, questions):
         if type(questions) != list:
             self.questions = [].append(questions)
@@ -24,10 +26,14 @@ class SequenceDeQuestions:
         self.prof = prof
         self.etudiants = []
         self.etat = 0
-        self.reponsesOuvertes = False
+        self.reponsesOuvertes = True
         self.reponses = {}
         for question in questions:
             self.reponses[question["id"]] = {}
+            if question["type"] == "ChoixMultiple":
+                for reponse in question["answers"]:
+                    self.reponses[question["id"]][reponse["text"]] = []
+        
     
     def questionSuivante(self):
         if self.etat == len(self.questions) - 1:
@@ -43,14 +49,54 @@ class SequenceDeQuestions:
         self.reponsesOuvertes = True
 
     def getQuestionCourante(self):
-        return self.questions[self.etat]
+        return {"question" : self.questions[self.etat], "position" : self.etat + 1, "total" : len(self.questions)}
     
     def getAllQuestions(self):
         return self.questions
     
+    def ajouterReponse(self, num_etu, reponse):
+        if self.reponsesOuvertes:
+            if self.questions[self.etat]["type"] == "ChoixMultiple":
+                for i, reponse_possible in enumerate(self.questions[self.etat]["answers"]):
+                    if str(i) in reponse and num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]]:
+                        self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]].append(num_etu)
+                return True
+            elif self.questions[self.etat]["type"] == "Alphanumerique":
+                if reponse not in self.reponses[self.questions[self.etat]["id"]]:
+                    self.reponses[self.questions[self.etat]["id"]][reponse] = [].append(num_etu)
+                    return True
+                elif num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse]:
+                    self.reponses[self.questions[self.etat]["id"]][reponse].append(num_etu)
+                    return True
+        return False
+    
     def getReponsesCourantes(self):
         return self.reponses[self.etat]
     
+    def getNbReponsesCourantes(self):
+        reponses = dict(self.reponses[self.questions[self.etat]["id"]])
+        print("Reponses : ")
+        print(reponses)
+        retour = {}
+        retour["answers"] = {}
+        total = 0
+        if self.questions[self.etat]["type"] == "ChoixMultiple":
+            for i, reponse in enumerate(reponses):
+                retour["answers"][i] = len(reponses[reponse])
+                total += len(reponses[reponse])
+            retour["type"] = "ChoixMultiple"
+        
+        if self.questions[self.etat]["type"] == "Alphanumerique":
+            alphanumerique = {}
+            for reponse in reponses:
+                alphanumerique[reponse] = len(reponses[reponse])
+                total += len(reponses[reponse])
+            alphanumerique = dict(sorted(alphanumerique.items(), key=lambda item: item[1], reverse=True)[:self.nb_max_alphanumerique])
+            retour["type"] = "Alphanumerique"
+        
+        retour["total"] = total
+        return retour
+
     def getAllReponses(self):
         return self.reponses
 
@@ -59,12 +105,19 @@ class SequenceDeQuestions:
             self.reponses[self.questions[self.etat]["id"]][etudiant] = reponse
     
     def ajouterEtudiant(self, etudiant):
-        self.etudiants.append(etudiant)
+        if etudiant not in self.etudiants:
+            self.etudiants.append(etudiant)
+
+    def supprimerEtudiant(self, etudiant):
+        self.etudiants.remove(etudiant)
+
+    def getEtudiants(self):
+        return self.etudiants
 
     def archiverSequence(self):
         with open("archive.json", "r") as fp:
             data = json.load(fp)
-        data.append({self.id_unique: self.reponses})
+        data[self.id_unique] = self.reponses
         with open("archive.json", "w") as fp:
             json.dump(data, fp, indent=4)
 
