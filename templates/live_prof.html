@@ -185,6 +185,7 @@
          btn.name = 'correct';
          btn.id = 'flexSwitchCheckDefault';
          btn.checked = true;
+         btn.onchange = function () { toggleDisplayAnswers(this); };
          btndiv.appendChild(btn);
          answers.appendChild(btndiv);
 
@@ -199,6 +200,14 @@
          }
          mermaid.init();
          MathJax.typeset();
+      }
+
+      function toggleDisplayAnswers(checkbox) {
+         if (checkbox.checked) {
+            socket.emit('toggleDisplayAnswers', { "sequence_id": "{{ sequence.id_unique }}", "display": true });
+         } else {
+            socket.emit('toggleDisplayAnswers', { "sequence_id": "{{ sequence.id_unique }}", "display": false });
+         }
       }
    </script>
 </head>
@@ -236,8 +245,7 @@
                <div id="qst" name="text"
                   style="background-color: #EBFCCB; border-radius: 15px; color:black; height: auto; min-height: 100px; width: 300px; display: flex; text-align: center; justify-content: center; flex-direction:column;">
                   <div class="answer form-check form-switch">
-                     <input class="isCorrect form-check-input" type="checkbox" name="correct"
-                        id="flexSwitchCheckDefault"
+                     <input class="form-check-input" type="checkbox" id="toggledisplay-answers"
                         style="float :right; display:block;position: relative; top:0;right: 0;" checked>
                   </div>
                </div>

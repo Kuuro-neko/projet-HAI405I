@@ -308,8 +308,6 @@ def traiter_texte(texte):
     """
     # Markdown et code coloré
     html = markdown2.markdown(texte, extras=["newline", "fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
-    print("Texte après traitement :")
-    print(html)
     # Mermaid
     soup = BeautifulSoup(html, 'html.parser')
     for code_block in soup.find_all('code'):

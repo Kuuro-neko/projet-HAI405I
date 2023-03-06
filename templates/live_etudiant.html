@@ -48,7 +48,20 @@
                alert(data.message);
                ouvrirReponses();
             });
+
+            socket.on('toggleDisplayAnswers', function (data) {
+               toggleDisplayAnswers(data["display"]);
+            });
          };
+
+         // Afficher / cacher les réponses
+         function toggleDisplayAnswers(display) {
+            if (display) {
+               $('#answers').show();
+            } else {
+               $('#answers').hide();
+            }
+         }
 
          // Affichage de la correction
          function showCorrection(data) {
@@ -153,7 +166,7 @@
          // Crée une div cliquable pour les questions à choix multiple
          function creerChoixMultipleInputEtu(reponse, id) {
             var div = document.createElement('div');
-            div.className = 'answer form-check form-switch answer-js flex-col-center-center';
+            div.className = 'answer form-switch answer-js flex-col-center-center';
             div.style.padding = '10px';
             div.id = 'answer-' + id;
             div.style.cursor = 'pointer';

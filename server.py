@@ -463,6 +463,10 @@ def next_question(data):
     print(question)
     emit('display-question', question, broadcast=True)
 
+@socketio.on('toggleDisplayAnswers')
+def toggleDisplayAnswers(data):
+    emit('toggleDisplayAnswers', data, broadcast=True)
+
 """
 Socket pour envoyer les stats à chaque réponse d'un étudiant
     - 1 socket emit côté eleve
