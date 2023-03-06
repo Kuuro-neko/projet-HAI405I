@@ -127,9 +127,9 @@
             },
             {
                 "type": "Alphanumerique",
-                "text": "Salut mon gars",
+                "text": "Salut mon gars (r\u00e9ponse : 4544)",
                 "etiquettes": [],
-                "answers": "ppppp4544",
+                "answers": "4544",
                 "titre": "Test visualiser libre",
                 "id": "29001ce8"
             },

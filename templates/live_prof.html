@@ -77,7 +77,15 @@
       }
 
       function nextQuestion() {
-         socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
+         var next_button = document.getElementById('next_button');
+         switch (next_button.textContent) {
+            case 'Suivant':
+               socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
+               break;
+            case 'Terminer':
+               alert('Fin de la séquence');
+               break;
+         }
          let btnStopReponses = document.getElementById('btn-stop-reponses');
          let btnShowCorrection = document.getElementById('btn-show-correction');
          btnStopReponses.classList.remove('d-none');
@@ -255,7 +263,6 @@
       */
       var next_button = document.getElementById('next_button');
       next_button.addEventListener("click", function () {
-         console.log('click');
          nextQuestion();
       });
    

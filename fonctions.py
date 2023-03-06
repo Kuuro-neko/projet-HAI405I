@@ -55,22 +55,28 @@ class SequenceDeQuestions:
         return self.questions
     
     def ajouterReponse(self, num_etu, reponse):
-        if self.reponsesOuvertes:
-            if self.questions[self.etat]["type"] == "ChoixMultiple":
-                for i, reponse_possible in enumerate(self.questions[self.etat]["answers"]):
-                    if str(i) in reponse and num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]]:
-                        self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]].append(num_etu)
+        if not self.reponsesOuvertes:
+            raise Exception("Les réponses sont fermées.")
+        if reponse == []:
+            raise Exception("Aucune réponse n'a été donnée.")
+        if self.questions[self.etat]["type"] == "ChoixMultiple":
+            for i, reponse_possible in enumerate(self.questions[self.etat]["answers"]):
+                if str(i) in reponse and num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]]:
+                    self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]].append(num_etu)
+            return True
+        elif self.questions[self.etat]["type"] == "Alphanumerique":
+            reponse = reponse[0]
+            if "," in reponse:
+                reponse = reponse.replace(",", ".")
+            if reponse != "" and not re.match("^[0-9]+(\.[0-9]{0,2})?$", reponse):
+                raise Exception("La réponse n'est pas un nombre avec au plus deux chiffres après la virgule.")
+            if str(reponse) not in self.reponses[self.questions[self.etat]["id"]].keys():
+                self.reponses[self.questions[self.etat]["id"]][str(reponse)] = []
+                self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
                 return True
-            elif self.questions[self.etat]["type"] == "Alphanumerique":
-                reponse = reponse[0]
-                if str(reponse) not in self.reponses[self.questions[self.etat]["id"]].keys():
-                    self.reponses[self.questions[self.etat]["id"]][str(reponse)] = []
-                    self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
-                    return True
-                elif num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse]:
-                    self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
-                    return True
-                
+            elif num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse]:
+                self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
+                return True
         return False
     
     def getReponsesCourantes(self):

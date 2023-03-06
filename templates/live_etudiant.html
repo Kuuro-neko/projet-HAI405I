@@ -36,14 +36,17 @@
 
             // Désactivation du bouton d'envoi de réponse si le professeur a stoppé les réponses
             socket.on('stop-answers', function () {
-               let btnSendAnswer = document.getElementById('btn-send-answer');
-               btnSendAnswer.disabled = true;
                fermerReponses();
             });
 
             // Affichage de la correction
             socket.on('show-correction', function (data) {
                showCorrection(data);
+            });
+
+            socket.on('error', function (data) {
+               alert(data.message);
+               ouvrirReponses();
             });
          };
 
@@ -95,8 +98,6 @@
                   'sequence_id': id,
                   'answers': reponses
                });
-               let btnSendAnswer = document.getElementById('btn-send-answer');
-               btnSendAnswer.disabled = true;
                fermerReponses();
                console.log("Réponses envoyées :");
                console.log(reponses);
@@ -105,6 +106,8 @@
 
          function fermerReponses() {
             reponsesOuvertes = false;
+            let btnSendAnswer = document.getElementById('btn-send-answer');
+            btnSendAnswer.disabled = true;
             if (type == 'ChoixMultiple') {
                var answers = document.getElementsByClassName('answer-js');
                for (var i = 0; i < answers.length; i++) {
@@ -119,6 +122,18 @@
 
          function ouvrirReponses() {
             reponsesOuvertes = true;
+            let btnSendAnswer = document.getElementById('btn-send-answer');
+            btnSendAnswer.disabled = false;
+            if (type == 'ChoixMultiple') {
+               var answers = document.getElementsByClassName('answer-js');
+               for (var i = 0; i < answers.length; i++) {
+                  answers[i].children[0].classList.remove("answer-disabled-choixmultiple");
+               }
+            } else if (type == 'Alphanumerique') {
+               var reponse = document.getElementById('reponse');
+               reponse.readOnly = false;
+               reponse.classList.remove("answer-disabled-alphanumeric");
+            }
          }
 
          // Crée un input de type text pour les questions alphanumériques
@@ -187,8 +202,6 @@
             } else {
                answers.appendChild(creerAlphanumeriqueInputEtu("Saisissez votre réponse"));
             }
-            let btnSendAnswer = document.getElementById('btn-send-answer');
-            btnSendAnswer.disabled = false;
 
             // Visualisation des formules mathématiques et des graphes
             mermaid.init();

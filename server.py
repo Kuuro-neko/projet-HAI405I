@@ -434,9 +434,12 @@ def send_answer(data):
     sid = data["sequence_id"]
     num = data["numero_etudiant"]
     answer = data["answers"]
-    confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
-    emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client
-    emit('refresh-answers', sequencesCourantes[sid].getNbReponsesCourantes(), room=sid) # Rafraichissement des stats pour le prof
+    try:
+        confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
+        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client
+        emit('refresh-answers', sequencesCourantes[sid].getNbReponsesCourantes(), room=sid) # Rafraichissement des stats pour le prof
+    except Exception as e:
+        emit('error', {'message': str(e)})
 
 @socketio.on('stop-answers')
 def stop_answers(data):
