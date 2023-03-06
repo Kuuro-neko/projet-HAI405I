@@ -127,9 +127,9 @@
             },
             {
                 "type": "Alphanumerique",
-                "text": "Salut mon gars",
+                "text": "Salut mon gars (r\u00e9ponse : 4544)",
                 "etiquettes": [],
-                "answers": "ppppp4544",
+                "answers": "4544",
                 "titre": "Test visualiser libre",
                 "id": "29001ce8"
             },
@@ -395,6 +395,14 @@
                 ],
                 "titre": "Capitale P\u00e9rou",
                 "id": "f01a6362"
+            },
+            {
+                "type": "Alphanumerique",
+                "text": "2 + 2 = ?",
+                "etiquettes": [],
+                "answers": "4",
+                "titre": "Math avanc\u00e9s",
+                "id": "77fb19e0"
             }
         ]
     },
@@ -429,6 +437,60 @@
                 ],
                 "titre": "Est-ce que cette question fonctionne ?",
                 "id": "9e4b1aba"
+            }
+        ]
+    },
+    {
+        "user": "Mr Propre",
+        "password": "test",
+        "questions": [
+            {
+                "type": "ChoixMultiple",
+                "text": "De quelle couleur est le logo de Python ?",
+                "etiquettes": [
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "Bleu et jaune",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Bleu et rouge",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Jeune et vert",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Couleur logo python",
+                "id": "7ad7503b"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "Quelle est la bonne impl\u00e9mentation en Python du diagramme suivant ?\r\n```mermaid\r\nclassDiagram\r\n    class Chat\r\n    Chat : -String nom\r\n    Chat : -int age\r\n    Chat : +plusVieuxQue(Chat) boolean\r\n```",
+                "etiquettes": [
+                    "POO",
+                    "UML",
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "```python\nclass Chat:\n  def __init__(self, nom, age):\n    self.name = nom\n    self.age = age\n  def plusVieuxQue(autre):\n    return autre.age < self.age\n```",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "```python\nclass Chat(nom, age):\n  def __init__(self):\n    self.name = nom\n    self.age = age\n  def plusVieuxQue(autre):\n    return autre.age > self.age\n```",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "```java\npublic class Chat() {\n  private String nom;\n  private int age;\n  public Chat(String n, int a){\n    this.nom = n;\n    this.age = a;\n  }\n  public boolean plusVieuxQue(Chat autre) {\n  return autre.getAge() < this.age;\n}\npublic int getAge() {\n  return this.age;\n}\n```",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Classe chat Python",
+                "id": "f30c9239"
             }
         ]
     }

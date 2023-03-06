@@ -306,6 +306,8 @@ def creation_comptes_etudiants():
 @app.route('/sequence', methods=['GET', 'POST'])
 def sequence():
     try:
+        print(session['user_type'])
+        print(session['user'])
         if session['user_type'] == "prof":
             prof = session['user']
             questions = get_questions(prof)
@@ -321,7 +323,7 @@ def sequence():
             return render_template('diffusion.html', questions=questions)
         return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
     except KeyError:
-        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page 1")
 
 
 ################################################ ELEVES ################################################
@@ -410,7 +412,10 @@ def connect_prof(data):
     sid = data["sequence_id"]
     print(f"Prof connecté à la séquence {sid}")
     join_room(sid)
-
+    emit('refresh-connects', {'connects': len(sequencesCourantes[sid].getEtudiants())}, room=sid)
+    question = sequencesCourantes[sid].getQuestionCourante().copy()
+    emit('display-question', question, room=sid) # Envoie la question courante au prof
+    emit('refresh-answers', sequencesCourantes[sid].getNbReponsesCourantes(), room=sid) # Rafraichissement des stats pour le prof
 
 @socketio.on('connect-etu')
 def connect_etu(data):
@@ -418,13 +423,49 @@ def connect_etu(data):
     num = data["numero_etudiant"]
     sequencesCourantes[sid].ajouterEtudiant(num)
     print(f"Etudiant {num} connecté à la séquence {sid}")
-    question = sequencesCourantes[sid].getQuestionCourante()
-    question = traiter_question(question)
-    for answer in question["answers"]:
-        answer["isCorrect"] = "Bien essayé :)"
-    emit('display-question', {'numero_etudiant': num, 'question': question})
-    emit('connect-etu', {'numero_etudiant': num}, room=sid)
+    question = sequencesCourantes[sid].getQuestionCourante().copy()
+    emit('display-question', question) # Envoie la question à l'étudiant
+    emit('connect-etu', {'count': len(sequencesCourantes[sid].getEtudiants())}, room=sid) # Rafraichissement du nombre d'étudiants connectés côté prof
 
+@socketio.on('send-answer')
+def send_answer(data):
+    print(data)
+    print("Réponse reçue")
+    sid = data["sequence_id"]
+    num = data["numero_etudiant"]
+    answer = data["answers"]
+    try:
+        confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
+        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client
+        emit('refresh-answers', sequencesCourantes[sid].getNbReponsesCourantes(), room=sid) # Rafraichissement des stats pour le prof
+    except Exception as e:
+        emit('error', {'message': str(e)})
+
+@socketio.on('stop-answers')
+def stop_answers(data):
+    sid = data["sequence_id"]
+    sequencesCourantes[sid].fermerReponses()
+    emit('stop-answers', broadcast=True)
+
+@socketio.on('show-correction')
+def show_correction(data):
+    sid = data["sequence_id"]
+    correction = sequencesCourantes[sid].getCorrectionCourante()
+    print("Correction : ")
+    print(correction)
+    emit('show-correction', correction, broadcast=True)
+
+@socketio.on('next-question')
+def next_question(data):
+    sid = data["sequence_id"]
+    sequencesCourantes[sid].questionSuivante()
+    question = dict(sequencesCourantes[sid].getQuestionCourante())
+    print(question)
+    emit('display-question', question, broadcast=True)
+
+@socketio.on('toggleDisplayAnswers')
+def toggleDisplayAnswers(data):
+    emit('toggleDisplayAnswers', data, broadcast=True)
 
 """
 Socket pour envoyer les stats à chaque réponse d'un étudiant
@@ -443,8 +484,5 @@ Et tout le côté client (voir diapo)
 """
 
 if __name__ == '__main__':
-    # Fonctions pour mettre à jour les bases de données qui n'ont pas suivi les màj du code
-    generer_id_question()
-    update_type_question()
     # Lancement du serveur
     socketio.run(app, host=host, port=port, debug=True)

@@ -136,7 +136,6 @@ function imprimer_page(){
 
 function toGreen(checkbox, x) {
     let box = document.getElementById('check'+x);
-    console.log('check'+x)
     if (checkbox.checked) {
       box.style = "margin: 30px; box-shadow: 5px 5px 7px green ; padding: 5px; display:flex ; flex-direction: row; justify-content: center;";
     } else {

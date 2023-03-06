@@ -9,14 +9,207 @@
       integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
       integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
-      <script>
-        var socket;
-        window.onload = function() {
-           socket = io.connect('https://' + location.host);
-           socket.emit('connect-prof', {"sequence_id": id});
-        };
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+      crossorigin="anonymous"></script>
+   <script>
+      var socket;
+      window.onload = function () {
+         socket = io.connect('https://' + location.host);
+         socket.emit('connect-prof', { "sequence_id": "{{ sequence.id_unique }}" });
 
-      </script>
+         socket.on('connect-etu', function (data) {
+            $('#etu-count').text(data['count']);
+         });
+
+         socket.on('display-question', function (data) {
+            console.log(data);
+            display(data);
+         });
+
+         socket.on('refresh-answers', function (data) {
+            console.log(data);
+            refreshAnswers(data);
+         });
+      };
+
+      function refreshAnswers(data) {
+         $('#rep-count').text(data['rep_count']);
+         if (data['type'] == 'Alphanumerique') {
+            answers.innerHTML = '';
+            var btndiv = document.createElement('div');
+            btndiv.className = 'answer form-check form-switch';
+            var btn = document.createElement('input');
+            btn.className = 'isCorrect form-check-input answers-btn';
+            btn.type = 'checkbox';
+            btn.name = 'correct';
+            btn.id = 'flexSwitchCheckDefault';
+            btn.checked = true;
+            btndiv.appendChild(btn);
+            answers.appendChild(btndiv);
+
+            for (let reponse in data["answers"]) {
+               var nbReponses = data["answers"][reponse];
+               var input = creerAlphanumeriqueInput(reponse, nbReponses, data["total"]);
+               answers.appendChild(input);
+            }
+
+         } else if (data['type'] == 'ChoixMultiple') {
+            for (var i = 0; i < Object.keys(data["answers"]).length; i++) {
+               var nbReponses = data["answers"][i];
+               if (data["total"] == 0)
+                  var pourcentage = 0;
+               else
+                  var pourcentage = nbReponses / data["total"] * 100;
+               console.log("reponse " + i + ", % : " + pourcentage);
+               var progressBar = document.getElementById("progress-bar" + i);
+               progressBar.style.width = pourcentage + '%';
+               progressBar.setAttribute('aria-valuenow', pourcentage);
+            }
+         }
+      }
+
+      function stopReponses() {
+         socket.emit('stop-answers', { "sequence_id": "{{ sequence.id_unique }}" });
+         let btnStopReponses = document.getElementById('btn-stop-reponses');
+         let btnShowCorrection = document.getElementById('btn-show-correction');
+         btnStopReponses.classList.add('d-none');
+         btnShowCorrection.classList.remove('d-none');
+      }
+
+      function nextQuestion() {
+         var next_button = document.getElementById('next_button');
+         switch (next_button.textContent) {
+            case 'Suivant':
+               socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
+               break;
+            case 'Terminer':
+               alert('Fin de la séquence');
+               break;
+         }
+         let btnStopReponses = document.getElementById('btn-stop-reponses');
+         let btnShowCorrection = document.getElementById('btn-show-correction');
+         btnStopReponses.classList.remove('d-none');
+         btnShowCorrection.classList.add('d-none');
+      }
+
+      function showCorrection() {
+         socket.emit('show-correction', { "sequence_id": "{{ sequence.id_unique }}" });
+         let btnStopReponses = document.getElementById('btn-stop-reponses');
+         let btnShowCorrection = document.getElementById('btn-show-correction');
+         btnStopReponses.classList.add('d-none');
+         btnShowCorrection.classList.add('d-none');
+      }
+
+      function creerProgressBar(pourcentage, id) {
+         var progress = document.createElement('div');
+         progress.className = 'progress';
+         progress.style.width = '80%';
+         progress.style.margin = '12px';
+         var progressBar = document.createElement('div');
+         progressBar.className = 'progress-bar';
+         progressBar.role = 'progressbar';
+         progressBar.id = "progress-bar" + id;
+         progressBar.style.width = pourcentage + '%';
+         progressBar.setAttribute('aria-valuenow', pourcentage);
+         progressBar.setAttribute('aria-valuemin', '0');
+         progressBar.setAttribute('aria-valuemax', '100');
+         progress.appendChild(progressBar);
+         return progress;
+      }
+
+      function creerAlphanumeriqueInput(reponse, nb, total) {
+         var pourcentage = (nb / total) * 100;
+
+         var wrapper = document.createElement('div');
+         wrapper.className = 'answer form-check form-switch answer-js flex-col-center-center';
+         
+
+         var input = document.createElement('input');
+         input.type = 'text';
+         input.className = 'form-control answer-js';
+         input.id = 'reponse';
+         input.name = 'reponse';
+         input.readOnly = true;
+         input.value = reponse;
+         wrapper.appendChild(input);
+
+         var progress = creerProgressBar(pourcentage, "");
+         wrapper.appendChild(progress);
+         return wrapper;
+      }
+
+      function creerChoixMultipleInput(reponse, id, nb, total) {
+         var pourcentage = (nb / total) * 100;
+
+         var div = document.createElement('div');
+         div.className = 'answer form-check form-switch answer-js flex-col-center-center';
+         div.style.padding = '10px';
+
+         var answ = document.createElement('div');
+         answ.className = 'answer-html';
+         answ.innerHTML = reponse;
+         div.appendChild(answ);
+
+         var progress = creerProgressBar(pourcentage, id);
+         div.appendChild(progress);
+         return div;
+      }
+
+      function display(question) {
+         // Afficher Suivant ou Terminet sur le bouton
+         var next_button = document.getElementById('next_button');
+         if (question['position'] < question['total']) {
+            next_button.textContent = 'Suivant';
+         } else {
+            next_button.textContent = 'Terminer';
+         }
+         // Affichage du titre de la question 
+         var questionTitle = document.getElementById('question-titre');
+         questionTitle.textContent = question['question']['titre'];
+         // Affichage du N° de la question courante
+         var questionNb = document.getElementById('question-nb');
+         questionNb.textContent = question['position'];
+         // Affichage de la question
+         var qst = document.getElementById('qst');
+         qst.innerHTML = question['question']['text'];
+         // Affichage des réponses
+         var answers = document.getElementById('answers');
+
+         answers.innerHTML = '';
+         var btndiv = document.createElement('div');
+         btndiv.className = 'answer form-check form-switch';
+         var btn = document.createElement('input');
+         btn.className = 'isCorrect form-check-input answers-btn';
+         btn.type = 'checkbox';
+         btn.name = 'correct';
+         btn.id = 'flexSwitchCheckDefault';
+         btn.checked = true;
+         btn.onchange = function () { toggleDisplayAnswers(this); };
+         btndiv.appendChild(btn);
+         answers.appendChild(btndiv);
+
+         var type = question['question']['type'];
+         if (type == "ChoixMultiple") {
+            for (var i = 0; i < question['question']['answers'].length; i++) {
+               var reponse = question['question']['answers'][i]['text'];
+               
+               var input = creerChoixMultipleInput(reponse, i, 0, 100);
+               answers.appendChild(input);
+            }
+         }
+         mermaid.init();
+         MathJax.typeset();
+      }
+
+      function toggleDisplayAnswers(checkbox) {
+         if (checkbox.checked) {
+            socket.emit('toggleDisplayAnswers', { "sequence_id": "{{ sequence.id_unique }}", "display": true });
+         } else {
+            socket.emit('toggleDisplayAnswers', { "sequence_id": "{{ sequence.id_unique }}", "display": false });
+         }
+      }
+   </script>
 </head>
 
 <body>
@@ -29,90 +222,57 @@
             {% else %}
             <h2 class="display-6">Code de la question : {{ questions[0].id }}</h2>
             {% endif %}
+            <h3>Nombre d'étudiants connectés : <strong id="etu-count">0</strong></h3>
+            <h3>Nombre de réponses : <strong id="rep-count">0</strong></h3>
          </header>
       </div>
    </div>
    <center>
       <div class="row-container">
-         {%for question in questions %}
-         {%if questions.index(question)==0%}
-         <div class="card bg-dark col-4" id="card-{{questions.index(question)}}"
-            style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px; display : block">
-            {%else%}
-            <div class="card bg-dark col-4" id="card-{{questions.index(question)+1}}" data-id="{{questions.index(question)+1}}"
-               style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;display : None">
-               {%endif%}
-            <div class="card-body" style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
-               <div style= " align-items: center;  width: 100%">
-                  <h6 class="card-subtitle mb-2 text-muted" style="">{{ question.titre }}</h6>
-                  {%if length>1%}
-                  <button type="button" id="nextBtn" class="btn btn-outline-success" style="float :right; display:block;position: absolute; top:0;right: 0;" ><i class="bi bi-arrow-right-circle"></i> Suivant </button> 
-                  {%endif%}
+
+         <div class="card bg-dark col-4 question" id="card">
+            <div class="card-body flex-col-center-center">
+               <div style="align-items: center;  width: 100%">
+                  <h6 id="question-titre" class="card-subtitle mb-2 text-muted">Titre question ???</h6>
+                  <button type="button" id="next_button" class="btn btn-outline-success"
+                     style="float :right; display:block;position: absolute; top:0;right: 0;"><i
+                        class="bi bi-arrow-right-circle"></i> Salut (test) </button>
                </div>
                <div>
-                  <label for="qst"><strong class="text-light">Question {{questions.index(question)+1}} :</strong></label>
+                  <label for="qst" class="text-light">Question <strong id="question-nb" class="text-light">0</strong> :</label>
                </div>
+
                <div id="qst" name="text"
                   style="background-color: #EBFCCB; border-radius: 15px; color:black; height: auto; min-height: 100px; width: 300px; display: flex; text-align: center; justify-content: center; flex-direction:column;">
                   <div class="answer form-check form-switch">
-                  <input class="isCorrect form-check-input" type="checkbox" name="correct" id="flexSwitchCheckDefault" style="float :right; display:block;position: relative; top:0;right: 0;" checked>
-               </div>
-                  {{ question.text | safe }}
-               </div>
-            </div>
-            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2"
-               style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
-               <div class="answer form-check form-switch">
-                  <input class="isCorrect form-check-input" type="checkbox" name="correct" id="flexSwitchCheckDefault" style="float :right; display:block;position: relative; top:0;right: 0; margin-bottom:10px" checked>
-               </div>
-                  {% if question.type == "ChoixMultiple" %}
-                  {% for answer in question.answers %}
-                  <div class=" answer form-check form-switch"
-                     style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
-                     <div
-                        style="border-radius: 30px; background-color:#CBFCF0; overflow: auto; display: inline-block; min-width: 300px; color: black; justify-content: center;">
-                        <p> {{ answer.text | safe }} </p>
-                     </div>
-                     <div class="progress" style="width: 80%; margin: 12px;">
-                        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
+                     <input class="form-check-input" type="checkbox" id="toggledisplay-answers"
+                        style="float :right; display:block;position: relative; top:0;right: 0;" checked>
                   </div>
-                  {% endfor%}
-               {% elif question.type == "Alphanumerique" %}
-                  <input type="text" class="form-control" id="reponse" name="reponse" readonly placeholder="{{question.answers}}">
-                  <div class="progress" style="width: 80%; margin: 12px;">
-                     <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                   </div>
-               {% endif %}
-   
+               </div>
             </div>
-         </div>
-         {%endfor%}
-      </div>   
+
+            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
+            </div>
+            <button id="btn-stop-reponses" onclick="stopReponses()">Stopper les réponses</button>
+            <button id="btn-show-correction" class="d-none" onclick="showCorrection()">Afficher la correction</button>
+      </div>
    </center>
 
    <script>
       mermaid.initialize({
          startOnLoad: true
       });
-
+      /*
       var currentContent = 0;
-      var nextBtn = document.getElementById("nextBtn");
+      var next_button = document.getElementById("next_button");
       var prevBtn = document.getElementById("prevBtn");
       var contentList = document.getElementsByClassName("card");
-
-      nextBtn.addEventListener("click", function() {
-        // Hide current content
-        console.log(contentList);
-        contentList[currentContent].style.display="None";
-        // Show next content
-        currentContent++;
-        if (currentContent == contentList.length) {
-            currentContent = 0;
-         }
-        contentList[currentContent].style.display = "block";
+      */
+      var next_button = document.getElementById('next_button');
+      next_button.addEventListener("click", function () {
+         nextQuestion();
       });
-
+   
    </script>
 
 

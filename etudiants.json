@@ -1,5 +1,23 @@
 [
     {
+        "nom": "a",
+        "prenom": "a",
+        "numero_etudiant": "11111111",
+        "password": "a"
+    },
+    {
+        "nom": "b",
+        "prenom": "b",
+        "numero_etudiant": "22222222",
+        "password": "b"
+    },
+    {
+        "nom": "c",
+        "prenom": "c",
+        "numero_etudiant": "33333333",
+        "password": "c"
+    },
+    {
         "nom": "test",
         "prenom": "test",
         "numero_etudiant": "00000000",
