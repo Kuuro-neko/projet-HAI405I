@@ -34,6 +34,7 @@
       };
 
       function refreshAnswers(data) {
+         $('#rep-count').text(data['rep_count']);
          if (data['type'] == 'Alphanumerique') {
             answers.innerHTML = '';
             var btndiv = document.createElement('div');
@@ -152,9 +153,6 @@
 
          var progress = creerProgressBar(pourcentage, id);
          div.appendChild(progress);
-
-         MathJax.typeset([answ]);
-
          return div;
       }
 
@@ -166,6 +164,9 @@
          } else {
             next_button.textContent = 'Terminer';
          }
+         // Affichage du titre de la question 
+         var questionTitle = document.getElementById('question-titre');
+         questionTitle.textContent = question['question']['titre'];
          // Affichage du N° de la question courante
          var questionNb = document.getElementById('question-nb');
          questionNb.textContent = question['position'];
@@ -195,12 +196,9 @@
                var input = creerChoixMultipleInput(reponse, i, 0, 100);
                answers.appendChild(input);
             }
-         } else {
-            // AFFICHAGE INITIAL MARCHE PAS JE SAIS PAS POURQUOI
-            var wrapper = creerAlphanumeriqueInput("Saisissez vos réponses", 0, 100);
-            answers.appendChild(wrapper);
          }
          mermaid.init();
+         MathJax.typeset();
       }
    </script>
 </head>
@@ -215,7 +213,8 @@
             {% else %}
             <h2 class="display-6">Code de la question : {{ questions[0].id }}</h2>
             {% endif %}
-            <h3>Nombre d'étudiants connectés : <strong id="etu-count">0</strong></h2>
+            <h3>Nombre d'étudiants connectés : <strong id="etu-count">0</strong></h3>
+            <h3>Nombre de réponses : <strong id="rep-count">0</strong></h3>
          </header>
       </div>
    </div>

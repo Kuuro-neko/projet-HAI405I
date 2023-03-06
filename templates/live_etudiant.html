@@ -73,11 +73,13 @@
                   } else {
                      reponse.classList.add("answer-wrong");
                   }
+                  
                   break;
             }
             fermerReponses();
-
          }
+
+         // Afficher la réponse en 
 
          // Envoi de la réponse à la question courante (désactive le bouton d'envoi après envoi)
          function sendAnswer() {
@@ -205,8 +207,6 @@
 
             // Visualisation des formules mathématiques et des graphes
             mermaid.init();
-
-            // TO DO FAIRE MARCHER MATHJAX :(
             MathJax.typeset();
          }
    </script>
@@ -226,9 +226,6 @@
 
          <div class="card bg-dark col-4 question" id="card">
             <div class="card-body flex-col-center-center">
-               <div style="align-items: center;  width: 100%">
-                  <h6 id="question-titre" class="card-subtitle mb-2 text-muted">Titre question ???</h6>
-               </div>
                <div>
                   <label for="qst" class="text-light">Question <strong id="question-nb" class="text-light">0</strong> :</label>
                </div>

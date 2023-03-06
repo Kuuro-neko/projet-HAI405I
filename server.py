@@ -480,8 +480,5 @@ Et tout le côté client (voir diapo)
 """
 
 if __name__ == '__main__':
-    # Fonctions pour mettre à jour les bases de données qui n'ont pas suivi les màj du code
-    generer_id_question()
-    update_type_question()
     # Lancement du serveur
     socketio.run(app, host=host, port=port, debug=True)

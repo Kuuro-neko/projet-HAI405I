@@ -25,6 +25,7 @@ class SequenceDeQuestions:
             self.id_unique = create_unique_id(get_prof_id(prof), id_string)
         self.prof = prof
         self.etudiants = []
+        self.etudiants_qui_ont_repondu = []
         self.etat = 0
         self.reponsesOuvertes = True
         self.reponses = {}
@@ -39,6 +40,7 @@ class SequenceDeQuestions:
         if self.etat == len(self.questions) - 1:
             self.etat = -2
             self.archiverSequence()
+        self.etudiants_qui_ont_repondu = []
         self.etat += 1
         self.ouvrirReponses()
 
@@ -59,10 +61,13 @@ class SequenceDeQuestions:
             raise Exception("Les réponses sont fermées.")
         if reponse == []:
             raise Exception("Aucune réponse n'a été donnée.")
+        if num_etu in self.etudiants_qui_ont_repondu:
+            raise Exception("Vous avez déjà répondu.")
         if self.questions[self.etat]["type"] == "ChoixMultiple":
             for i, reponse_possible in enumerate(self.questions[self.etat]["answers"]):
                 if str(i) in reponse and num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]]:
                     self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]].append(num_etu)
+            self.etudiants_qui_ont_repondu.append(num_etu)
             return True
         elif self.questions[self.etat]["type"] == "Alphanumerique":
             reponse = reponse[0]
@@ -73,9 +78,11 @@ class SequenceDeQuestions:
             if str(reponse) not in self.reponses[self.questions[self.etat]["id"]].keys():
                 self.reponses[self.questions[self.etat]["id"]][str(reponse)] = []
                 self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
+                self.etudiants_qui_ont_repondu.append(num_etu)
                 return True
             elif num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse]:
                 self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
+                self.etudiants_qui_ont_repondu.append(num_etu)
                 return True
         return False
     
@@ -88,6 +95,7 @@ class SequenceDeQuestions:
         retour["answers"] = {}
         total = 0
         if self.questions[self.etat]["type"] == "ChoixMultiple":
+            
             for i, reponse in enumerate(reponses):
                 retour["answers"][i] = len(reponses[reponse])
                 total += len(reponses[reponse])
@@ -103,6 +111,7 @@ class SequenceDeQuestions:
             retour["answers"] = alphanumerique
         
         retour["total"] = total
+        retour["rep_count"] = len(self.etudiants_qui_ont_repondu)
         print(retour)
         return retour
     
@@ -298,8 +307,9 @@ def traiter_texte(texte):
     Out : html (str)
     """
     # Markdown et code coloré
-    html = markdown2.markdown(texte, extras=[
-                              "fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
+    html = markdown2.markdown(texte, extras=["newline", "fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
+    print("Texte après traitement :")
+    print(html)
     # Mermaid
     soup = BeautifulSoup(html, 'html.parser')
     for code_block in soup.find_all('code'):
