@@ -115,7 +115,7 @@
                 "answers": [
                     {
                         "text": "oui",
-                        "isCorrect": "false"
+                        "isCorrect": "true"
                     },
                     {
                         "text": "non",

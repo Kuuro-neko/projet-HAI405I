@@ -67,7 +67,6 @@
          function showCorrection(data) {
             console.log("Correction reçue :");
             console.log(data);
-            var nbRep = Object.keys(data).length;
             switch(type) {
                case "ChoixMultiple":
                   var answers = document.getElementsByClassName('answer-js');
@@ -81,10 +80,12 @@
                   break;
                case "Alphanumerique":
                   var reponse = document.getElementById('reponse');
-                  if (data["answers"] == reponses[0]) {
-                     reponse.classList.add("answer-correct");
+                  console.log("reponse etu : " + reponse.value);
+                  console.log("reponse prof : " + data);
+                  if (reponse.value == data) {
+                     reponse.classList.add("alphanumerique-correct");
                   } else {
-                     reponse.classList.add("answer-wrong");
+                     reponse.classList.add("alphanumerique-wrong");
                   }
                   
                   break;

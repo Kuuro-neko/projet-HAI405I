@@ -37,12 +37,17 @@ class SequenceDeQuestions:
         
     
     def questionSuivante(self):
+        print(f"Question suivante :\n Actuelle : {self.etat} / {len(self.questions)}, Suivante : {self.etat + 1} / {len(self.questions)}")
         if self.etat == len(self.questions) - 1:
             self.etat = -2
             self.archiverSequence()
+            print("Sequence archivée")
+            return False
         self.etudiants_qui_ont_repondu = []
         self.etat += 1
         self.ouvrirReponses()
+        print(f"Passé à la question {self.etat}")
+        return True
 
     def fermerReponses(self):
         self.reponsesOuvertes = False
@@ -332,6 +337,11 @@ def traiter_question(question):
             answer["text"] = traiter_texte(answer["text"])
     return question
 
+def get_all_num_etu(json_data):
+      num_etu = []
+      for etu in json_data:
+         num_etu.append(etu['numero_etudiant'])
+      return num_etu
 
 def creer_comptes_etudiant(filename):
    with open((UPLOAD_FOLDER + "/" + filename), 'r') as f:
@@ -343,12 +353,6 @@ def creer_comptes_etudiant(filename):
          data = json.load(f)
    except:
       data = []
-      
-   def get_all_num_etu(json_data):
-      num_etu = []
-      for etu in json_data:
-         num_etu.append(etu['numero_etudiant'])
-      return num_etu
 
    num_existants = get_all_num_etu(data)
 

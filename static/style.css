@@ -214,3 +214,13 @@ code {
 .answer-wrong {
     background-color: #c72121;
 }
+
+.alphanumerique-correct {
+    background-color: #67e691 !important;
+    color: black !important;
+}
+
+.alphanumerique-wrong {
+    background-color: #e66767 !important;
+    color: black !important;
+}

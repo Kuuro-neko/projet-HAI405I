@@ -14,6 +14,7 @@
       crossorigin="anonymous"></script>
    <script>
       var socket;
+      var type;
       window.onload = function () {
          socket = io.connect('https://' + location.host);
          socket.emit('connect-prof', { "sequence_id": "{{ sequence.id_unique }}" });
@@ -30,6 +31,10 @@
          socket.on('refresh-answers', function (data) {
             console.log(data);
             refreshAnswers(data);
+         });
+
+         socket.on('show-correction', function (data) {
+            displayCorrectionHere(data);
          });
       };
 
@@ -93,6 +98,40 @@
          btnShowCorrection.classList.add('d-none');
       }
 
+      function displayCorrectionHere(data) { // TO CONTINUE
+         switch(type) {
+               case "ChoixMultiple":
+                  console.log(data);
+                  var answers = document.getElementsByClassName('answer-js');
+                  for (var i = 0; i < answers.length; i++) {
+                     if (data[answers[i].id.split('-')[1]]["isCorrect"] == "true") {
+                        answers[i].children[0].classList.add("answer-correct");
+                     } else {
+                        answers[i].children[0].classList.add("answer-wrong");
+                     }
+                  }
+                  break;
+               case "Alphanumerique":
+                  var answer_container = document.getElementById('answers');
+                  var reponses = document.getElementsByClassName('reponse-alphanum');
+                  var trouve = false;
+                  for (var i = 0; i < reponses.length; i++) {
+                     if (reponses[i].value == data) {
+                        trouve = true;
+                        reponses[i].classList.add("alphanumerique-correct");
+                     } else {
+                        reponses[i].classList.add("alphanumerique-wrong");
+                     }
+                  }
+                  if (!trouve) {
+                     var input = creerAlphanumeriqueInput(data, 0, 0);
+                     input.childNodes[0].classList.add("alphanumerique-correct");
+                     answer_container.appendChild(input);
+                  }
+                  break;
+            }
+      }
+
       function showCorrection() {
          socket.emit('show-correction', { "sequence_id": "{{ sequence.id_unique }}" });
          let btnStopReponses = document.getElementById('btn-stop-reponses');
@@ -129,6 +168,7 @@
          input.type = 'text';
          input.className = 'form-control answer-js';
          input.id = 'reponse';
+         input.classList.add('reponse-alphanum');
          input.name = 'reponse';
          input.readOnly = true;
          input.value = reponse;
@@ -189,7 +229,7 @@
          btndiv.appendChild(btn);
          answers.appendChild(btndiv);
 
-         var type = question['question']['type'];
+         type = question['question']['type'];
          if (type == "ChoixMultiple") {
             for (var i = 0; i < question['question']['answers'].length; i++) {
                var reponse = question['question']['answers'][i]['text'];
