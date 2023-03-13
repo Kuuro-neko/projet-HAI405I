@@ -9,7 +9,7 @@ import re
 ################################## Fonctions ##################################
 
 class SequenceDeQuestions:
-    nb_max_alphanumerique = 5
+    nb_max_alphanumerique = 2
 
     def __init__(self, prof, questions):
         if type(questions) != list:
@@ -37,15 +37,18 @@ class SequenceDeQuestions:
         
     
     def questionSuivante(self):
+        print(f"Question suivante :\n Actuelle : {self.etat} / {len(self.questions)}, Suivante : {self.etat + 1} / {len(self.questions)}")
         if self.etat == len(self.questions) - 1:
             self.etat = -2
             self.archiverSequence()
-            return True
+            print("Sequence archivée")
+            return False
         self.etudiants_qui_ont_repondu = []
         self.etat += 1
         self.ouvrirReponses()
-        return False
-        
+        print(f"Passé à la question {self.etat}")
+        return True
+
     def fermerReponses(self):
         self.reponsesOuvertes = False
     
@@ -105,10 +108,13 @@ class SequenceDeQuestions:
         
         if self.questions[self.etat]["type"] == "Alphanumerique":
             alphanumerique = {}
+            nb_rep_diff = len(reponses)
             for reponse in reponses:
                 alphanumerique[reponse] = len(reponses[reponse])
                 total += len(reponses[reponse])
-            alphanumerique = dict(sorted(alphanumerique.items(), key=lambda item: item[1], reverse=True)[:self.nb_max_alphanumerique])
+            if nb_rep_diff > self.nb_max_alphanumerique:
+                alphanumerique = dict(sorted(alphanumerique.items(), key=lambda item: item[1], reverse=True)[:self.nb_max_alphanumerique])
+                alphanumerique["Autres"] = total - sum(alphanumerique.values())
             retour["type"] = "Alphanumerique"
             retour["answers"] = alphanumerique
         
@@ -334,6 +340,11 @@ def traiter_question(question):
             answer["text"] = traiter_texte(answer["text"])
     return question
 
+def get_all_num_etu(json_data):
+      num_etu = []
+      for etu in json_data:
+         num_etu.append(etu['numero_etudiant'])
+      return num_etu
 
 def creer_comptes_etudiant(filename):
    with open((UPLOAD_FOLDER + "/" + filename), 'r') as f:
@@ -345,12 +356,6 @@ def creer_comptes_etudiant(filename):
          data = json.load(f)
    except:
       data = []
-      
-   def get_all_num_etu(json_data):
-      num_etu = []
-      for etu in json_data:
-         num_etu.append(etu['numero_etudiant'])
-      return num_etu
 
    num_existants = get_all_num_etu(data)
 

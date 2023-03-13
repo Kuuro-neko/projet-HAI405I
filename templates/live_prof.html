@@ -14,6 +14,7 @@
       crossorigin="anonymous"></script>
    <script>
       var socket;
+      var type;
       window.onload = function () {
          socket = io.connect('http://' + location.host);
          socket.emit('connect-prof', { "sequence_id": "{{ sequence.id_unique }}" });
@@ -30,6 +31,14 @@
          socket.on('refresh-answers', function (data) {
             console.log(data);
             refreshAnswers(data);
+         });
+
+         socket.on('show-correction', function (data) {
+            displayCorrectionHere(data);
+         });
+
+         socket.on('end-sequence', function (data) {
+            alert("Sequence terminée");
          });
       };
 
@@ -48,8 +57,10 @@
             btndiv.appendChild(btn);
             answers.appendChild(btndiv);
 
-            for (let reponse in data["answers"]) {
-               var nbReponses = data["answers"][reponse];
+            reponsesDict = data["answers"];
+            
+            for (let reponse in reponsesDict) {
+               var nbReponses = reponsesDict[reponse];
                var input = creerAlphanumeriqueInput(reponse, nbReponses, data["total"]);
                answers.appendChild(input);
             }
@@ -79,19 +90,48 @@
 
       function nextQuestion() {
          var next_button = document.getElementById('next_button');
-         switch (next_button.textContent) {
-            case 'Suivant':
-               socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
-               break;
-            case 'Terminer':
-            socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
-            alert('Fin de la séquence');
-            break;
-         }
+         socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
          let btnStopReponses = document.getElementById('btn-stop-reponses');
          let btnShowCorrection = document.getElementById('btn-show-correction');
          btnStopReponses.classList.remove('d-none');
          btnShowCorrection.classList.add('d-none');
+      }
+
+      function displayCorrectionHere(data) { // TO CONTINUE
+         switch(type) {
+               case "ChoixMultiple":
+                  console.log("data : ");
+                  console.log(data);
+                  var answers = document.getElementsByClassName('answer-html');
+                  console.log("answers : ");
+                  console.log(answers);
+                  for (var i = 0; i < answers.length; i++) {
+                     if (data[answers[i].id.split('-')[1]]["isCorrect"] == "true") {
+                        answers[i].classList.add("answer-correct");
+                     } else {
+                        answers[i].classList.add("answer-wrong");
+                     }
+                  }
+                  break;
+               case "Alphanumerique":
+                  var answer_container = document.getElementById('answers');
+                  var reponses = document.getElementsByClassName('reponse-alphanum');
+                  var trouve = false;
+                  for (var i = 0; i < reponses.length; i++) {
+                     if (reponses[i].value == data) {
+                        trouve = true;
+                        reponses[i].classList.add("alphanumerique-correct");
+                     } else {
+                        reponses[i].classList.add("alphanumerique-wrong");
+                     }
+                  }
+                  if (!trouve) {
+                     var input = creerAlphanumeriqueInput(data, 0, 0);
+                     input.childNodes[0].classList.add("alphanumerique-correct");
+                     answer_container.appendChild(input);
+                  }
+                  break;
+            }
       }
 
       function showCorrection() {
@@ -130,6 +170,7 @@
          input.type = 'text';
          input.className = 'form-control answer-js';
          input.id = 'reponse';
+         input.classList.add('reponse-alphanum');
          input.name = 'reponse';
          input.readOnly = true;
          input.value = reponse;
@@ -149,6 +190,7 @@
 
          var answ = document.createElement('div');
          answ.className = 'answer-html';
+         answ.id = 'answer-' + id;
          answ.innerHTML = reponse;
          div.appendChild(answ);
 
@@ -190,7 +232,7 @@
          btndiv.appendChild(btn);
          answers.appendChild(btndiv);
 
-         var type = question['question']['type'];
+         type = question['question']['type'];
          if (type == "ChoixMultiple") {
             for (var i = 0; i < question['question']['answers'].length; i++) {
                var reponse = question['question']['answers'][i]['text'];
