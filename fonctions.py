@@ -9,7 +9,7 @@ import re
 ################################## Fonctions ##################################
 
 class SequenceDeQuestions:
-    nb_max_alphanumerique = 5
+    nb_max_alphanumerique = 2
 
     def __init__(self, prof, questions):
         if type(questions) != list:
@@ -108,10 +108,13 @@ class SequenceDeQuestions:
         
         if self.questions[self.etat]["type"] == "Alphanumerique":
             alphanumerique = {}
+            nb_rep_diff = len(reponses)
             for reponse in reponses:
                 alphanumerique[reponse] = len(reponses[reponse])
                 total += len(reponses[reponse])
-            alphanumerique = dict(sorted(alphanumerique.items(), key=lambda item: item[1], reverse=True)[:self.nb_max_alphanumerique])
+            if nb_rep_diff > self.nb_max_alphanumerique:
+                alphanumerique = dict(sorted(alphanumerique.items(), key=lambda item: item[1], reverse=True)[:self.nb_max_alphanumerique])
+                alphanumerique["Autres"] = total - sum(alphanumerique.values())
             retour["type"] = "Alphanumerique"
             retour["answers"] = alphanumerique
         

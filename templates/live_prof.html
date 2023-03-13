@@ -57,8 +57,10 @@
             btndiv.appendChild(btn);
             answers.appendChild(btndiv);
 
-            for (let reponse in data["answers"]) {
-               var nbReponses = data["answers"][reponse];
+            reponsesDict = data["answers"];
+            
+            for (let reponse in reponsesDict) {
+               var nbReponses = reponsesDict[reponse];
                var input = creerAlphanumeriqueInput(reponse, nbReponses, data["total"]);
                answers.appendChild(input);
             }
