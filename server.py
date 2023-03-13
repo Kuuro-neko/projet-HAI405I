@@ -467,11 +467,14 @@ def next_question(data):
         print(question)
         emit('display-question', question, broadcast=True)
     else:
+        sequencesCourantes.pop(sid)
         emit('end-sequence', broadcast=True)
 
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):
     emit('toggleDisplayAnswers', data, broadcast=True)
+    
+
 
 """
 Socket pour envoyer les stats à chaque réponse d'un étudiant
