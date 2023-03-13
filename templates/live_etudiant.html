@@ -52,6 +52,10 @@
             socket.on('toggleDisplayAnswers', function (data) {
                toggleDisplayAnswers(data["display"]);
             });
+
+            socket.on('end-sequence', function (data) {
+               alert("Sequence terminée");
+            });
          };
 
          // Afficher / cacher les réponses

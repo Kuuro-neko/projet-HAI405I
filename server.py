@@ -436,8 +436,11 @@ def send_answer(data):
     answer = data["answers"]
     try:
         confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
-        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client
-        emit('refresh-answers', sequencesCourantes[sid].getNbReponsesCourantes(), room=sid) # Rafraichissement des stats pour le prof
+        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etu
+        reponses = sequencesCourantes[sid].getNbReponsesCourantes()
+        print("J'envoie ça au prof :")
+        print(reponses)
+        emit('refresh-answers', reponses, room=sid) # Rafraichissement des stats pour le prof
     except Exception as e:
         emit('error', {'message': str(e)})
 
@@ -458,10 +461,13 @@ def show_correction(data):
 @socketio.on('next-question')
 def next_question(data):
     sid = data["sequence_id"]
-    sequencesCourantes[sid].questionSuivante()
-    question = dict(sequencesCourantes[sid].getQuestionCourante())
-    print(question)
-    emit('display-question', question, broadcast=True)
+    continuer = sequencesCourantes[sid].questionSuivante()
+    if continuer:
+        question = dict(sequencesCourantes[sid].getQuestionCourante())
+        print(question)
+        emit('display-question', question, broadcast=True)
+    else:
+        emit('end-sequence', broadcast=True)
 
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):

@@ -208,11 +208,13 @@ code {
 }
 
 .answer-correct {
-    background-color: #0ead43;
+    background-color: #67e691 !important;
+    color: black !important;
 }
 
 .answer-wrong {
-    background-color: #c72121;
+    background-color: #e66767 !important;
+    color: black !important;
 }
 
 .alphanumerique-correct {

@@ -36,6 +36,10 @@
          socket.on('show-correction', function (data) {
             displayCorrectionHere(data);
          });
+
+         socket.on('end-sequence', function (data) {
+            alert("Sequence terminée");
+         });
       };
 
       function refreshAnswers(data) {
@@ -84,14 +88,7 @@
 
       function nextQuestion() {
          var next_button = document.getElementById('next_button');
-         switch (next_button.textContent) {
-            case 'Suivant':
-               socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
-               break;
-            case 'Terminer':
-               alert('Fin de la séquence');
-               break;
-         }
+         socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
          let btnStopReponses = document.getElementById('btn-stop-reponses');
          let btnShowCorrection = document.getElementById('btn-show-correction');
          btnStopReponses.classList.remove('d-none');
@@ -101,13 +98,16 @@
       function displayCorrectionHere(data) { // TO CONTINUE
          switch(type) {
                case "ChoixMultiple":
+                  console.log("data : ");
                   console.log(data);
-                  var answers = document.getElementsByClassName('answer-js');
+                  var answers = document.getElementsByClassName('answer-html');
+                  console.log("answers : ");
+                  console.log(answers);
                   for (var i = 0; i < answers.length; i++) {
                      if (data[answers[i].id.split('-')[1]]["isCorrect"] == "true") {
-                        answers[i].children[0].classList.add("answer-correct");
+                        answers[i].classList.add("answer-correct");
                      } else {
-                        answers[i].children[0].classList.add("answer-wrong");
+                        answers[i].classList.add("answer-wrong");
                      }
                   }
                   break;
@@ -188,6 +188,7 @@
 
          var answ = document.createElement('div');
          answ.className = 'answer-html';
+         answ.id = 'answer-' + id;
          answ.innerHTML = reponse;
          div.appendChild(answ);
 
