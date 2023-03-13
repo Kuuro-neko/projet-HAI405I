@@ -16,7 +16,7 @@
       var socket;
       var type;
       window.onload = function () {
-         socket = io.connect('http://' + location.host);
+         socket = io.connect('https://' + location.host);
          socket.emit('connect-prof', { "sequence_id": "{{ sequence.id_unique }}" });
 
          socket.on('connect-etu', function (data) {
@@ -201,6 +201,8 @@
 
       function display(question) {
          // Afficher Suivant ou Terminet sur le bouton
+         console.log(question)
+
          var next_button = document.getElementById('next_button');
          if (question['position'] < question['total']) {
             next_button.textContent = 'Suivant';
