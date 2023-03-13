@@ -15,7 +15,7 @@
    <script>
       var socket;
       window.onload = function () {
-         socket = io.connect('https://' + location.host);
+         socket = io.connect('http://' + location.host);
          socket.emit('connect-prof', { "sequence_id": "{{ sequence.id_unique }}" });
 
          socket.on('connect-etu', function (data) {
@@ -84,8 +84,9 @@
                socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
                break;
             case 'Terminer':
-               alert('Fin de la séquence');
-               break;
+            socket.emit('next-question', { "sequence_id": "{{ sequence.id_unique }}" });
+            alert('Fin de la séquence');
+            break;
          }
          let btnStopReponses = document.getElementById('btn-stop-reponses');
          let btnShowCorrection = document.getElementById('btn-show-correction');

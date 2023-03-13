@@ -109,23 +109,6 @@
                 "id": "9e274120"
             },
             {
-                "type": "ChoixMultiple",
-                "text": "## titre H2\r\n### sous titre H3\r\n**en gras**, *en italique*...\r\n- un item\r\n- un second item",
-                "etiquettes": [],
-                "answers": [
-                    {
-                        "text": "oui",
-                        "isCorrect": "false"
-                    },
-                    {
-                        "text": "non",
-                        "isCorrect": "false"
-                    }
-                ],
-                "titre": "Markdown",
-                "id": "383d1870"
-            },
-            {
                 "type": "Alphanumerique",
                 "text": "Salut mon gars (r\u00e9ponse : 4544)",
                 "etiquettes": [],

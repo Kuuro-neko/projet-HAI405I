@@ -40,10 +40,12 @@ class SequenceDeQuestions:
         if self.etat == len(self.questions) - 1:
             self.etat = -2
             self.archiverSequence()
+            return True
         self.etudiants_qui_ont_repondu = []
         self.etat += 1
         self.ouvrirReponses()
-
+        return False
+        
     def fermerReponses(self):
         self.reponsesOuvertes = False
     

@@ -8,9 +8,6 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
          <div class="navbar-nav">
             {% if name != None %}
-            <a class="btn btn-dark text-light" href="{{ url_for('logout') }}"
-               onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Se
-               déconnecter</a>
             <a class="btn btn-dark text-light" href="generation" onmouseover="this.style.transform='scale(1.1)'"
                onmouseout="this.style.transform='scale(1)'">Générer un QCM</a>
             <a class="btn btn-dark text-light" href="creation-comptes-etudiants"
@@ -18,8 +15,16 @@
                comptes étudiants</a>
             <a class="btn btn-dark text-light" href="sequence" style="margin-left: 10px;"
             onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Diffuser QCM</a>
-            {% endif %}
          </div>
+         <div class="ms-auto">
+            <a class="btn btn-dark text-light" href="{{ url_for('logout') }}"
+               onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" >Se
+               déconnecter
+            </a>
+         </div>
+         {% endif %}         
       </div>
    </div>
 </nav>
+
+

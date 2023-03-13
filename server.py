@@ -458,14 +458,22 @@ def show_correction(data):
 @socketio.on('next-question')
 def next_question(data):
     sid = data["sequence_id"]
-    sequencesCourantes[sid].questionSuivante()
+    terminer = sequencesCourantes[sid].questionSuivante()
     question = dict(sequencesCourantes[sid].getQuestionCourante())
     print(question)
-    emit('display-question', question, broadcast=True)
+    if terminer :
+        print("Fin de la séquence !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        sequencesCourantes.pop(sid)
+        emit('end-sequence', broadcast=True) 
+    else :
+        emit('display-question', question, broadcast=True)
+        
 
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):
     emit('toggleDisplayAnswers', data, broadcast=True)
+    
+
 
 """
 Socket pour envoyer les stats à chaque réponse d'un étudiant
