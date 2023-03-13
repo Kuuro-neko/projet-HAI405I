@@ -436,7 +436,7 @@ def send_answer(data):
     answer = data["answers"]
     try:
         confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
-        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etu
+        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
         reponses = sequencesCourantes[sid].getNbReponsesCourantes()
         print("J'envoie ça au prof :")
         print(reponses)
