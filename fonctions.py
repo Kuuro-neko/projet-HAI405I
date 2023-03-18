@@ -150,9 +150,9 @@ class SequenceDeQuestions:
     def archiverSequence(self):
         with open("archive.json", "r") as fp:
             data = json.load(fp)
-        data[self.id_unique] = self.reponses
+        data[self.id_unique] = self.reponses 
         with open("archive.json", "w") as fp:
-            json.dump(data, fp, indent=4)
+            json.dump(data, fp, indent=4) 
 
     def __str__(self) -> str:
         return "SequenceDeQuestions de " + self.prof + " avec " + str(len(self.questions)) + " questions"
@@ -169,7 +169,6 @@ def get_data():
     with open('prof.json', 'r') as fp:
         data = json.load(fp)
     return data
-
 
 def get_etudiants():
     """
@@ -227,6 +226,7 @@ def get_questions(prof, filtre=None):
                     break
         return questions
     return data[get_prof_id(prof)]['questions']
+
 
 # Retourne la liste des etiquettes utilisées dans des questions
 # In : questions (list (dict)) (optionnel, si non renseigné, on prend toutes les etiquettes utilisées dans toutes les questions)
@@ -378,4 +378,3 @@ def try_login_etudiant(login, password, etudiant):
          if password == etudiant['password']:
             return True
    return False
-      

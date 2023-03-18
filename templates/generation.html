@@ -38,8 +38,7 @@
          <form action="" method="post">
             <div class="input-group" style="justify-content: center">
                <div class="form-outline" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px; ">
-                  <select id="search-focus" type="select" id="form1" class="form-select" placeholder="Etiquette"
-                     name="filtres">
+                  <select id="search-focus" type="select" id="form1" class="form-select" placeholder="Etiquette"name="filtres">
                      {% for filtre in liste_filtre %}
                      <option value="{{ filtre }}">{{ filtre }}</option>
                      {% endfor %}
@@ -51,18 +50,16 @@
                   <a href="{{ url_for('generation') }}" class="btn btn-success" style="margin-left : 10px;">Réinitialiser</a>
                   {% endif %}
                </div>
-
-            </div>
+               <div id="liste-filtre" style="width: 100%; margin-top: 10px; display:flex; flex-direction:row; justify-content:center;">
+                  {% if filtres != None %}
+                  {% for filtre in filtres %}
+                  <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres"
+                     style=" color : green" readonly>
+                  {% endfor %}
+                  {% endif %}
+               </div>
+            </form>
          </div>
-         <div id="liste-filtre" style="width: 100%; margin-top: 10px; display:flex; flex-direction:row; justify-content:center;">
-            {% if filtres != None %}
-            {% for filtre in filtres %}
-            <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres"
-               style=" color : green" readonly>
-            {% endfor %}
-            {% endif %}
-         </div>
-         </form>
       </div>
       {% for i in range(0, questions | length) %}
       <div class="container">

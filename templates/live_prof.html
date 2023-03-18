@@ -16,7 +16,7 @@
       var socket;
       var type;
       window.onload = function () {
-         socket = io.connect('https://' + location.host);
+         socket = io.connect('http://' + location.host);
          socket.emit('connect-prof', { "sequence_id": "{{ sequence.id_unique }}" });
 
          socket.on('connect-etu', function (data) {
@@ -38,7 +38,7 @@
          });
 
          socket.on('end-sequence', function (data) {
-            alert("Sequence terminée");
+            window.location.replace ("http://wwww."+location.host+"/sequence");// RENVOIE VERS INDEX COMME SI LE PROF C'ÉTAIT DÉCONNECTÉ
          });
       };
 

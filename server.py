@@ -312,18 +312,29 @@ def sequence():
             prof = session['user']
             questions = get_questions(prof)
             if request.method == 'POST':
-                tabChoix = request.form.getlist('choisi')
-                questions_sequence = []
-                for id in tabChoix:
-                    questions_sequence.append(traiter_question(questions[int(id)]))
-                print(questions_sequence)
-                sequence = SequenceDeQuestions(prof, questions_sequence)
-                sequencesCourantes[sequence.id_unique] = sequence
-                return redirect(url_for('live', id_sequence=sequence.id_unique))
-            return render_template('diffusion.html', questions=questions)
+                if len(request.form.getlist('filtres')) > 0 :
+                    filtres = request.form.getlist('filtres') 
+                    questions = get_questions(prof, filtres)
+                elif len(request.form.getlist('choisi')) > 0 :
+                    tabChoix = request.form.getlist('choisi')
+                    questions_sequence = []
+                    for id in tabChoix:
+                        questions_sequence.append(traiter_question(questions[int(id)]))
+                    print(questions_sequence)
+                    sequence = SequenceDeQuestions(prof, questions_sequence)
+                    sequencesCourantes[sequence.id_unique] = sequence
+                    return redirect(url_for('live', id_sequence=sequence.id_unique))
+            else : 
+                filtres = []
+                questions = questions
+            liste_filtre = get_etiquettes(questions)
+            for filtre_applique in filtres:
+                liste_filtre.remove(filtre_applique)        
+            return render_template('diffusion.html', questions=questions, filtres=filtres, liste_filtre=liste_filtre)
         return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
     except KeyError:
         return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page 1")
+
 
 
 ################################################ ELEVES ################################################

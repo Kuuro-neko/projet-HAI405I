@@ -29,38 +29,36 @@
             </div>
          </div>
       </nav>
-      <div id="filtre-container">
-         <h3 class="text-light" style="margin: 10px;">Filtrer par étiquette :</h3>
-         <form action="" method="post">
+      <div>
+         <h3 class="text-light" style="margin: 10px;">Selectionnez les questions souhaitées :</h3>
+      </div>
+      <div id="filtre-container" style="display:flex ; flex-direction: row; justify-content: center;">
+         <h4 class="text-light" style="margin: 10px;">Filtrer par étiquette :</h4>
+         <form action="" method="POST">
             <div class="input-group" style="justify-content: center">
-               <div class="form-outline" style="display:flex ; flex-direction: row; justify-content: center;">
-                  <select id="search-focus" type="select" id="form1" class="form-select" placeholder="Etiquette"
-                     name="filtres">
+               <div class="form-outline" style="display:flex ; flex-direction: row; justify-content: center; margin: 10px; ">
+                  <select id="search-focus" type="select" id="form1" class="form-select" placeholder="Etiquette" name="filtres">
                      {% for filtre in liste_filtre %}
                      <option value="{{ filtre }}">{{ filtre }}</option>
                      {% endfor %}
                   </select>
-                  <button type="submit" class="btn btn-success" onclick>
+                  <button type="submit" class="btn btn-success" style="margin-left : 5px;" onclick>
                      <i class="fa fa-search"></i>
                   </button>
+                  {% if filtres | length > 0 %}
+                  <a href="{{ url_for('sequence') }}" class="btn btn-success" style="margin-left : 10px;">Réinitialiser</a>
+                  {% endif %}
                </div>
-               <div id="liste-filtre"
-                  style="width: 100%; margin-top: 10px; display:flex; flex-direction:row; justify-content:center;">
+               <div id="liste-filtre" style="width: 100%; margin-top: 10px; display:flex; flex-direction:row; justify-content:center;">
                   {% if filtres != None %}
                   {% for filtre in filtres %}
                   <input type="text" class="etiquette-filtre" value="{{ filtre }}" name="filtres"
-                     style="width: fit-content;" readonly>
+                  style=" color : green" readonly>
                   {% endfor %}
                   {% endif %}
                </div>
+            </form>
             </div>
-         </form>
-         {% if filtres | length > 0 %}
-         <a href="{{ url_for('sequence') }}" class="btn btn-success" style="margin: 10px;">Réinitialiser</a>
-         {% endif %}
-      </div>
-      <div>
-         <h3 class="text-light" style="margin: 10px;">Selectionnez les questions souhaitées :</h3>
       </div>
       {% for i in range(0, questions | length) %}
       <div class="container">
