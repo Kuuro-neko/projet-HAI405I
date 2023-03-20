@@ -131,7 +131,7 @@ function delFiltre(id) {
 };
 
 function imprimer_page(){
-  window.print();
+    window.print();
 }
 
 function toGreen(checkbox, x) {
