@@ -488,6 +488,7 @@ def next_question(data):
         emit('display-question', question, broadcast=True)
     else:
         sequencesCourantes.pop(sid)
+        leave_room(sid)
         emit('end-sequence-prof', '/sequence', broadcast=True)
         emit('end-sequence-etudiant', '/wait', broadcast=True)
 
@@ -496,10 +497,35 @@ def next_question(data):
 def toggleDisplayAnswers(data):
     emit('toggleDisplayAnswers', data, broadcast=True)
     
+################################################ ARCHIVES ################################################
+
+@app.route('/archives')
+def archives():
+    try:
+        print(session['user_type'])
+        if session['user_type'] == "prof":
+            archives = dict_of_dicts_to_list_of_dicts(get_archives(session['user']))
+            return render_template('archives.html', sequences=archives)
+        else:
+            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+    except KeyError:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+
+@app.route('/archive/<string:id_sequence>')
+def archive(id_sequence):
+    try:
+        if session['user_type'] == "prof":
+            sequence = get_archives(session['user'], id_sequence)
+            return render_template('archive.html', sequence=sequence)
+        else:
+            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+    except Exception:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+
 @socketio.on('fermer-sequence')
 def fermer_sequence(data):
     sid = data["sequence_id"]
-    sequencesCourantes[sid].fermerSequence()
+    sequencesCourantes[sid].fermerSequence() 
     sequencesCourantes.pop(sid)   
     emit('fermer-sequence-prof', '/sequence', broadcast=True)
     emit('fermer-sequence-etudiant', '/wait', broadcast=True)

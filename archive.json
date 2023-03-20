@@ -1,101 +1,89 @@
 {
-    "e0668cb0": {
-        "fcd972b4": {
-            "<p>\n Oui\n</p>\n": [
+    "Test": {
+        "7669cb56": {
+            "questions": [
+                {
+                    "type": "ChoixMultiple",
+                    "text": "<div class=\"codehilite\">\n <pre><span></span><code><span class=\"n\">text</span> <span class=\"o\">=</span> <span class=\"s2\">\"hello world\"</span>\n<span class=\"nb\">print</span><span class=\"p\">(</span><span class=\"n\">text</span><span class=\"p\">)</span>\n</code></pre>\n</div>\n",
+                    "etiquettes": [
+                        "Python"
+                    ],
+                    "answers": [
+                        {
+                            "text": "<p>\n Oui\n</p>\n",
+                            "isCorrect": "true"
+                        },
+                        {
+                            "text": "<p>\n Non\n</p>\n",
+                            "isCorrect": "false"
+                        }
+                    ],
+                    "titre": "PYYYYYY",
+                    "id": "fcd972b4"
+                },
+                {
+                    "type": "ChoixMultiple",
+                    "text": "<h2>\n titre H2\n</h2>\n<h3>\n sous titre H3\n</h3>\n<p>\n <strong>\n  en gras\n </strong>\n ,\n <em>\n  en italique\n </em>\n ...\n- un item\n- un second item\n</p>\n",
+                    "etiquettes": [],
+                    "answers": [
+                        {
+                            "text": "<p>\n oui\n</p>\n",
+                            "isCorrect": "true"
+                        },
+                        {
+                            "text": "<p>\n non\n</p>\n",
+                            "isCorrect": "false"
+                        }
+                    ],
+                    "titre": "Markdown",
+                    "id": "383d1870"
+                },
+                {
+                    "type": "Alphanumerique",
+                    "text": "<p>\n 1+1 = ?\n</p>\n",
+                    "etiquettes": [],
+                    "answers": "2",
+                    "titre": "alphanum",
+                    "id": "8c0b18bb"
+                }
+            ],
+            "reponses": {
+                "fcd972b4": {
+                    "<p>\n Oui\n</p>\n": [
+                        "33333333",
+                        "11111111"
+                    ],
+                    "<p>\n Non\n</p>\n": [
+                        "22222222"
+                    ]
+                },
+                "383d1870": {
+                    "<p>\n oui\n</p>\n": [
+                        "11111111",
+                        "33333333"
+                    ],
+                    "<p>\n non\n</p>\n": [
+                        "22222222"
+                    ]
+                },
+                "8c0b18bb": {
+                    "10": [
+                        "22222222"
+                    ],
+                    "2": [
+                        "11111111"
+                    ],
+                    "11": [
+                        "33333333"
+                    ]
+                }
+            },
+            "etudiants": [
+                "11111111",
+                "22222222",
                 "33333333"
             ],
-            "<p>\n Non\n</p>\n": [
-                "22222222"
-            ]
-        },
-        "0ac8ff32": {
-            "<p>\n Oui\n</p>\n": [
-                "33333333"
-            ],
-            "<p>\n Non\n</p>\n": [],
-            "<p>\n Peut etre\n</p>\n": [
-                "33333333"
-            ]
-        },
-        "920e32eb": {
-            "<p>\n Oui\n</p>\n": [],
-            "<p>\n Non\n</p>\n": []
-        }
-    },
-    "d24f3123": {
-        "29001ce8": {
-            "5": [
-                "11111111"
-            ]
-        },
-        "8c0b18bb": {
-            "2": [
-                "11111111"
-            ]
-        }
-    },
-    "927a0447": {
-        "383d1870": {
-            "<p>\n oui\n</p>\n": [
-                "11111111"
-            ],
-            "<p>\n non\n</p>\n": [
-                "22222222"
-            ]
-        },
-        "29001ce8": {
-            "4544": [
-                "11111111"
-            ],
-            "52": [
-                "22222222"
-            ]
-        },
-        "8c0b18bb": {
-            "11": [
-                "11111111"
-            ],
-            "4": [
-                "22222222"
-            ]
-        }
-    },
-    "b815991a": {
-        "6fe08a1c": {
-            "<p>\n oui\n</p>\n": [],
-            "<p>\n coucou\n</p>\n": [],
-            "<p>\n montpellier\n</p>\n": []
-        },
-        "fcd972b4": {
-            "<p>\n Oui\n</p>\n": [],
-            "<p>\n Non\n</p>\n": []
-        }
-    },
-    "f916ad0a": {
-        "fcd972b4": {
-            "<p>\n Oui\n</p>\n": [],
-            "<p>\n Non\n</p>\n": []
-        },
-        "920e32eb": {
-            "<p>\n Oui\n</p>\n": [],
-            "<p>\n Non\n</p>\n": []
-        }
-    },
-    "fcd972b4": {
-        "fcd972b4": {
-            "<p>\n Oui\n</p>\n": [],
-            "<p>\n Non\n</p>\n": []
-        }
-    },
-    "d06aab3f": {
-        "fcd972b4": {
-            "<p>\n Oui\n</p>\n": [],
-            "<p>\n Non\n</p>\n": []
-        },
-        "0ac8ff32": {
-            "<p>\n Oui\n</p>\n": [],
-            "<p>\n Non\n</p>\n": [],
-            "<p>\n Peut etre\n</p>\n": []
+            "date": "2023-03-20 14:46:15.518913"
         }
     },
     "b8114371": {

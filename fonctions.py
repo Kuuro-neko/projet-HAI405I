@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from hashlib import sha256
 from server import UPLOAD_FOLDER
 import re
+from datetime import datetime
 from hashlib import sha512
 
 ################################## Fonctions ##################################
@@ -155,9 +156,15 @@ class SequenceDeQuestions:
     def archiverSequence(self):
         with open("archive.json", "r") as fp:
             data = json.load(fp)
-        data[self.id_unique] = self.reponses 
+        try:
+            archive_prof = data[self.prof]
+        except KeyError:
+            data[self.prof] = {}
+            archive_prof = {}
+        archive_prof[self.id_unique] = {"questions" : self.questions, "reponses" : self.reponses, "etudiants" : self.etudiants, "date" : str(datetime.now())}
+        data[self.prof] = archive_prof
         with open("archive.json", "w") as fp:
-            json.dump(data, fp, indent=4) 
+            json.dump(data, fp, indent=4)
 
     def __str__(self) -> str:
         return "SequenceDeQuestions de " + self.prof + " avec " + str(len(self.questions)) + " questions"
@@ -385,3 +392,33 @@ def try_login_etudiant(login, password, etudiant):
         if password_sign == etudiant['password']:
             return True
    return False
+
+def get_archives(prof, id_sequence=None):
+   """
+   Retourne les séquences archivées d'un prof
+   In : prof (str)
+   In : id_sequence (str) (optionnel)
+   Out : sequences (list (dict))
+   """
+   with open('archive.json', 'r') as fp:
+      data = json.load(fp)
+   try:
+      if id_sequence == None:
+        print(dict_of_dicts_to_list_of_dicts(data[prof]))
+        return data[prof]
+      else:
+        return data[prof][id_sequence]
+   except:
+      return []
+   
+def dict_of_dicts_to_list_of_dicts(dict_of_dicts):
+   """
+   Transforme un dictionnaire de dictionnaires en une liste de dictionnaires
+   In : dict_of_dicts (dict (dict))
+   Out : list_of_dicts (list (dict))
+   """
+   list_of_dicts = []
+   for key in dict_of_dicts:
+      dict_of_dicts[key]['id'] = key
+      list_of_dicts.append(dict_of_dicts[key])
+   return list_of_dicts
