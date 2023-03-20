@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from hashlib import sha256
 from server import UPLOAD_FOLDER
 import re
+from datetime import datetime
 
 ################################## Fonctions ##################################
 
@@ -150,9 +151,15 @@ class SequenceDeQuestions:
     def archiverSequence(self):
         with open("archive.json", "r") as fp:
             data = json.load(fp)
-        data[self.id_unique] = self.reponses 
+        try:
+            archive_prof = data[self.prof]
+        except KeyError:
+            data[self.prof] = {}
+            archive_prof = {}
+        archive_prof[self.id_unique] = {"questions" : self.questions, "reponses" : self.reponses, "etudiants" : self.etudiants, "date" : str(datetime.now())}
+        data[self.prof] = archive_prof
         with open("archive.json", "w") as fp:
-            json.dump(data, fp, indent=4) 
+            json.dump(data, fp, indent=4)
 
     def __str__(self) -> str:
         return "SequenceDeQuestions de " + self.prof + " avec " + str(len(self.questions)) + " questions"
@@ -378,3 +385,20 @@ def try_login_etudiant(login, password, etudiant):
          if password == etudiant['password']:
             return True
    return False
+
+def get_archives(prof, id_sequence=None):
+   """
+   Retourne les séquences archivées d'un prof
+   In : prof (str)
+   In : id_sequence (str) (optionnel)
+   Out : sequences (list (dict))
+   """
+   with open('archive.json', 'r') as fp:
+      data = json.load(fp)
+   try:
+      if id_sequence == None:
+        return data[prof]
+      else:
+        return data[prof][id_sequence]
+   except:
+      return []

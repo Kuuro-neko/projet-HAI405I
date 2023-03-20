@@ -479,29 +479,39 @@ def next_question(data):
         emit('display-question', question, broadcast=True)
     else:
         sequencesCourantes.pop(sid)
+        leave_room(sid)
         emit('end-sequence', broadcast=True)
 
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):
     emit('toggleDisplayAnswers', data, broadcast=True)
     
+################################################ ARCHIVES ################################################
 
+@app.route('/archives')
+def archives():
+    try:
+        if session['user_type'] == "prof":
+            archives = get_archives(session['user'])
+            if archives != []:
+                for sequence in archives:
+                    pass # todo ajouter des trucs dans les archives xD
+            return render_template('archives.html', sequences=archives)
+        else:
+            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+    except Exception:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
 
-"""
-Socket pour envoyer les stats à chaque réponse d'un étudiant
-    - 1 socket emit côté eleve
-    - 1 socket onmessage côté prof
-    - 1 socket ici
-Socket pour stopper les réponses + js côté client prof pour afficher la réponse + blocage des réponses côté client eleve :
-   - 1 bouton + socket sur la page du prof pour stopper les réponses
-   - 1 socket côté eleve pour bloquer les réponses
-   - 1 socket ici pour bloquer les réponses au niveau de la classe
-Socket pour passer à la question suivante + bouton côté client prof + rafraichir les lcients eleve
-   - 1 socket onmessage côté eleve
-   - 1 socket emit + bouton côté prof
-   - 1 socket ici
-Et tout le côté client (voir diapo)
-"""
+@app.route('/archive/<string:id_sequence>')
+def archive(id_sequence):
+    try:
+        if session['user_type'] == "prof":
+            sequence = get_archives(session['user'], id_sequence)
+            return render_template('archive.html', sequence=sequence)
+        else:
+            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+    except Exception:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
 
 if __name__ == '__main__':
     # Lancement du serveur
