@@ -9,10 +9,29 @@
    <center>
       {% include 'includes/navbar_prof.html' %}
       {% include 'includes/message.html' %}
-      
-      {% for i in range(0, sequences | length) %}
-         
-      {% endfor %}
+      <div id="sequences" class="container">
+      <h1>Vos séquences archivées</h1>
+         <table class="table">
+            <thead>
+               <tr>
+                  <th>Sequence ID</th>
+                  <th>Date</th>
+                  <th># Questions</th>
+                  <th># Students</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for sequence in sequences %}
+               <tr>
+                  <td>{{ sequence.id }}</td>
+                  <td>{{ sequence.date }}</td>
+                  <td>{{ sequence.questions | length }}</td>
+                  <td>{{ sequence.etudiants | length }}</td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>   
    </center>
 </body>
 </html>

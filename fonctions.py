@@ -397,8 +397,21 @@ def get_archives(prof, id_sequence=None):
       data = json.load(fp)
    try:
       if id_sequence == None:
+        print(dict_of_dicts_to_list_of_dicts(data[prof]))
         return data[prof]
       else:
         return data[prof][id_sequence]
    except:
       return []
+   
+def dict_of_dicts_to_list_of_dicts(dict_of_dicts):
+   """
+   Transforme un dictionnaire de dictionnaires en une liste de dictionnaires
+   In : dict_of_dicts (dict (dict))
+   Out : list_of_dicts (list (dict))
+   """
+   list_of_dicts = []
+   for key in dict_of_dicts:
+      dict_of_dicts[key]['id'] = key
+      list_of_dicts.append(dict_of_dicts[key])
+   return list_of_dicts

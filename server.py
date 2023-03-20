@@ -491,15 +491,13 @@ def toggleDisplayAnswers(data):
 @app.route('/archives')
 def archives():
     try:
+        print(session['user_type'])
         if session['user_type'] == "prof":
-            archives = get_archives(session['user'])
-            if archives != []:
-                for sequence in archives:
-                    pass # todo ajouter des trucs dans les archives xD
+            archives = dict_of_dicts_to_list_of_dicts(get_archives(session['user']))
             return render_template('archives.html', sequences=archives)
         else:
             return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
-    except Exception:
+    except KeyError:
         return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
 
 @app.route('/archive/<string:id_sequence>')
