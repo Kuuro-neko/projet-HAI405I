@@ -52,10 +52,13 @@
             socket.on('toggleDisplayAnswers', function (data) {
                toggleDisplayAnswers(data["display"]);
             });
-
-            socket.on('end-sequence', function(){
-               window.location.replace ("http://wwww."+location.host+"/wait");
-            });         
+        
+            socket.on('end-sequence-etudiant', function (data) {
+               window.location.href = data;
+            });
+            socket.on('fermer-sequence-etudiant', function(data){
+               window.location.href = data;
+            })
       };
 
 

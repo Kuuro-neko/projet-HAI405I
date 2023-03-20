@@ -1,7 +1,7 @@
 from fonctions import *
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_socketio import *
-
+from hashlib import sha512
 import os
 
 
@@ -46,8 +46,10 @@ def login():
         data = get_data()
         login = request.form['login']
         password = request.form['password']
+        password = password.encode()
+        password_sign = sha512(password).hexdigest()
         for users in data:
-            if users['user'] == login and users['password'] == password:
+            if users['user'] == login and users['password'] == password_sign:
                 session['user'] = login
                 session['user_type'] = "prof"
                 return redirect(url_for('questions'))
@@ -62,12 +64,15 @@ def inscription():
         data = get_data()
         login = request.form['login']
         password = request.form['password']
+        #creation et hashage du mot de passe de reference
+        password = password.encode()
+        password_sign = sha512(password).hexdigest()
         for users in data:
             if users['user'] == login:
                 return render_template("inscription.html", error="Login déjà utilisé")
         data.append({
             "user": login,
-            "password": password,
+            "password": password_sign,
             "questions": []
         })
         write_data(data)
@@ -346,6 +351,7 @@ def login_etudiant():
         data = get_etudiants()
         login = request.form['login']
         password = request.form['password']
+        
         for etudiant in data:
             if try_login_etudiant(login, password, etudiant):
                 session['user'] = json.dumps(etudiant)
@@ -373,9 +379,12 @@ def changePass():
                 confirmer = request.form['confirmer']
                 if nouveau == confirmer:
                     data = get_etudiants()
+                     #creation et hashage du mot de passe de reference
+                    password = nouveau.encode()
+                    password_sign = sha512(password).hexdigest()
                     for etd in data:
                         if etd['nom'] + "." + etd['prenom'] == etudiant['nom'] + "." + etudiant['prenom']:
-                            etd['password'] = nouveau
+                            etd['password'] = password_sign
                             write_data_etudiant(data)
                             return redirect(url_for('wait'))
                 else:
@@ -479,30 +488,23 @@ def next_question(data):
         emit('display-question', question, broadcast=True)
     else:
         sequencesCourantes.pop(sid)
-        emit('end-sequence', broadcast=True)
+        emit('end-sequence-prof', '/sequence', broadcast=True)
+        emit('end-sequence-etudiant', '/wait', broadcast=True)
+
 
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):
     emit('toggleDisplayAnswers', data, broadcast=True)
     
-
-
-"""
-Socket pour envoyer les stats à chaque réponse d'un étudiant
-    - 1 socket emit côté eleve
-    - 1 socket onmessage côté prof
-    - 1 socket ici
-Socket pour stopper les réponses + js côté client prof pour afficher la réponse + blocage des réponses côté client eleve :
-   - 1 bouton + socket sur la page du prof pour stopper les réponses
-   - 1 socket côté eleve pour bloquer les réponses
-   - 1 socket ici pour bloquer les réponses au niveau de la classe
-Socket pour passer à la question suivante + bouton côté client prof + rafraichir les lcients eleve
-   - 1 socket onmessage côté eleve
-   - 1 socket emit + bouton côté prof
-   - 1 socket ici
-Et tout le côté client (voir diapo)
-"""
-
+@socketio.on('fermer-sequence')
+def fermer_sequence(data):
+    sid = data["sequence_id"]
+    sequencesCourantes[sid].fermerSequence()
+    sequencesCourantes.pop(sid)   
+    emit('fermer-sequence-prof', '/sequence', broadcast=True)
+    emit('fermer-sequence-etudiant', '/wait', broadcast=True)
+        
+    
 if __name__ == '__main__':
     # Lancement du serveur
     socketio.run(app, host=host, port=port, debug=True)

@@ -6,6 +6,12 @@
         "password": "a"
     },
     {
+        "nom": "mdr",
+        "prenom": "mdr",
+        "numero_etudiant": "00000000",
+        "password": "6dd3c7b5f4742b76e281242fdce9d78da53899fb52d132d63b7544df367fa9005c0a5cc0d5fa74e4986a6327ef343d7f3db5b8ad9675b94ab93d93db0bb3e19c"
+    },
+    {
         "nom": "b",
         "prenom": "b",
         "numero_etudiant": "22222222",

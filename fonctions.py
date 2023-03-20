@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from hashlib import sha256
 from server import UPLOAD_FOLDER
 import re
+from hashlib import sha512
 
 ################################## Fonctions ##################################
 
@@ -34,6 +35,10 @@ class SequenceDeQuestions:
             if question["type"] == "ChoixMultiple":
                 for reponse in question["answers"]:
                     self.reponses[question["id"]][reponse["text"]] = []
+                    
+    def fermerSequence(self):
+        self.etat = -2
+        self.archiverSequence()
         
     
     def questionSuivante(self):
@@ -375,6 +380,8 @@ def try_login_etudiant(login, password, etudiant):
          if password == etudiant['numero_etudiant']:
             return True
       else:
-         if password == etudiant['password']:
+        password = password.encode()
+        password_sign = sha512(password).hexdigest()
+        if password_sign == etudiant['password']:
             return True
    return False

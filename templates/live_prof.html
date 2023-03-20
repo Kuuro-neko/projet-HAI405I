@@ -37,9 +37,12 @@
             displayCorrectionHere(data);
          });
 
-         socket.on('end-sequence', function (data) {
-            window.location.replace ("http://wwww."+location.host+"/sequence");// RENVOIE VERS INDEX COMME SI LE PROF C'ÉTAIT DÉCONNECTÉ
+         socket.on('end-sequence-prof', function (data) {
+            window.location.href = data;
          });
+         socket.on('fermer-sequence-prof', function(data){
+            window.location.href = data;
+         })
       };
 
       function refreshAnswers(data) {
@@ -86,6 +89,10 @@
          let btnShowCorrection = document.getElementById('btn-show-correction');
          btnStopReponses.classList.add('d-none');
          btnShowCorrection.classList.remove('d-none');
+      }
+
+      function stopSequence() {
+         socket.emit('fermer-sequence', { "sequence_id": "{{ sequence.id_unique }}" });
       }
 
       function nextQuestion() {
@@ -200,7 +207,7 @@
       }
 
       function display(question) {
-         // Afficher Suivant ou Terminet sur le bouton
+         // Afficher Suivant ou Terminer sur le bouton
          console.log(question)
 
          var next_button = document.getElementById('next_button');
@@ -298,8 +305,14 @@
 
             <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
             </div>
-            <button id="btn-stop-reponses" onclick="stopReponses()">Stopper les réponses</button>
-            <button id="btn-show-correction" class="d-none" onclick="showCorrection()">Afficher la correction</button>
+            <div>
+               <button id="btn-stop-reponses" class="btn btn-outline-warning" onclick="stopReponses()">Stopper les réponses</button>
+               <button id="btn-stop-reponses" class="btn btn-outline-danger" onclick="stopSequence()" style="float :right; display:block;position: absolute; top:0;left: 0;">Arrêter</button>
+
+            </div>
+            <div>
+            <button id="btn-show-correction" class="d-none btn btn-outline-success" onclick="showCorrection()" style = "margin-top : 10px;">Afficher la correction</button>
+            </div>
       </div>
    </center>
 
