@@ -315,7 +315,7 @@ def sequence():
                 tabChoix = request.form.getlist('choisi')
                 questions_sequence = []
                 for id in tabChoix:
-                    questions_sequence.append(traiter_question(questions[int(id)]))
+                    questions_sequence.append(questions[int(id)])
                 print(questions_sequence)
                 sequence = SequenceDeQuestions(prof, questions_sequence)
                 sequencesCourantes[sequence.id_unique] = sequence
@@ -414,6 +414,7 @@ def connect_prof(data):
     join_room(sid)
     emit('refresh-connects', {'connects': len(sequencesCourantes[sid].getEtudiants())}, room=sid)
     question = sequencesCourantes[sid].getQuestionCourante().copy()
+    question['question'] = traiter_question(question['question'])
     emit('display-question', question, room=sid) # Envoie la question courante au prof
     emit('refresh-answers', sequencesCourantes[sid].getNbReponsesCourantes(), room=sid) # Rafraichissement des stats pour le prof
 
@@ -424,6 +425,7 @@ def connect_etu(data):
     sequencesCourantes[sid].ajouterEtudiant(num)
     print(f"Etudiant {num} connecté à la séquence {sid}")
     question = sequencesCourantes[sid].getQuestionCourante().copy()
+    question['question'] = traiter_question(question['question'])
     emit('display-question', question) # Envoie la question à l'étudiant
     emit('connect-etu', {'count': len(sequencesCourantes[sid].getEtudiants())}, room=sid) # Rafraichissement du nombre d'étudiants connectés côté prof
 
@@ -473,24 +475,31 @@ def next_question(data):
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):
     emit('toggleDisplayAnswers', data, broadcast=True)
-    
 
 
-"""
-Socket pour envoyer les stats à chaque réponse d'un étudiant
-    - 1 socket emit côté eleve
-    - 1 socket onmessage côté prof
-    - 1 socket ici
-Socket pour stopper les réponses + js côté client prof pour afficher la réponse + blocage des réponses côté client eleve :
-   - 1 bouton + socket sur la page du prof pour stopper les réponses
-   - 1 socket côté eleve pour bloquer les réponses
-   - 1 socket ici pour bloquer les réponses au niveau de la classe
-Socket pour passer à la question suivante + bouton côté client prof + rafraichir les lcients eleve
-   - 1 socket onmessage côté eleve
-   - 1 socket emit + bouton côté prof
-   - 1 socket ici
-Et tout le côté client (voir diapo)
-"""
+################################################ ARCHIVES ################################################
+
+@app.route('/archives')
+def archives():
+    try:
+        if session['user_type'] == "prof":
+            archives = get_archives(session['user'])
+            return render_template('archives.html', sequences=archives)
+        else:
+            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+    except Exception:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+
+@app.route('/archive/<string:id_sequence>')
+def archive(id_sequence):
+    try:
+        if session['user_type'] == "prof":
+            sequence = get_archives(session['user'], id_sequence)
+            return render_template('archive.html', sequence=sequence)
+        else:
+            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+    except Exception:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
 
 if __name__ == '__main__':
     # Lancement du serveur

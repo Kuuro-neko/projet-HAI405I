@@ -68,18 +68,21 @@ class SequenceDeQuestions:
             raise Exception("Aucune réponse n'a été donnée.")
         if num_etu in self.etudiants_qui_ont_repondu:
             raise Exception("Vous avez déjà répondu.")
+        
         if self.questions[self.etat]["type"] == "ChoixMultiple":
             for i, reponse_possible in enumerate(self.questions[self.etat]["answers"]):
                 if str(i) in reponse and num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]]:
                     self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]].append(num_etu)
             self.etudiants_qui_ont_repondu.append(num_etu)
             return True
+        
         elif self.questions[self.etat]["type"] == "Alphanumerique":
             reponse = reponse[0]
             if "," in reponse:
                 reponse = reponse.replace(",", ".")
             if reponse != "" and not re.match("^[0-9]+(\.[0-9]{0,2})?$", reponse):
                 raise Exception("La réponse n'est pas un nombre avec au plus deux chiffres après la virgule.")
+            
             if str(reponse) not in self.reponses[self.questions[self.etat]["id"]].keys():
                 self.reponses[self.questions[self.etat]["id"]][str(reponse)] = []
                 self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
@@ -150,7 +153,13 @@ class SequenceDeQuestions:
     def archiverSequence(self):
         with open("archive.json", "r") as fp:
             data = json.load(fp)
-        data[self.id_unique] = self.reponses
+        try:
+            archive_prof = data[self.prof]
+        except KeyError:
+            data[self.prof] = {}
+            archive_prof = {}
+        archive_prof[self.id_unique] = self.reponses
+        data[self.prof] = archive_prof
         with open("archive.json", "w") as fp:
             json.dump(data, fp, indent=4)
 
@@ -378,4 +387,20 @@ def try_login_etudiant(login, password, etudiant):
          if password == etudiant['password']:
             return True
    return False
-      
+
+def get_archives(prof, id_sequence=None):
+   """
+   Retourne les séquences archivées d'un prof
+   In : prof (str)
+   In : id_sequence (str) (optionnel)
+   Out : sequences (list (dict))
+   """
+   with open('archive.json', 'r') as fp:
+      data = json.load(fp)
+   try:
+      if id_sequence == None:
+        return data[prof]
+      else:
+        return data[prof][id_sequence]
+   except:
+      return []
