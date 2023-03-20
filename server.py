@@ -525,7 +525,7 @@ def archive(id_sequence):
 @socketio.on('fermer-sequence')
 def fermer_sequence(data):
     sid = data["sequence_id"]
-    sequencesCourantes[sid].fermerSequence()
+    sequencesCourantes[sid].fermerSequence() 
     sequencesCourantes.pop(sid)   
     emit('fermer-sequence-prof', '/sequence', broadcast=True)
     emit('fermer-sequence-etudiant', '/wait', broadcast=True)
