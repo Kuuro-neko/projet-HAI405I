@@ -191,6 +191,19 @@ def get_etudiants():
         data = json.load(fp)
     return data
 
+def get_etudiant(num_etu):
+    """
+    retourne l'étudiant correspondant au numéro d'étudiant
+    In : num_etu (str)
+    Out : etudiant (dict)
+    """
+    data = get_etudiants()
+    for etudiant in data:
+        if etudiant['num_etu'] == num_etu:
+            retour = dict(etudiant)
+            del retour['password']
+            return retour
+    return None
 
 def write_data(data):
     """

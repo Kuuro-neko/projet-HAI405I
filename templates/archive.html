@@ -13,21 +13,19 @@
       <h1>Séquence {{ sequence_id }}</h1>
          <div id="archives-container">
             <table id="archives-table" class="table">
-               <thead>
-                  <tr>
-                     <th>ID de la séquence</th>
-                     <th>Date</th>
-                     <th># Questions</th>
-                     <th># Étudiants</th>
-                  </tr>
-               </thead>
                <tbody>
-                  <tr>
-                     <td>{{ sequence_id }}</td>
-                     <td>{{ sequence.date }}</td>
-                     <td>{{ sequence.questions | length }}</td>
-                     <td>{{ sequence.etudiants | length }}</td>
+                  {% for question in sequence.questions %}
+                  <tr id="q{{ question.id }}">
+                  <th>{{ question.titre }}</th>   
+                     {% if question.type == "ChoixMultiple" %}
+                        {% for answer in question.answers %}
+                           <td>{{ answer.text | safe }}</td>
+                        {% endfor %}
+                     {% elif question.type == "Alphanumerique" %}
+                        <td colspan="2">Réponses</td>
+                     {% endif %}
                   </tr>
+                  {% endfor %}
                </tbody>
             </table>
          </div>

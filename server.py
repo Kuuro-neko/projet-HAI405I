@@ -523,8 +523,19 @@ def archives():
 def archive(id_sequence):
     try:
         if session['user_type'] == "prof":
-            sequence = get_archives(session['user'], id_sequence)
-            return render_template('archive.html', sequence=sequence, sequence_id=id_sequence)
+            sequence = dict(get_archives(session['user'], id_sequence))
+            # récupération des infos étudiants
+            for etudiant in sequence['etudiants']:
+                etudiant = get_etudiant(etudiant['numero_etudiant'])
+                etudiant['reponses'] = []
+                for question in sequence['questions']:
+                    if question['type'] == "ChoixMultiple":
+                        pass # TO DO vérifier les bonnes réponses de l'étudiant à la question
+                    elif question['type'] == "Alphanumerique":
+                        pass # TO DO vérifier les bonnes réponses de l'étudiant à la question
+            # Etudiant : nom, prenom, num_etu, rep {rep1, rep2, ... repN}
+
+            return render_template('archive.html', sequence=sequence, sequence_id=id_sequence, etudiants=sequence['etudiants'])
         else:
             return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
     except Exception:
