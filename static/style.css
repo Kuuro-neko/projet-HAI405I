@@ -237,6 +237,12 @@ code {
     background-color: #575757;
 }
 
+.highlighted-row:hover {
+    background-color: #575757;
+}   
+
+
+
 #archives-container {
     background-color: #343a40;
     padding: 20px;
