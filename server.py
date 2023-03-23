@@ -521,29 +521,42 @@ def archives():
 
 @app.route('/archive/<string:id_sequence>')
 def archive(id_sequence):
-    try:
+    #try:
         if session['user_type'] == "prof":
             sequence = dict(get_archives(session['user'], id_sequence))
-            # récupération des infos étudiants
-            for etudiant in sequence['etudiants']:
-                etudiant = get_etudiant(etudiant['numero_etudiant'])
+            etudiants = []
+            for num_etu in sequence['etudiants']:
+                etudiant = get_etudiant(num_etu)
                 etudiant['reponses'] = []
+                # Comparaison des réponses des étudiants avec les bonnes réponses
                 for question in sequence['questions']:
                     if question['type'] == "ChoixMultiple":
+                        correct = True
                         for answer in question["answers"]:
-                            if (answer['isCorrect'] and  not etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]) or (not answer['isCorrect'] and etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]):
+                            if (answer['isCorrect'] == "true" and  not etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]) or (not answer['isCorrect'] == "true" and etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]):
                                 etudiant['reponses'].append(False) # Mauvaise réponse (Au moins 1 mauvaise réponse choisie ou 1 bonne réponse non choisie)
-                            else:
-                                etudiant['reponses'].append(True) # Bonne réponse (Toutes les bonnes réponses choisies et aucune mauvaise réponse choisie)
+                                correct = False
+                                print("Ajouté false. Etudiant : " + etudiant['numero_etudiant'] + " Question : " + question['id'] + " Réponse : " + answer['text'] + " Correct : " + str(answer['isCorrect']))
+                                break
+                        if correct:
+                            etudiant['reponses'].append(True) # Bonne réponse (Toutes les bonnes réponses choisies et aucune mauvaise réponse choisie)
+                        print("Ajouté true. Etudiant : " + etudiant['numero_etudiant'] + " Question : " + question['id'] + " Réponse : " + answer['text'] + " Correct : " + str(answer['isCorrect']))
                     elif question['type'] == "Alphanumerique":
-                        pass # TO DO vérifier les bonnes réponses de l'étudiant à la question
-            # Etudiant : nom, prenom, num_etu, rep {rep1, rep2, ... repN}
-
-            return render_template('archive.html', sequence=sequence, sequence_id=id_sequence, etudiants=sequence['etudiants'])
+                        correct = question['answers']
+                        if etudiant['numero_etudiant'] in sequence['reponses'][question['id']][correct]:
+                            etudiant['reponses'].append(True) # Bonne réponse
+                        else:
+                            etudiant['reponses'].append(False) # Mauvaise réponse
+                etudiants.append(etudiant)
+                print("Sequence")
+                print(sequence)
+                print("Etudiant")
+                print(etudiant)
+            return render_template('archive.html', sequence=sequence, sequence_id=id_sequence, etudiants=etudiants)
         else:
-            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
-    except Exception:
-        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page1")
+    #except KeyError:
+    #   return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page2")
     
 if __name__ == '__main__':
     # Lancement du serveur

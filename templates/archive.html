@@ -10,20 +10,31 @@
       {% include 'includes/navbar_prof.html' %}
       {% include 'includes/message.html' %}
       <div id="sequences" class="container">
-      <h1>Séquence {{ sequence_id }}</h1>
+      <h1 style="color:white">Séquence {{ sequence_id }}</h1>
          <div id="archives-container">
             <table id="archives-table" class="table">
-               <tbody>
+               <thead>
+                  <tr>
+                  <th>Etudiant</th>
                   {% for question in sequence.questions %}
-                  <tr id="q{{ question.id }}">
-                  <th>{{ question.titre }}</th>   
-                     {% if question.type == "ChoixMultiple" %}
-                        {% for answer in question.answers %}
-                           <td>{{ answer.text | safe }}</td>
-                        {% endfor %}
-                     {% elif question.type == "Alphanumerique" %}
-                        <td colspan="2">Réponses</td>
-                     {% endif %}
+                     <th>{{ question.titre }} </th>
+                  {% endfor %}
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for etudiant in etudiants %}
+                  <tr>
+                     <th>{{ etudiant.numero_etudiant }}</th>
+
+                     {% for reponse in etudiant.reponses %}
+                        <td>
+                           {% if reponse %}
+                              <span class="badge bg-success">Correct</span>
+                           {% else %}
+                              <span class="badge bg-danger">Incorrect</span>
+                           {% endif %}
+                        </td>
+                     {% endfor %}
                   </tr>
                   {% endfor %}
                </tbody>

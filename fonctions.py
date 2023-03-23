@@ -196,7 +196,7 @@ def get_etudiant(num_etu):
     """
     data = get_etudiants()
     for etudiant in data:
-        if etudiant['num_etu'] == num_etu:
+        if etudiant['numero_etudiant'] == num_etu:
             retour = dict(etudiant)
             del retour['password']
             return retour
