@@ -521,7 +521,7 @@ def archives():
 
 @app.route('/archive/<string:id_sequence>')
 def archive(id_sequence):
-    #try:
+    try:
         if session['user_type'] == "prof":
             sequence = dict(get_archives(session['user'], id_sequence))
             etudiants = []
@@ -536,11 +536,9 @@ def archive(id_sequence):
                             if (answer['isCorrect'] == "true" and  not etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]) or (not answer['isCorrect'] == "true" and etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]):
                                 etudiant['reponses'].append(False) # Mauvaise réponse (Au moins 1 mauvaise réponse choisie ou 1 bonne réponse non choisie)
                                 correct = False
-                                print("Ajouté false. Etudiant : " + etudiant['numero_etudiant'] + " Question : " + question['id'] + " Réponse : " + answer['text'] + " Correct : " + str(answer['isCorrect']))
                                 break
                         if correct:
                             etudiant['reponses'].append(True) # Bonne réponse (Toutes les bonnes réponses choisies et aucune mauvaise réponse choisie)
-                        print("Ajouté true. Etudiant : " + etudiant['numero_etudiant'] + " Question : " + question['id'] + " Réponse : " + answer['text'] + " Correct : " + str(answer['isCorrect']))
                     elif question['type'] == "Alphanumerique":
                         correct = question['answers']
                         if etudiant['numero_etudiant'] in sequence['reponses'][question['id']][correct]:
@@ -548,16 +546,12 @@ def archive(id_sequence):
                         else:
                             etudiant['reponses'].append(False) # Mauvaise réponse
                 etudiants.append(etudiant)
-                print("Sequence")
-                print(sequence)
-                print("Etudiant")
-                print(etudiant)
             return render_template('archive.html', sequence=sequence, sequence_id=id_sequence, etudiants=etudiants)
         else:
-            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page1")
-    #except KeyError:
-    #   return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page2")
+            return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
+    except KeyError:
+       return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
     
 if __name__ == '__main__':
     # Lancement du serveur
-    socketio.run(app, host=host, port=port, debug=True)
+    socketio.run(app, host=host, port=port, debug=False)
