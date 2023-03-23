@@ -49,6 +49,7 @@ def login():
         password = password.encode()
         password_sign = sha512(password).hexdigest()
         for users in data:
+            print(f"login: {login} | password: {password_sign}, user: {users['user']} | password: {users['password']}")
             if users['user'] == login and users['password'] == password_sign:
                 session['user'] = login
                 session['user_type'] = "prof"
@@ -492,6 +493,13 @@ def next_question(data):
         emit('end-sequence-prof', '/sequence', broadcast=True)
         emit('end-sequence-etudiant', '/wait', broadcast=True)
 
+@socketio.on('fermer-sequence')
+def fermer_sequence(data):
+    sid = data["sequence_id"]
+    sequencesCourantes[sid].fermerSequence() 
+    sequencesCourantes.pop(sid)   
+    emit('fermer-sequence-prof', '/sequence', broadcast=True)
+    emit('fermer-sequence-etudiant', '/wait', broadcast=True)
 
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):
@@ -516,20 +524,11 @@ def archive(id_sequence):
     try:
         if session['user_type'] == "prof":
             sequence = get_archives(session['user'], id_sequence)
-            return render_template('archive.html', sequence=sequence)
+            return render_template('archive.html', sequence=sequence, sequence_id=id_sequence)
         else:
             return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
     except Exception:
         return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
-
-@socketio.on('fermer-sequence')
-def fermer_sequence(data):
-    sid = data["sequence_id"]
-    sequencesCourantes[sid].fermerSequence() 
-    sequencesCourantes.pop(sid)   
-    emit('fermer-sequence-prof', '/sequence', broadcast=True)
-    emit('fermer-sequence-etudiant', '/wait', broadcast=True)
-        
     
 if __name__ == '__main__':
     # Lancement du serveur

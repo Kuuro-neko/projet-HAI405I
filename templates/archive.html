@@ -3,8 +3,6 @@
 <head>
    <title>Questions</title>
    {% include 'includes/head_common.html' %}
-   <script src="https://code.jquery.com/jquery-3.6.3.min.js"
-      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -12,7 +10,7 @@
       {% include 'includes/navbar_prof.html' %}
       {% include 'includes/message.html' %}
       <div id="sequences" class="container">
-      <h1>Vos séquences archivées</h1>
+      <h1>Séquence {{ sequence_id }}</h1>
          <div id="archives-container">
             <table id="archives-table" class="table">
                <thead>
@@ -24,25 +22,16 @@
                   </tr>
                </thead>
                <tbody>
-                  {% for sequence in sequences %}
-                  <tr class='clickable-row' data-href='/archive/{{ sequence.id }}'>
-                     <td>{{ sequence.id }}</td>
+                  <tr>
+                     <td>{{ sequence_id }}</td>
                      <td>{{ sequence.date }}</td>
                      <td>{{ sequence.questions | length }}</td>
                      <td>{{ sequence.etudiants | length }}</td>
                   </tr>
-                  {% endfor %}
                </tbody>
             </table>
          </div>
       </div>   
    </center>
-   <script>
-      jQuery(document).ready(function($) {
-         $(".clickable-row").click(function() {
-            window.location = $(this).data("href");
-         });
-      });
-   </script>
 </body>
 </html>
