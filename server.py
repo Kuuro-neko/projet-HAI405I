@@ -49,6 +49,7 @@ def login():
         password = password.encode()
         password_sign = sha512(password).hexdigest()
         for users in data:
+            print(f"login: {login} | password: {password_sign}, user: {users['user']} | password: {users['password']}")
             if users['user'] == login and users['password'] == password_sign:
                 session['user'] = login
                 session['user_type'] = "prof"
@@ -492,6 +493,13 @@ def next_question(data):
         emit('end-sequence-prof', '/sequence', broadcast=True)
         emit('end-sequence-etudiant', '/wait', broadcast=True)
 
+@socketio.on('fermer-sequence')
+def fermer_sequence(data):
+    sid = data["sequence_id"]
+    sequencesCourantes[sid].fermerSequence() 
+    sequencesCourantes.pop(sid)   
+    emit('fermer-sequence-prof', '/sequence', broadcast=True)
+    emit('fermer-sequence-etudiant', '/wait', broadcast=True)
 
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):
@@ -515,25 +523,35 @@ def archives():
 def archive(id_sequence):
     try:
         if session['user_type'] == "prof":
-            sequence = get_archives(session['user'], id_sequence)
-            return render_template('archive.html', sequence=sequence)
+            sequence = dict(get_archives(session['user'], id_sequence))
+            etudiants = []
+            for num_etu in sequence['etudiants']:
+                etudiant = get_etudiant(num_etu)
+                etudiant['reponses'] = []
+                # Comparaison des réponses des étudiants avec les bonnes réponses
+                for question in sequence['questions']:
+                    if question['type'] == "ChoixMultiple":
+                        correct = True
+                        for answer in question["answers"]:
+                            if (answer['isCorrect'] == "true" and  not etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]) or (not answer['isCorrect'] == "true" and etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]):
+                                etudiant['reponses'].append(False) # Mauvaise réponse (Au moins 1 mauvaise réponse choisie ou 1 bonne réponse non choisie)
+                                correct = False
+                                break
+                        if correct:
+                            etudiant['reponses'].append(True) # Bonne réponse (Toutes les bonnes réponses choisies et aucune mauvaise réponse choisie)
+                    elif question['type'] == "Alphanumerique":
+                        correct = question['answers']
+                        if etudiant['numero_etudiant'] in sequence['reponses'][question['id']][correct]:
+                            etudiant['reponses'].append(True) # Bonne réponse
+                        else:
+                            etudiant['reponses'].append(False) # Mauvaise réponse
+                etudiants.append(etudiant)
+            return render_template('archive.html', sequence=sequence, sequence_id=id_sequence, etudiants=etudiants)
         else:
             return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
-    except Exception:
-        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
-
-@socketio.on('fermer-sequence')
-def fermer_sequence(data):
-    sid = data["sequence_id"]
-    sequencesCourantes[sid].fermerSequence() 
-    sequencesCourantes.pop(sid)   
-    emit('fermer-sequence-prof', '/sequence', broadcast=True)
-    emit('fermer-sequence-etudiant', '/wait', broadcast=True)
-    
-
-print(sequencesCourantes)
-    
+    except KeyError:
+       return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
     
 if __name__ == '__main__':
     # Lancement du serveur
-    socketio.run(app, host=host, port=port, debug=True)
+    socketio.run(app, host=host, port=port, debug=False)
