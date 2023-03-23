@@ -639,8 +639,207 @@
         ]
     },
     {
-        "user": "Gilles",
-        "password": "e344bcd2faa5a72ab7fd0725551087f2da78cba96e4acc6515485e04bf05d6c0fdb05453491d993a9ffe24b9a00ef2fcf0ee57f5efde3e78237d319ef2997969",
-        "questions": []
+        "user": "GerrardLampard",
+        "password": "7339d99a73eb055ef9c9f217e8febc448444c037f35dbead6cf3afcd1fa0b236076dfe05c0f8a6237c618e3fd0c8e798583e254f171c3576fa7e6777e48870f8",
+        "questions": [
+            {
+                "type": "ChoixMultiple",
+                "text": "Que fait le code suivant :\r\n```python\r\ntext = \"Hello world\"\r\nprint(text)\r\n```",
+                "etiquettes": [
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "Affiche text dans une fen\u00eatre",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Affiche text dans la console",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Supprime text",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Imprime text",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Python print()",
+                "id": "d752a495"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "Que vaut :\r\n$$e^{i\\pi}+1$$",
+                "etiquettes": [
+                    "Math"
+                ],
+                "answers": [
+                    {
+                        "text": "1",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "-1",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "0",
+                        "isCorrect": "true"
+                    }
+                ],
+                "titre": "Math",
+                "id": "922a30f6"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "```mermaid\r\nclassDiagram\r\n    Animal <|-- Duck\r\n    Animal <|-- Fish\r\n    Animal <|-- Zebra\r\n    Animal : +int age\r\n    Animal : +String gender\r\n    Animal: +isMammal()\r\n    Animal: +mate()\r\n    class Duck{\r\n    +String beakColor\r\n    +swim()\r\n    +quack()\r\n    }\r\n    class Fish{\r\n    -int sizeInFeet\r\n    -canEat()\r\n    }\r\n    class Zebra{\r\n    +bool is_wild\r\n    +run()\r\n    }\r\n```\r\nCeci est un :",
+                "etiquettes": [
+                    "UML"
+                ],
+                "answers": [
+                    {
+                        "text": "Graphe",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Diagramme UML",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Des animaux dans un zoo",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "un automate",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Graphe Mermaid",
+                "id": "f0a801ed"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "Quelle est la capitale de la France ?",
+                "etiquettes": [
+                    "Capitales"
+                ],
+                "answers": [
+                    {
+                        "text": "Marseille",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Nancy",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Paris",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Brest",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Capitale France",
+                "id": "640fa008"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "Quelle est la bonne impl\u00e9mentation en Python du diagramme suivant ?\r\n```mermaid\r\nclassDiagram\r\n    class Chat\r\n    Chat : -String nom\r\n    Chat : -int age\r\n    Chat : +plusVieuxQue(Chat) boolean\r\n```",
+                "etiquettes": [
+                    "POO",
+                    "UML",
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "```python\nclass Chat:\n  def __init__(self, nom, age):\n    self.name = nom\n    self.age = age\n  def plusVieuxQue(autre):\n    return autre.age < self.age\n```",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "```python\nclass Chat(nom, age):\n  def __init__(self):\n    self.name = nom\n    self.age = age\n  def plusVieuxQue(autre):\n    return autre.age > self.age\n```",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "```java\npublic class Chat() {\n  private String nom;\n  private int age;\n  public Chat(String n, int a){\n    this.nom = n;\n    this.age = a;\n  }\n  public boolean plusVieuxQue(Chat autre) {\n  return autre.getAge() < this.age;\n}\npublic int getAge() {\n  return this.age;\n}\n```",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Classe chat Python",
+                "id": "e20287d8"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "## Quelle est la capitale du P\u00e9rou ?\r\n*Indice : ce n'est pas un animal*",
+                "etiquettes": [
+                    "Capitales"
+                ],
+                "answers": [
+                    {
+                        "text": "Lama",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Lima",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "Loma",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Lime \u00e0 ongles",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Capitale P\u00e9rou",
+                "id": "f01a6362"
+            },
+            {
+                "type": "Alphanumerique",
+                "text": "2 + 2 = ?",
+                "etiquettes": [],
+                "answers": "4",
+                "titre": "Math avanc\u00e9s",
+                "id": "77fb19e0"
+            }
+        ]
+    },
+    {
+        "user": "Testtest",
+        "password": "test",
+        "questions": [
+            {
+                "type": "ChoixMultiple",
+                "text": "## Latex\r\n$$\\sqrt{x^2+1}$$\r\n## Code (Python)\r\n```python\r\ndef test():\r\n    print(\"Goodbye World\")\r\n```\r\n## Code (PHP)\r\n```php\r\nfor($i = 0; i < 10; $i++) {\r\n    echo $i;\r\n}\r\n```\r\n\r\n## Mermaid\r\n```mermaid\r\ngraph LR\r\n    A((1)) -->|a| B(((2)))\r\n    B -->|a| A\r\n    B --> |b| B\r\n    A -->|b| A\r\n```",
+                "etiquettes": [
+                    "Python",
+                    "Markdown"
+                ],
+                "answers": [
+                    {
+                        "text": "$$e^{i\\e}+1=0$$",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "```python\ndef fact(n):\n    if n<2:\n        return ...\n    else:\n        return ...\n```",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "## Aurevoir",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "```mermaid\ngraph TB\nr --- g\nr --- d\ng --- gg\ng --- gd\nd --- dg\nd --- dd\n```",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Est-ce que cette question fonctionne ?",
+                "id": "9e4b1aba"
+            }
+        ]
     }
 ]

@@ -1,9 +1,21 @@
 [
     {
-        "nom": "a",
-        "prenom": "a",
+        "nom": "jean",
+        "prenom": "dujardin",
         "numero_etudiant": "11111111",
-        "password": "a"
+        "password": ""
+    },
+    {
+        "nom": "paul",
+        "prenom": "mirabel",
+        "numero_etudiant": "12345678",
+        "password": ""
+    },
+    {
+        "nom": "james",
+        "prenom": "bond",
+        "numero_etudiant": "11111111",
+        "password": ""
     },
     {
         "nom": "mdr",

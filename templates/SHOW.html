@@ -10,10 +10,10 @@
 <body>
 <center>
    {% include 'includes/navbar_prof.html' %}
-   <button type="button" class="btn btn-labeled btn-success " style="margin: 5px; ;" onclick="imprimer_page()">
+   <button type="button" class="btn btn-labeled btn-success " style="margin: 5px; ;" onclick="printContent()">
       <span class="btn-label navbar-nav ml-auto"><i class="bi bi-printer-fill bi-lg"></i></span>
    </button>
-   <div class="row container">
+   <div class="row container" id= "toPrint">
       {%for question in questions %}
       <div class="card bg-dark col-4"
          style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;">
@@ -41,7 +41,7 @@
                </div>
                {% endfor%}
             {% elif question.type == "Alphanumerique" %}
-               <input type="text" class="form-control" id="reponse" name="reponse" readonly placeholder="Réponse...">
+               <input type="text" class="form-control" id="reponse" name="reponse" readonly>
             {% endif %}
                
          </div>
@@ -50,6 +50,17 @@
    </div>
 
 </center>
+	<script>
+
+		function printContent() {
+			var content = document.getElementById("toPrint").innerHTML;
+			var printWindow = window.open('', '', 'height=500,width=500');
+         printWindow.close();
+			printWindow.document.write(content);
+			printWindow.print();
+		}
+
+	</script>
 </body>
 
 </html>
