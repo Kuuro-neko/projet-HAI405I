@@ -530,7 +530,11 @@ def archive(id_sequence):
                 etudiant['reponses'] = []
                 for question in sequence['questions']:
                     if question['type'] == "ChoixMultiple":
-                        pass # TO DO vérifier les bonnes réponses de l'étudiant à la question
+                        for answer in question["answers"]:
+                            if (answer['isCorrect'] and  not etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]) or (not answer['isCorrect'] and etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]):
+                                etudiant['reponses'].append(False) # Mauvaise réponse (Au moins 1 mauvaise réponse choisie ou 1 bonne réponse non choisie)
+                            else:
+                                etudiant['reponses'].append(True) # Bonne réponse (Toutes les bonnes réponses choisies et aucune mauvaise réponse choisie)
                     elif question['type'] == "Alphanumerique":
                         pass # TO DO vérifier les bonnes réponses de l'étudiant à la question
             # Etudiant : nom, prenom, num_etu, rep {rep1, rep2, ... repN}
