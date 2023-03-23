@@ -11,7 +11,7 @@ from hashlib import sha512
 ################################## Fonctions ##################################
 
 class SequenceDeQuestions:
-    nb_max_alphanumerique = 2
+    nb_max_alphanumerique = 4
 
     def __init__(self, prof, questions):
         if type(questions) != list:
