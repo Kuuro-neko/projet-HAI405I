@@ -23,11 +23,11 @@
                </thead>
                <tbody>
                   {% for etudiant in etudiants %}
-                  <tr>
-                     <th>{{ etudiant.numero_etudiant }}</th>
+                  <tr class="highlighted-row">
+                     <td>{{ etudiant.nom|capitalize }} {{ etudiant.prenom|capitalize }}<br>N° etu : {{ etudiant.numero_etudiant }}</th>
 
                      {% for reponse in etudiant.reponses %}
-                        <td>
+                        <td style="vertical-align: middle;">
                            {% if reponse %}
                               <span class="badge bg-success">Correct</span>
                            {% else %}
