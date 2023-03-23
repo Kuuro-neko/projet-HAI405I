@@ -21,7 +21,7 @@
 
          window.onload = function() {
             // Initialisation de la connexion au serveur
-            socket = io.connect('https://' + location.host);
+            socket = io.connect('http://' + location.host);
             num = "{{ etudiant.numero_etudiant }}"
             console.log(num)
             id = "{{ sequence.id_unique }}"

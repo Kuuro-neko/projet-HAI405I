@@ -25,12 +25,12 @@ class SequenceDeQuestions:
             for question in self.questions:
                 id_string += question["id"]
             self.id_unique = create_unique_id(get_prof_id(prof), id_string)
-        self.prof = prof
+        self.prof = prof 
         self.etudiants = []
         self.etudiants_qui_ont_repondu = []
-        self.etat = 0
+        self.etat = 0 # -1 : En attente de démarrage, 0 : Question 1, 1 : Question 2, etc.
         self.reponsesOuvertes = True
-        self.reponses = {}
+        self.reponses = {}  # {id_question : {reponse : [num_etu, num_etu, ...]}}
         for question in questions:
             self.reponses[question["id"]] = {}
             if question["type"] == "ChoixMultiple":
@@ -146,9 +146,6 @@ class SequenceDeQuestions:
         if etudiant not in self.etudiants:
             self.etudiants.append(etudiant)
         print("Etudiants : " + str(self.etudiants))
-
-    def supprimerEtudiant(self, etudiant):
-        self.etudiants.remove(etudiant)
 
     def getEtudiants(self):
         return self.etudiants

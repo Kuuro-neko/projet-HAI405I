@@ -13,7 +13,7 @@ socketio = SocketIO(app)
 
 host = '127.0.0.1'
 port = 8888
-sequencesCourantes = {}
+sequencesCourantes = {} 
 
 ############################################### ROUTES ###############################################
 
@@ -328,7 +328,7 @@ def sequence():
                         questions_sequence.append(traiter_question(questions[int(id)]))
                     print(questions_sequence)
                     sequence = SequenceDeQuestions(prof, questions_sequence)
-                    sequencesCourantes[sequence.id_unique] = sequence
+                    sequencesCourantes[sequence.id_unique] = sequence 
                     return redirect(url_for('live', id_sequence=sequence.id_unique))
             else : 
                 filtres = []
