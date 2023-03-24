@@ -55,6 +55,8 @@ Génération d'ID uniques : sha256
 
 Lecture de fichier csv : csv
 
+Questions en direct : [Flask-SocketIO](https://flask-socketio.readthedocs.io/en/latest/#) et [Socket.io javascript](https://socket.io/)
+
 ### Autres sources
 
 Background images : https://unsplash.com/fr
