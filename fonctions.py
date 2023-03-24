@@ -10,6 +10,7 @@ from hashlib import sha512
 
 ################################## Fonctions ##################################
 
+
 class SequenceDeQuestions:
     nb_max_alphanumerique = 4
 
@@ -25,48 +26,48 @@ class SequenceDeQuestions:
             for question in self.questions:
                 id_string += question["id"]
             self.id_unique = create_unique_id(get_prof_id(prof), id_string)
-        self.prof = prof 
+        self.prof = prof
         self.etudiants = []
         self.etudiants_qui_ont_repondu = []
-        self.etat = 0 # -1 : En attente de démarrage, 0 : Question 1, 1 : Question 2, etc.
+        # -1 : En attente de démarrage, 0 : Question 1, 1 : Question 2, etc.
+        self.etat = 0
         self.reponsesOuvertes = True
-        self.reponses = {}  # {id_question : {reponse : [num_etu, num_etu, ...]}}
+        # {id_question : {reponse : [num_etu, num_etu, ...]}}
+        self.reponses = {}
         for question in questions:
             self.reponses[question["id"]] = {}
             if question["type"] == "ChoixMultiple":
                 for reponse in question["answers"]:
                     self.reponses[question["id"]][reponse["text"]] = []
-                    
+
     def fermerSequence(self):
         self.etat = -2
         self.archiverSequence()
-        
-    
+
     def questionSuivante(self):
-        print(f"Question suivante :\n Actuelle : {self.etat} / {len(self.questions)}, Suivante : {self.etat + 1} / {len(self.questions)}")
         if self.etat == len(self.questions) - 1:
             self.etat = -2
             self.archiverSequence()
-            print("Sequence archivée")
+            print(f"Sequence {self.id_unique} archivée avec succès")
             return False
         self.etudiants_qui_ont_repondu = []
         self.etat += 1
         self.ouvrirReponses()
-        print(f"Passé à la question {self.etat}")
+        print(f"Passé à la question {self.etat} / {len(self.questions)}")
         return True
 
     def fermerReponses(self):
         self.reponsesOuvertes = False
-    
+
     def ouvrirReponses(self):
         self.reponsesOuvertes = True
 
     def getQuestionCourante(self):
-        return {"question" : self.questions[self.etat], "position" : self.etat + 1, "total" : len(self.questions)}
-    
+        return {"question": self.questions[self.etat], "position": self.etat + 1, "total": len(self.questions)}
+
     def getAllQuestions(self):
         return self.questions
-    
+
     def ajouterReponse(self, num_etu, reponse):
         if not self.reponsesOuvertes:
             raise Exception("Les réponses sont fermées.")
@@ -77,7 +78,8 @@ class SequenceDeQuestions:
         if self.questions[self.etat]["type"] == "ChoixMultiple":
             for i, reponse_possible in enumerate(self.questions[self.etat]["answers"]):
                 if str(i) in reponse and num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]]:
-                    self.reponses[self.questions[self.etat]["id"]][reponse_possible["text"]].append(num_etu)
+                    self.reponses[self.questions[self.etat]["id"]
+                                  ][reponse_possible["text"]].append(num_etu)
             self.etudiants_qui_ont_repondu.append(num_etu)
             return True
         elif self.questions[self.etat]["type"] == "Alphanumerique":
@@ -85,33 +87,37 @@ class SequenceDeQuestions:
             if "," in reponse:
                 reponse = reponse.replace(",", ".")
             if reponse != "" and not re.match("^[0-9]+(\.[0-9]{0,2})?$", reponse):
-                raise Exception("La réponse n'est pas un nombre avec au plus deux chiffres après la virgule.")
+                raise Exception(
+                    "La réponse n'est pas un nombre avec au plus deux chiffres après la virgule.")
             if str(reponse) not in self.reponses[self.questions[self.etat]["id"]].keys():
-                self.reponses[self.questions[self.etat]["id"]][str(reponse)] = []
-                self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
+                self.reponses[self.questions[self.etat]
+                              ["id"]][str(reponse)] = []
+                self.reponses[self.questions[self.etat]
+                              ["id"]][str(reponse)].append(num_etu)
                 self.etudiants_qui_ont_repondu.append(num_etu)
                 return True
             elif num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse]:
-                self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu)
+                self.reponses[self.questions[self.etat]
+                              ["id"]][str(reponse)].append(num_etu)
                 self.etudiants_qui_ont_repondu.append(num_etu)
                 return True
         return False
-    
+
     def getReponsesCourantes(self):
         return self.reponses[self.etat]
-    
+
     def getNbReponsesCourantes(self):
         reponses = dict(self.reponses[self.questions[self.etat]["id"]])
         retour = {}
         retour["answers"] = {}
         total = 0
         if self.questions[self.etat]["type"] == "ChoixMultiple":
-            
+
             for i, reponse in enumerate(reponses):
                 retour["answers"][i] = len(reponses[reponse])
                 total += len(reponses[reponse])
             retour["type"] = "ChoixMultiple"
-        
+
         if self.questions[self.etat]["type"] == "Alphanumerique":
             alphanumerique = {}
             nb_rep_diff = len(reponses)
@@ -119,18 +125,17 @@ class SequenceDeQuestions:
                 alphanumerique[reponse] = len(reponses[reponse])
                 total += len(reponses[reponse])
             if nb_rep_diff > self.nb_max_alphanumerique:
-                alphanumerique = dict(sorted(alphanumerique.items(), key=lambda item: item[1], reverse=True)[:self.nb_max_alphanumerique])
+                alphanumerique = dict(sorted(alphanumerique.items(
+                ), key=lambda item: item[1], reverse=True)[:self.nb_max_alphanumerique])
                 alphanumerique["Autres"] = total - sum(alphanumerique.values())
             retour["type"] = "Alphanumerique"
             retour["answers"] = alphanumerique
-        
+
         retour["total"] = total
         retour["rep_count"] = len(self.etudiants_qui_ont_repondu)
-        print(retour)
         return retour
-    
+
     def getCorrectionCourante(self):
-        print("Correction : " + str(self.questions[self.etat]["answers"]))
         return self.questions[self.etat]["answers"]
 
     def getAllReponses(self):
@@ -139,13 +144,11 @@ class SequenceDeQuestions:
     def setReponseEtudiant(self, etudiant, reponse):
         if re.match("^[a-zA-Z0-9]{8}$", etudiant) and self.reponsesOuvertes:
             self.reponses[self.questions[self.etat]["id"]][etudiant] = reponse
-    
+
     def ajouterEtudiant(self, etudiant):
         print("Ajout de l'étudiant " + etudiant)
-        print("Etudiants : " + str(self.etudiants))
         if etudiant not in self.etudiants:
             self.etudiants.append(etudiant)
-        print("Etudiants : " + str(self.etudiants))
 
     def getEtudiants(self):
         return self.etudiants
@@ -158,13 +161,15 @@ class SequenceDeQuestions:
         except KeyError:
             data[self.prof] = {}
             archive_prof = {}
-        archive_prof[self.id_unique] = {"questions" : self.questions, "reponses" : self.reponses, "etudiants" : self.etudiants, "date" : str(datetime.now().strftime("%d/%m/%Y, %H:%M:%S"))}
+        archive_prof[self.id_unique] = {"questions": self.questions, "reponses": self.reponses,
+                                        "etudiants": self.etudiants, "date": str(datetime.now().strftime("%d/%m/%Y, %H:%M:%S"))}
         data[self.prof] = archive_prof
         with open("archive.json", "w") as fp:
             json.dump(data, fp, indent=4)
 
     def __str__(self) -> str:
         return "SequenceDeQuestions de " + self.prof + " avec " + str(len(self.questions)) + " questions"
+
 
 def create_unique_id(id, string):
     return sha256(str(id).encode() + string.encode()).hexdigest()[:8]
@@ -179,6 +184,7 @@ def get_data():
         data = json.load(fp)
     return data
 
+
 def get_etudiants():
     """
     Retourne le contenu du fichier etudiants.json
@@ -187,6 +193,7 @@ def get_etudiants():
     with open('etudiants.json', 'r') as fp:
         data = json.load(fp)
     return data
+
 
 def get_etudiant(num_etu):
     """
@@ -202,6 +209,7 @@ def get_etudiant(num_etu):
             return retour
     return None
 
+
 def write_data(data):
     """
     Ecrit dans le fichier prof.json
@@ -210,13 +218,15 @@ def write_data(data):
     with open('prof.json', 'w') as fp:
         json.dump(data, fp, indent=4)
 
+
 def write_data_etudiant(data):
-   """
-   Ecrit dans le fichier prof.json
-   In : data (dict)
-   """
-   with open('etudiants.json', 'w') as fp:
-      json.dump(data, fp, indent=4)
+    """
+    Ecrit dans le fichier prof.json
+    In : data (dict)
+    """
+    with open('etudiants.json', 'w') as fp:
+        json.dump(data, fp, indent=4)
+
 
 def get_prof_id(prof):
     """
@@ -317,7 +327,8 @@ def generer_id_question():
     data = get_data()
     for i in range(len(data)):
         for j in range(len(data[i]['questions'])):
-            data[i]['questions'][j]['id'] = create_unique_id(j, data[i]["user"])
+            data[i]['questions'][j]['id'] = create_unique_id(
+                j, data[i]["user"])
     write_data(data)
 
 
@@ -330,6 +341,7 @@ def update_type_question():
                 data[i]['questions'][j]['type'] = "ChoixMultiple"
     write_data(data)
 
+
 def traiter_texte(texte):
     """
     Traite une chaine de caractère pour la visualiser
@@ -337,7 +349,8 @@ def traiter_texte(texte):
     Out : html (str)
     """
     # Markdown et code coloré
-    html = markdown2.markdown(texte, extras=["newline", "fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
+    html = markdown2.markdown(texte, extras=[
+                              "newline", "fenced-code-blocks", "code-friendly", "mermaid"], safe_mode='escape')
     # Mermaid
     soup = BeautifulSoup(html, 'html.parser')
     for code_block in soup.find_all('code'):
@@ -362,73 +375,78 @@ def traiter_question(question):
             answer["text"] = traiter_texte(answer["text"])
     return question
 
+
 def get_all_num_etu(json_data):
-      num_etu = []
-      for etu in json_data:
-         num_etu.append(etu['numero_etudiant'])
-      return num_etu
+    num_etu = []
+    for etu in json_data:
+        num_etu.append(etu['numero_etudiant'])
+    return num_etu
+
 
 def creer_comptes_etudiant(filename):
-   with open((UPLOAD_FOLDER + "/" + filename), 'r') as f:
-      reader = csv.DictReader(f)
-      rows = list(reader)
+    with open((UPLOAD_FOLDER + "/" + filename), 'r') as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
 
-   try:
-      with open('etudiants.json', 'r') as f:
-         data = json.load(f)
-   except:
-      data = []
+    try:
+        with open('etudiants.json', 'r') as f:
+            data = json.load(f)
+    except:
+        data = []
 
-   num_existants = get_all_num_etu(data)
+    num_existants = get_all_num_etu(data)
 
-   for row in rows:
-      if row['numero_etudiant'] not in num_existants:
-         row["password"] = ""
-         row["prenom"] = row["prenom"].replace(" ", "_").replace("'", "_").lower()
-         row["nom"] = row["nom"].replace(" ", "_").replace("'", "_").lower()
-         data.append(row)
+    for row in rows:
+        if row['numero_etudiant'] not in num_existants:
+            row["password"] = ""
+            row["prenom"] = row["prenom"].replace(
+                " ", "_").replace("'", "_").lower()
+            row["nom"] = row["nom"].replace(" ", "_").replace("'", "_").lower()
+            data.append(row)
 
-   with open('etudiants.json', 'w') as f:
-      json.dump(data, f, indent=4)
-      
+    with open('etudiants.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+
 def try_login_etudiant(login, password, etudiant):
-   if etudiant['nom'] + "." + etudiant['prenom'] == login:
-      if etudiant['password'] == "":
-         if password == etudiant['numero_etudiant']:
-            return True
-      else:
-        password = password.encode()
-        password_sign = sha512(password).hexdigest()
-        if password_sign == etudiant['password']:
-            return True
-   return False
+    if etudiant['nom'] + "." + etudiant['prenom'] == login:
+        if etudiant['password'] == "":
+            if password == etudiant['numero_etudiant']:
+                return True
+        else:
+            password = password.encode()
+            password_sign = sha512(password).hexdigest()
+            if password_sign == etudiant['password']:
+                return True
+    return False
+
 
 def get_archives(prof, id_sequence=None):
-   """
-   Retourne les séquences archivées d'un prof
-   In : prof (str)
-   In : id_sequence (str) (optionnel)
-   Out : sequences (list (dict))
-   """
-   with open('archive.json', 'r') as fp:
-      data = json.load(fp)
-   try:
-      if id_sequence == None:
-        print(dict_of_dicts_to_list_of_dicts(data[prof]))
-        return data[prof]
-      else:
-        return data[prof][id_sequence]
-   except:
-      return []
-   
+    """
+    Retourne les séquences archivées d'un prof
+    In : prof (str)
+    In : id_sequence (str) (optionnel)
+    Out : sequences (list (dict))
+    """
+    with open('archive.json', 'r') as fp:
+        data = json.load(fp)
+    try:
+        if id_sequence == None:
+            return data[prof]
+        else:
+            return data[prof][id_sequence]
+    except:
+        return []
+
+
 def dict_of_dicts_to_list_of_dicts(dict_of_dicts):
-   """
-   Transforme un dictionnaire de dictionnaires en une liste de dictionnaires
-   In : dict_of_dicts (dict (dict))
-   Out : list_of_dicts (list (dict))
-   """
-   list_of_dicts = []
-   for key in dict_of_dicts:
-      dict_of_dicts[key]['id'] = key
-      list_of_dicts.append(dict_of_dicts[key])
-   return list_of_dicts
+    """
+    Transforme un dictionnaire de dictionnaires en une liste de dictionnaires
+    In : dict_of_dicts (dict (dict))
+    Out : list_of_dicts (list (dict))
+    """
+    list_of_dicts = []
+    for key in dict_of_dicts:
+        dict_of_dicts[key]['id'] = key
+        list_of_dicts.append(dict_of_dicts[key])
+    return list_of_dicts

@@ -33,8 +33,8 @@
     <form action="" method="GET" id="seq_form">
       <div class="input-group">
         <div class="form-outline">
-          <input type="search" id="seq_input" class="form-control" name="seq_input" placeholder="Identifiant quizz .." maxlength="8"
-            pattern="[a-zA-Z0-9]+" required />
+          <input type="search" id="seq_input" class="form-control" name="seq_input" placeholder="Identifiant quizz .."
+            maxlength="8" pattern="[a-zA-Z0-9]+" required />
         </div>
         <button type="submit" class="btn btn-success">
           <i class="fa fa-search"></i>
@@ -44,11 +44,11 @@
   </section>
   <script>
     /*{{ url_for('live', id_sequence = seq_input) }}*/
-      const form = document.getElementById('seq_form');
-      const input = document.getElementById('seq_input');
-      
-      console.log(input);
-      input.addEventListener('input', () => {
+    const form = document.getElementById('seq_form');
+    const input = document.getElementById('seq_input');
+
+    console.log(input);
+    input.addEventListener('input', () => {
       const value = input.value.trim();
       console.log(value);
       if (value) {

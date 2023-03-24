@@ -8,28 +8,28 @@
 </head>
 
 <body>
-<center>
-   {% include 'includes/navbar_prof.html' %}
-   <button type="button" class="btn btn-labeled btn-success " style="margin: 5px; ;" onclick="printContent()">
-      <span class="btn-label navbar-nav ml-auto"><i class="bi bi-printer-fill bi-lg"></i></span>
-   </button>
-   <div class="row container" id= "toPrint">
-      {%for question in questions %}
-      <div class="card bg-dark col-4"
-         style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;">
-         <div class="card-body"
-            style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
-            <h6 class="card-subtitle mb-2 text-muted">{{ question.titre }}</h6>
-            <label for="qst"><strong class="text-light">Question {{questions.index(question)+1}} :</strong></label>
-            <div id="qst" name="text"
-               style="background-color: #EBFCCB; border-radius: 15px; color:black; height: auto; min-height: 100px; width: 300px; display: flex; text-align: center; justify-content: center; flex-direction:column;">
-               {{ question.text | safe }}
+   <center>
+      {% include 'includes/navbar_prof.html' %}
+      <button type="button" class="btn btn-labeled btn-success " style="margin: 5px; ;" onclick="printContent()">
+         <span class="btn-label navbar-nav ml-auto"><i class="bi bi-printer-fill bi-lg"></i></span>
+      </button>
+      <div class="row container" id="toPrint">
+         {%for question in questions %}
+         <div class="card bg-dark col-4"
+            style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;">
+            <div class="card-body"
+               style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
+               <h6 class="card-subtitle mb-2 text-muted">{{ question.titre }}</h6>
+               <label for="qst"><strong class="text-light">Question {{questions.index(question)+1}} :</strong></label>
+               <div id="qst" name="text"
+                  style="background-color: #EBFCCB; border-radius: 15px; color:black; height: auto; min-height: 100px; width: 300px; display: flex; text-align: center; justify-content: center; flex-direction:column;">
+                  {{ question.text | safe }}
+               </div>
             </div>
-         </div>
-         <div id="answers" class="container my-2 bg-dark w-80 text-light p-2"
-            style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
+            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2"
+               style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
 
-            {% if question.type == "ChoixMultiple" %}
+               {% if question.type == "ChoixMultiple" %}
                {% for answer in question.answers %}
                <div class=" answer form-check form-switch"
                   style="display:flex; flex-direction: row;justify-content: center;align-items: center; padding: 10px;">
@@ -40,27 +40,27 @@
                   </div>
                </div>
                {% endfor%}
-            {% elif question.type == "Alphanumerique" %}
+               {% elif question.type == "Alphanumerique" %}
                <input type="text" class="form-control" id="reponse" name="reponse" readonly>
-            {% endif %}
-               
+               {% endif %}
+
+            </div>
          </div>
+         {%endfor%}
       </div>
-      {%endfor%}
-   </div>
 
-</center>
-	<script>
+   </center>
+   <script>
 
-		function printContent() {
-			var content = document.getElementById("toPrint").innerHTML;
-			var printWindow = window.open('', '', 'height=500,width=500');
+      function printContent() {
+         var content = document.getElementById("toPrint").innerHTML;
+         var printWindow = window.open('', '', 'height=500,width=500');
          printWindow.close();
-			printWindow.document.write(content);
-			printWindow.print();
-		}
+         printWindow.document.write(content);
+         printWindow.print();
+      }
 
-	</script>
+   </script>
 </body>
 
 </html>

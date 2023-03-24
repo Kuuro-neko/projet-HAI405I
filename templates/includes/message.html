@@ -1,6 +1,5 @@
 <html>
    <body>
-
       {% if error is defined %}
       {% if error != "" %}
       <div class=" alert alert-danger alert-dismissible fade show" role="alert" id = "danger" style="">
@@ -19,8 +18,8 @@
          {% endif %}
       {% endif %}
    </body>
+   
    <script type="text/javascript">
-
       if((document.getElementById("danger") != null)){
          
          function showDanger() {
@@ -40,7 +39,6 @@
          
             setTimeout("showSuccess()", 5000); // aprés 5 sec
       }
-
      </script>
 
 </html>

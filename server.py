@@ -49,7 +49,6 @@ def login():
         password = password.encode()
         password_sign = sha512(password).hexdigest()
         for users in data:
-            print(f"login: {login} | password: {password_sign}, user: {users['user']} | password: {users['password']}")
             if users['user'] == login and users['password'] == password_sign:
                 session['user'] = login
                 session['user_type'] = "prof"
@@ -293,7 +292,6 @@ def creation_comptes_etudiants():
     try:
         if session['user_type'] == "prof":
             if request.method == 'POST':
-                print(request.files)
                 csv_file = request.files['csv_file']
                 if csv_file.filename == '':
                     return redirect(request.url)
@@ -312,8 +310,6 @@ def creation_comptes_etudiants():
 @app.route('/sequence', methods=['GET', 'POST'])
 def sequence():
     try:
-        print(session['user_type'])
-        print(session['user'])
         if session['user_type'] == "prof":
             prof = session['user']
             questions = get_questions(prof)
@@ -326,7 +322,6 @@ def sequence():
                     questions_sequence = []
                     for id in tabChoix:
                         questions_sequence.append(traiter_question(questions[int(id)]))
-                    print(questions_sequence)
                     sequence = SequenceDeQuestions(prof, questions_sequence)
                     sequencesCourantes[sequence.id_unique] = sequence 
                     return redirect(url_for('live', id_sequence=sequence.id_unique))
@@ -402,7 +397,6 @@ def changePass():
 def wait():
     try:
         if session['user_type'] == "etudiant":
-            print(json.loads(session['user']))
             return render_template("wait.html", etudiant=json.loads(session['user']))
         return render_template("index.html", name=None, error="Vous devez être connecté en tant qu'étudiant pour accéder à cette page")
     except Exception:
@@ -413,12 +407,9 @@ def wait():
 
 @app.route('/live/<string:id_sequence>', methods=['GET'])
 def live(id_sequence):
-    for sequence in sequencesCourantes.values():
-        print(sequence)
     if id_sequence not in sequencesCourantes:
         return redirect(url_for('index', error="Cette séquence n'existe pas."))
     sequence = sequencesCourantes[id_sequence]
-    print(len(sequence.getAllQuestions()))
     if session['user_type'] == "etudiant":
         etudiant = json.loads(session['user'])
         return render_template('live_etudiant.html', etudiant=etudiant, sequence=sequence)
@@ -459,8 +450,6 @@ def send_answer(data):
         confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
         emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
         reponses = sequencesCourantes[sid].getNbReponsesCourantes()
-        print("J'envoie ça au prof :")
-        print(reponses)
         emit('refresh-answers', reponses, room=sid) # Rafraichissement des stats pour le prof
     except Exception as e:
         emit('error', {'message': str(e)})
@@ -475,8 +464,7 @@ def stop_answers(data):
 def show_correction(data):
     sid = data["sequence_id"]
     correction = sequencesCourantes[sid].getCorrectionCourante()
-    print("Correction : ")
-    print(correction)
+    print("Correction envoyée")
     emit('show-correction', correction, broadcast=True)
 
 @socketio.on('next-question')
@@ -510,7 +498,6 @@ def toggleDisplayAnswers(data):
 @app.route('/archives')
 def archives():
     try:
-        print(session['user_type'])
         if session['user_type'] == "prof":
             archives = dict_of_dicts_to_list_of_dicts(get_archives(session['user']))
             return render_template('archives.html', sequences=archives)
