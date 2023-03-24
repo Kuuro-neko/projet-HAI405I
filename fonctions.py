@@ -158,7 +158,7 @@ class SequenceDeQuestions:
         except KeyError:
             data[self.prof] = {}
             archive_prof = {}
-        archive_prof[self.id_unique] = {"questions" : self.questions, "reponses" : self.reponses, "etudiants" : self.etudiants, "date" : str(datetime.now())}
+        archive_prof[self.id_unique] = {"questions" : self.questions, "reponses" : self.reponses, "etudiants" : self.etudiants, "date" : str(datetime.now().strftime("%d/%m/%Y, %H:%M:%S"))}
         data[self.prof] = archive_prof
         with open("archive.json", "w") as fp:
             json.dump(data, fp, indent=4)

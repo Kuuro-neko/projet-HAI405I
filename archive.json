@@ -83,7 +83,7 @@
                 "22222222",
                 "33333333"
             ],
-            "date": "2023-03-20 14:46:15.518913"
+            "date": "2023-03-20, 14:46:15"
         }
     },
     "b8114371": {
@@ -256,7 +256,7 @@
             "etudiants": [
                 "00000000"
             ],
-            "date": "2023-03-21 23:26:01.792668"
+            "date": "2023-03-21, 23:26:01"
         },
         "da182f4e": {
             "questions": [
@@ -351,7 +351,7 @@
             "etudiants": [
                 "00000000"
             ],
-            "date": "2023-03-21 23:28:48.489551"
+            "date": "2023-03-21, 23:28:48"
         },
         "b8114371": {
             "questions": [
@@ -433,7 +433,221 @@
                 }
             },
             "etudiants": [],
-            "date": "2023-03-22 16:17:06.334346"
+            "date": "2023-03-22, 16:17:06"
+        }
+    },
+    "GerrardLampard": {
+        "a1ab26a2": {
+            "questions": [
+                {
+                    "type": "ChoixMultiple",
+                    "text": "<p>\n Que vaut :\n$$e^{i\\pi}+1$$\n</p>\n",
+                    "etiquettes": [
+                        "Math"
+                    ],
+                    "answers": [
+                        {
+                            "text": "<p>\n 1\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n -1\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n 0\n</p>\n",
+                            "isCorrect": "true"
+                        }
+                    ],
+                    "titre": "Math",
+                    "id": "922a30f6"
+                },
+                {
+                    "type": "ChoixMultiple",
+                    "text": "<p>\n Quelle est la capitale de la France ?\n</p>\n",
+                    "etiquettes": [
+                        "Capitales"
+                    ],
+                    "answers": [
+                        {
+                            "text": "<p>\n Marseille\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n Nancy\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n Paris\n</p>\n",
+                            "isCorrect": "true"
+                        },
+                        {
+                            "text": "<p>\n Brest\n</p>\n",
+                            "isCorrect": "false"
+                        }
+                    ],
+                    "titre": "Capitale France",
+                    "id": "640fa008"
+                },
+                {
+                    "type": "ChoixMultiple",
+                    "text": "<p>\n Quelle est la bonne impl\u00e9mentation en Python du diagramme suivant ?\n</p>\n<pre class=\"mermaid-pre\"><div class=\"mermaid\">classDiagram\n    class Chat\n    Chat : -String nom\n    Chat : -int age\n    Chat : +plusVieuxQue(Chat) boolean\n</div></pre>\n",
+                    "etiquettes": [
+                        "POO",
+                        "UML",
+                        "Python"
+                    ],
+                    "answers": [
+                        {
+                            "text": "<pre><div class=\"mermaid\">class Chat:\n  def __init__(self, nom, age):\n    self.name = nom\n    self.age = age\n  def plusVieuxQue(autre):\n    return autre.age &lt; self.age\n</div></pre>\n",
+                            "isCorrect": "true"
+                        },
+                        {
+                            "text": "<pre><div class=\"mermaid\">class Chat(nom, age):\n  def __init__(self):\n    self.name = nom\n    self.age = age\n  def plusVieuxQue(autre):\n    return autre.age &gt; self.age\n</div></pre>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<pre><div class=\"mermaid\">public class Chat() {\n  private String nom;\n  private int age;\n  public Chat(String n, int a){\n    this.nom = n;\n    this.age = a;\n  }\n  public boolean plusVieuxQue(Chat autre) {\n  return autre.getAge() &lt; this.age;\n}\npublic int getAge() {\n  return this.age;\n}\n</div></pre>\n",
+                            "isCorrect": "false"
+                        }
+                    ],
+                    "titre": "Classe chat Python",
+                    "id": "e20287d8"
+                },
+                {
+                    "type": "ChoixMultiple",
+                    "text": "<h2>\n Quelle est la capitale du P\u00e9rou ?\n</h2>\n<p>\n <em>\n  Indice : ce n'est pas un animal\n </em>\n</p>\n",
+                    "etiquettes": [
+                        "Capitales"
+                    ],
+                    "answers": [
+                        {
+                            "text": "<p>\n Lama\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n Lima\n</p>\n",
+                            "isCorrect": "true"
+                        },
+                        {
+                            "text": "<p>\n Loma\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n Lime \u00e0 ongles\n</p>\n",
+                            "isCorrect": "false"
+                        }
+                    ],
+                    "titre": "Capitale P\u00e9rou",
+                    "id": "f01a6362"
+                }
+            ],
+            "reponses": {
+                "922a30f6": {
+                    "<p>\n 1\n</p>\n": [
+                        "11111112",
+                        "12345678"
+                    ],
+                    "<p>\n -1\n</p>\n": [
+                        "11111113"
+                    ],
+                    "<p>\n 0\n</p>\n": []
+                },
+                "640fa008": {
+                    "<p>\n Marseille\n</p>\n": [],
+                    "<p>\n Nancy\n</p>\n": [
+                        "12345678"
+                    ],
+                    "<p>\n Paris\n</p>\n": [
+                        "11111113"
+                    ],
+                    "<p>\n Brest\n</p>\n": [
+                        "11111112"
+                    ]
+                },
+                "e20287d8": {
+                    "<pre><div class=\"mermaid\">class Chat:\n  def __init__(self, nom, age):\n    self.name = nom\n    self.age = age\n  def plusVieuxQue(autre):\n    return autre.age &lt; self.age\n</div></pre>\n": [
+                        "11111113",
+                        "11111112"
+                    ],
+                    "<pre><div class=\"mermaid\">class Chat(nom, age):\n  def __init__(self):\n    self.name = nom\n    self.age = age\n  def plusVieuxQue(autre):\n    return autre.age &gt; self.age\n</div></pre>\n": [
+                        "12345678"
+                    ],
+                    "<pre><div class=\"mermaid\">public class Chat() {\n  private String nom;\n  private int age;\n  public Chat(String n, int a){\n    this.nom = n;\n    this.age = a;\n  }\n  public boolean plusVieuxQue(Chat autre) {\n  return autre.getAge() &lt; this.age;\n}\npublic int getAge() {\n  return this.age;\n}\n</div></pre>\n": []
+                },
+                "f01a6362": {
+                    "<p>\n Lama\n</p>\n": [],
+                    "<p>\n Lima\n</p>\n": [],
+                    "<p>\n Loma\n</p>\n": [],
+                    "<p>\n Lime \u00e0 ongles\n</p>\n": []
+                }
+            },
+            "etudiants": [
+                "11111113",
+                "12345678",
+                "11111112"
+            ],
+            "date": "2023-03-24, 00:57:31"
+        },
+        "d4f27692": {
+            "questions": [
+                {
+                    "type": "ChoixMultiple",
+                    "text": "<p>\n Que vaut :\n$$e^{i\\pi}+1$$\n</p>\n",
+                    "etiquettes": [
+                        "Math"
+                    ],
+                    "answers": [
+                        {
+                            "text": "<p>\n 1\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n -1\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n 0\n</p>\n",
+                            "isCorrect": "true"
+                        }
+                    ],
+                    "titre": "Math",
+                    "id": "922a30f6"
+                },
+                {
+                    "type": "Alphanumerique",
+                    "text": "<p>\n 2 + 2 = ?\n</p>\n",
+                    "etiquettes": [],
+                    "answers": "4",
+                    "titre": "Math avanc\u00e9s",
+                    "id": "77fb19e0"
+                }
+            ],
+            "reponses": {
+                "922a30f6": {
+                    "<p>\n 1\n</p>\n": [],
+                    "<p>\n -1\n</p>\n": [
+                        "12345678"
+                    ],
+                    "<p>\n 0\n</p>\n": [
+                        "11111113",
+                        "12345678"
+                    ]
+                },
+                "77fb19e0": {
+                    "4": [
+                        "11111113"
+                    ],
+                    "4.56": [
+                        "12345678"
+                    ]
+                }
+            },
+            "etudiants": [
+                "11111113",
+                "12345678"
+            ],
+            "date": "24/03/2023, 03:49:35"
         }
     }
 }
