@@ -7,7 +7,6 @@ import os
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
-UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 socketio = SocketIO(app)
 

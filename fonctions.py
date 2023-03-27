@@ -3,10 +3,13 @@ import json
 import markdown2
 from bs4 import BeautifulSoup
 from hashlib import sha256
-from server import UPLOAD_FOLDER
 import re
 from datetime import datetime
 from hashlib import sha512
+from random import randint, shuffle
+import copy
+
+UPLOAD_FOLDER = './uploads'
 
 ################################## Fonctions ##################################
 
@@ -450,3 +453,134 @@ def dict_of_dicts_to_list_of_dicts(dict_of_dicts):
         dict_of_dicts[key]['id'] = key
         list_of_dicts.append(dict_of_dicts[key])
     return list_of_dicts
+
+
+############################################### Generation de controles ################################################
+
+def generer_repartition(settings, nb_questions):
+    """
+    Genere une répartition de questions pour un controle
+    In : settings (dict (tuple (int, int))) : Les paramètres des étiquettes, de la forme : {etiquette1 : (min1, max1), etiquette2 : (min2, max2), ...}
+    In : nb_questions (int) : Le nombre de questions à générer
+    """
+    nb_q = nb_questions
+    result = {}
+    for key in settings:
+        result[key] = 0
+
+    # Assigner le minimum de questions de chaque etiquette
+    for key in settings:
+        result[key] = settings[key][0]
+        nb_questions -= settings[key][0]
+        settings[key] = (0, settings[key][1] - settings[key][0])
+
+    #  Vérifier que les minimum ne sont pas supérieurs au nombre de questions demandées
+    if nb_questions < 0:
+        raise ValueError(f"Trop de questions choisies au minimum ({nb_q - nb_questions}) pour créer ce controle de {nb_q} questions")
+    
+    # Vérifier que le nombre de questions demandées est supérieur au nombre de questions disponibles
+    nb_questions_dispo = 0
+    for key in settings:
+        nb_questions_dispo += settings[key][1]
+    if nb_questions > nb_questions_dispo:
+        raise ValueError(f"Pas assez de questions choisies ({nb_questions_dispo}) pour créer ce controle de {nb_q} questions")
+
+    # Assigner ce qui reste
+    while nb_questions > 0:
+        e = list(settings.keys())[randint(0, len(settings)-1)]
+        if settings[e][1] > 0:
+            result[e] += 1
+            settings[e] = (settings[e][0], settings[e][1] - 1)
+            nb_questions -= 1
+
+    return result
+
+def generer_controle(settings, questions, nb_questions, mode="aleatoire"):
+    """
+    Génère un controle aléatoire
+    In : settings (dict (tuple (int, int))) : Les paramètres des étiquettes, de la forme : {etiquette1 : (min1, max1), etiquette2 : (min2, max2), ...}
+    In : questions (dict) : Dictionnaire contenant les questions disponibles
+    In : nb_questions (int) : Nombre de questions à générer
+    """
+    controle = []
+    questions_dispo = dict(questions)
+
+    # Randomise le nombre de questions de chaque etiquettes entre les bornes (min, max) fournies dans settings
+    repartition = generer_repartition(settings, nb_questions)
+
+    # Ajoute les questions au controle
+    for etiquette in repartition:
+        while repartition[etiquette] > 0:
+            try:
+                index = randint(0, len(questions_dispo[etiquette])-1)
+                if questions_dispo[etiquette][index] not in controle:
+                    questions_dispo[etiquette][index]['etiquettes'] = [etiquette] # Redéfinir l'étiquette de la question à celle définie par la répartition pour éviter les problèmes pour le tri ordonné des questions
+                    controle.append(questions_dispo[etiquette][index])
+                    questions_dispo[etiquette].pop(index)
+                    repartition[etiquette] -= 1
+            except ValueError as exc:
+                raise ValueError("Pas assez de questions pour créer un controle") from exc
+    
+    # Tri des questions par titre (ordre alphabétique) pour éviter les doublons de contrôles
+    controle.sort(key=lambda x: x['titre'])
+
+    return controle
+    
+def generer_n_controles(nb_controles, nb_questions, settings, data, mode="aleatoire"):
+    """
+    Génère un certain nombre de controles
+    In : nb_controles (int) Le nombre de controles à générer
+    In : nb_questions (int) Le nombre de questions par controle
+    In : settings (dict (tuple (int, int))) : Les paramètres des étiquettes, de la forme : {etiquette1 : (min1, max1), etiquette2 : (min2, max2), ...}
+    In : data (list (dict)) Les questions
+    """
+    print(f"Creation de controles avec {nb_controles} controles de {nb_questions} questions")
+    print(f"Paramètres des étiquettes : {settings}")
+    # Création d'un dictionnaire contenant les questions disponibles pour chaque étiquette demandée
+    questions_dispo = {}
+    for etiquette in settings:
+        questions_dispo[etiquette] = []
+    
+    # Tri des questions par etiquette dans le dictionnaire questions_dispo
+    for etiquette in settings:
+        for question in data:
+            if etiquette in question['etiquettes']:
+                questions_dispo[etiquette].append(question)
+
+    # Génération des controles
+    tous_controles = []
+    for i in range(0, nb_controles):
+        controle = generer_controle(copy.deepcopy(settings), copy.deepcopy(questions_dispo), nb_questions, mode)
+        #Vérification que le nouveau controle ne contient pas les mêmes questions que les autres
+        for controle_exist in tous_controles:
+            if controle_exist == controle:
+                controle = generer_controle(copy.deepcopy(settings), copy.deepcopy(questions_dispo), nb_questions, mode)
+        tous_controles.append(controle)
+    
+    # Spécification sur l'ordre des questions
+    if mode == "aleatoire":
+        for controle in tous_controles:
+            shuffle(controle)
+    elif mode == "ordre":
+        for controle in tous_controles:
+            controle.sort(key=lambda x: x['etiquettes'][0])
+
+    return tous_controles
+
+
+# Exemple de generation de 88 controles de 10 questions avec les paramètres suivants : {"Java" : (3, 5), "PHP" : (3, 4), "Python" : (2, 4)}
+
+with open('test/test.json', 'r') as fp:
+    data = json.load(fp)
+
+nb_controles = 88
+nb_questions = 10
+settings = {"Java" : (3, 5), "PHP" : (3, 4), "Python" : (2, 4)}
+
+controles = generer_n_controles(nb_controles, nb_questions, settings, data, "ordre")
+
+for controle in controles:
+    print("Controle : ", end=" ")
+    for question in controle:
+        print(question['etiquettes'][0], end=" ")
+    print()

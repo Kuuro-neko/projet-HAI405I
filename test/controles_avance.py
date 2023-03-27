@@ -2,20 +2,15 @@ import copy
 import json
 from random import randint
 
-with open('test.json') as f:
+with open('test/test.json') as f:
     data = json.load(f)
 
 nb_controles = 88
 nb_questions = 10
 settings = {"Java" : (3, 5), "PHP" : (3, 4), "Python" : (2, 4)}
-questions_dispo = {"Java" :[], "PHP" : [], "Python" : []}
 
-for etiquette in settings:
-    for question in data:
-        if etiquette in question['etiquettes']:
-            questions_dispo[etiquette].append(question)
 
-print(f"Creation de controles avec Java: {settings['Java']}, PHP: {settings['PHP']}, Python: {settings['Python']}\n")
+
 
 def generer_repartition(settings, nb_questions):
     result = {}
@@ -73,24 +68,27 @@ def generer_controle(settings, questions, nb_questions):
 
         return controle
     
+def generer_controles(nb_controles, nb_questions, settings, data):
+    print(f"Creation de controles avec {nb_controles} controles de {nb_questions} questions")
+    print(f"Paramètres des étiquettes : {settings}")
+    questions_dispo = {}
+    for etiquette in settings:
+        questions_dispo[etiquette] = []
+    for etiquette in settings:
+        for question in data:
+            if etiquette in question['etiquettes']:
+                questions_dispo[etiquette].append(question)
 
-tous_controles = []
-for i in range(0, nb_controles):
+    tous_controles = []
+    for i in range(0, nb_controles):
+        controle = generer_controle(copy.deepcopy(settings), copy.deepcopy(questions_dispo), nb_questions)
+        #Vérification que le nouveau controle ne contient pas les mêmes questions que les autres
+        for controle_exist in tous_controles:
+            if controle_exist == controle:
+                controle = generer_controle(copy.deepcopy(settings), copy.deepcopy(questions_dispo), nb_questions)
+        tous_controles.append(controle)
     
-    controle = generer_controle(copy.deepcopy(settings), copy.deepcopy(questions_dispo), nb_questions)
-    #Vérification que le nouveau controle ne contient pas les mêmes questions que les autres
-    for controle_exist in tous_controles:
-        if controle_exist == controle:
-            print("Controle déjà existant")
-            controle = generer_controle(copy.deepcopy(settings), copy.deepcopy(questions_dispo), nb_questions)
-    tous_controles.append(controle)
-
-    print(f"Controle {i+1}", end=" : {")
-    for question in controle:
-        print(question['text'], end="; ")
-    print("}\n")
+    return tous_controles
 
 
-
-
-
+print(generer_controles(nb_controles, nb_questions, settings, data))
