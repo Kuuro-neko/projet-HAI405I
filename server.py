@@ -266,6 +266,28 @@ def generation():
     except KeyError:
         return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
 
+@app.route('/generation_temp')
+def generation_temp():
+    try:
+        if session['user_type'] == "prof":
+            return render_template('generation_temp.html')
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
+    except KeyError:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
+
+@app.route('/controle', methods=['GET', 'POST'])
+def controle():
+    try:
+        if session['user_type'] == "prof":
+            if request.method == 'POST':
+                # To do : generation controle
+                return render_template("controle.html", controles=None)
+            else:
+                # To do : récupérer les etiquettes des questions du prof et les stats puis les envoyer a la page
+                return render_template("controle.html", settings=None)
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
+    except KeyError:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
 
 @app.route('/show', methods=['POST'])
 def show():

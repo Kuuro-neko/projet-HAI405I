@@ -567,7 +567,7 @@ def generer_n_controles(nb_controles, nb_questions, settings, data, mode="aleato
 
     return tous_controles
 
-
+"""
 # Exemple de generation de 88 controles de 10 questions avec les paramètres suivants : {"Java" : (3, 5), "PHP" : (3, 4), "Python" : (2, 4)}
 
 with open('test/test.json', 'r') as fp:
@@ -584,3 +584,4 @@ for controle in controles:
     for question in controle:
         print(question['etiquettes'][0], end=" ")
     print()
+"""
