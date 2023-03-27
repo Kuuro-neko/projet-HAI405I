@@ -541,4 +541,4 @@ def archive(id_sequence):
     
 if __name__ == '__main__':
     # Lancement du serveur
-    socketio.run(app, host=host, port=port, debug=False)
+    socketio.run(app, host=host, port=port, debug=True)
