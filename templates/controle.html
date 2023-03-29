@@ -11,15 +11,61 @@
       integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
       integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+
+   <!-- Sliders de selection du nombre de questions -->
+   <script src="{{ url_for('static', filename = '/rslider/rSlider.js') }} "></script>
+   <link href="{{ url_for('static', filename = '/rslider/rSlider.css') }}" rel="stylesheet">
 </head>
 
-<body>
+<body  class="text-light">
    <center>
       {% include 'includes/navbar_prof.html' %}
       <div>
-         <h3 class="text-light" style="margin: 10px;">Génération d'un contrôle</h3>
+         <h3 style="margin: 10px;">Génération d'un contrôle</h3>
       </div>
-      to do :p
+      <form method="post">
+         <fieldset>
+            <div class="container" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+               <label class="radio-id">
+                  Etudiants identifiés
+                  <input type="radio" name="identification" value="identifies" checked>
+               </label>
+               <label class="radio-id">
+                  Etudiants anonymes
+                  <input type="radio" name="identification" value="anonymes">
+               </label>
+            </div>
+         </fieldset>
+         <h3>Composition du contrôle</h3>
+         <input type="number" name="nb_questions" id="nb_questions" placeholder="Nombre de questions" min="1" max="100" required>
+         <div class="container" id="range-qst">
+            {% for etiquette in etiquettes %}
+               <div>
+                  <input type="text" id="slider-{{ etiquette.etiquette }}" class="slider"><label class="sl-label" for="slider-{{ etiquette.etiquette }}" >{{ etiquette.etiquette }}</label>
+               </div>
+            {% endfor %}
+         </div>
+         <input type="submit" value="Générer">
+      </form>
+      <script>
+         var cont = document.getElementById("range-qst");
+         var contWidth = cont.offsetWidth; 
+         {% for etiquette in etiquettes %}
+            var slider = new rSlider({
+               target: '#slider-{{ etiquette.etiquette }}',
+               values: {min: 0, max: "{{ etiquette.nb }}"},
+               range: true,
+               set: [0, "{{ etiquette.nb }}"],
+               scale: true,
+               labels: true,
+               step: 1,
+               width: contWidth * 0.6,
+               onChange: function(vals) {
+                  console.log(vals);
+               }
+            });
+         {% endfor %}
+      </script>
    </center>
 </body>
 

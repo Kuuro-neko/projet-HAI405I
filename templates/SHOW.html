@@ -56,7 +56,7 @@
       function printContent() { 
          var content = document.getElementsByClassName("toPrint");
          var printWindow = window.open();
-         printWindow.document.write("<html><head><title>Impression de contrôle</title></head><body>");
+         printWindow.document.write("<html><head><title>QCM</title></head><body><center>");
          //printWindow.close();
          for (var i = 0; i < content.length; i++) {
             var newcontent = content[i].cloneNode(true);
@@ -65,7 +65,7 @@
             }
             printWindow.document.write(newcontent.outerHTML);
          }
-         printWindow.document.write("</body></html>");
+         printWindow.document.write("</center></body></html>");
          printWindow.print();
       }
          

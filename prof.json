@@ -805,6 +805,135 @@
                 "answers": "4",
                 "titre": "Math avanc\u00e9s",
                 "id": "77fb19e0"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "Combien font 42 * 69 ?",
+                "etiquettes": [],
+                "answers": [
+                    {
+                        "text": "9288",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "2898",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "9828",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "9882",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Multiplication simple ",
+                "id": "b9b3986c"
+            },
+            {
+                "type": "Alphanumerique",
+                "text": "Quel est le mot cl\u00e9 qui permet de faire h\u00e9riter \u00e0 une classe une autre classe ?\r\n```java\r\npublic class MaClasse ??? AutreClasse {...}\r\n```",
+                "etiquettes": [
+                    "Java"
+                ],
+                "answers": "extends",
+                "titre": "Deviner \"extends\"",
+                "id": "1293a05c"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "Comment afficher un message dans la console en Python ET en Java",
+                "etiquettes": [
+                    "Java",
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "System.out.println(\"Salut\");",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "console.log(\"Bonjour\");",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "print(\"Bonne ann\u00e9e\")",
+                        "isCorrect": "true"
+                    }
+                ],
+                "titre": "Console log",
+                "id": "ad5060f6"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "Comment faire une puissance carr\u00e9e de la variable n en python ?",
+                "etiquettes": [
+                    "Math",
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "```py\np = n*n\n```",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "```py\np = 0\nfor i in range(n):\n    p = p + i\n```",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "```py\np = n+n+n+n\n```",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "```py\np = n**2\n```",
+                        "isCorrect": "true"
+                    },
+                    {
+                        "text": "```py\np = 2**n\n```",
+                        "isCorrect": "false"
+                    }
+                ],
+                "titre": "Puissance carr\u00e9e python",
+                "id": "59ebf023"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "Comment \u00e9crire \"non (a ET b) OU c\" en Python ?",
+                "etiquettes": [
+                    "Python"
+                ],
+                "answers": [
+                    {
+                        "text": "```java\n!(a && b) || c\n```",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "```py\nnot (a and b) or c\n```",
+                        "isCorrect": "true"
+                    }
+                ],
+                "titre": "Operateur booleens",
+                "id": "3a1cec0f"
+            },
+            {
+                "type": "ChoixMultiple",
+                "text": "Est ce que ce morceau de code compile ?\r\n```java\r\nArrayList<int> maListe = new ArrayList<>();\r\nint monEntier = 4;\r\nmaListe.add(monEntier);\r\n```",
+                "etiquettes": [
+                    "Java"
+                ],
+                "answers": [
+                    {
+                        "text": "Oui",
+                        "isCorrect": "false"
+                    },
+                    {
+                        "text": "Non",
+                        "isCorrect": "true"
+                    }
+                ],
+                "titre": "Classe wrapper int / Integer",
+                "id": "c805c663"
             }
         ]
     },

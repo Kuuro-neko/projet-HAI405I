@@ -178,17 +178,54 @@ code {
     flex-direction:column;
 }
 
-@media print {
-    /* set every element except .toPrint and its child to display none */
-    * {
-        display: none;
-    }
-    .toPrint {
-        display: block;
-    }
-    .toPrint * {
-        display: block;
-    }
+.radio-id {
+    width: fit-content;
+    min-width: 20%;
+    height: 40px;
+    border-radius: 50px;
+    background-color: #343a40;
+    margin: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: all 0.3s ease-in-out;
+}
+
+.radio-id:hover {
+    background-color: rgb(94, 94, 94);
+}
+
+/* target the radio-id that have a checked input in its children */
+.radio-id > input:checked + .radio-id {
+    background-color: #28a746de !important;
+}
+
+.radio-id input {
+    display: none;
+}
+
+#range-qst {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#range-qst > * {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 60px;
+    justify-content: flex-start;
+}
+
+.sl-label {
+    margin-left: 50px;
+    font-weight: 600;
+    font-size: 22px;
 }
 
 

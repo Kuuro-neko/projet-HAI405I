@@ -284,7 +284,18 @@ def controle():
                 return render_template("controle.html", controles=None)
             else:
                 # To do : récupérer les etiquettes des questions du prof et les stats puis les envoyer a la page
-                return render_template("controle.html", settings=None)
+                questions = get_questions(session['user'])
+                etiquette_dict = {}
+                for question in questions:
+                    for etiquette in question['etiquettes']:
+                        if etiquette in etiquette_dict:
+                            etiquette_dict[etiquette] += 1
+                        else:
+                            etiquette_dict[etiquette] = 1
+                etiquettes = []
+                for etiquette, nb in etiquette_dict.items():
+                    etiquettes.append({"etiquette": etiquette, "nb": nb})
+                return render_template("controle.html", etiquettes=etiquettes)
         return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
     except KeyError:
         return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
