@@ -6,12 +6,8 @@
    {% include 'includes/head_visualiser.html' %}
    <script src="{{ url_for('static', filename = 'questions_functions.js') }} "></script>
 
-   <!-- script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.1/purify.min.js" integrity="sha512-TU4FJi5o+epsahLtM9OFRvH2gXmmlzGlysk9wtTFgbYbMvFzh3Cw1l3ubnYIvBiZCC/aurRHS408TeEbcuOoyQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
-      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script -->
-      
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -20,16 +16,15 @@
       <button type="button" class="btn btn-labeled btn-success " style="margin: 5px; ;" onclick="printContent()">
          <span class="btn-label navbar-nav ml-auto"><i class="bi bi-printer-fill bi-lg"></i></span>
       </button>
-      <div class="row container" id="toPrint">
+      <div class="questions-container" id="toPrint">
          {%for question in questions %}
-         <div class="card bg-dark col-4 toPrint"
-            style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;">
+         <div class="card bg-dark col-4 toPrint" id="question-{{questions.index(question)}}"
+            style="width: 40%; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;">
             <div class="card-body"
                style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
                <h6 class="card-subtitle mb-2 text-muted">{{ question.titre }}</h6>
                <label for="qst"><strong class="text-light">Question {{questions.index(question)+1}} :</strong></label>
-               <div id="qst" name="text"
-                  style="background-color: #EBFCCB; border-radius: 15px; color:black; height: auto; min-height: 100px; width: 300px; display: flex; text-align: center; justify-content: center; flex-direction:column;">
+               <div id="qst" name="text" class="qst-text">
                   {{ question.text | safe }}
                </div>
             </div>
@@ -48,7 +43,7 @@
                </div>
                {% endfor%}
                {% elif question.type == "Alphanumerique" %}
-               <input type="text" class="form-control" id="reponse" name="reponse" readonly>
+               <input type="text" style="width: 60%;" class="form-control" id="reponse" name="reponse" placeholder="Nombre avec 0 à 2 décimales" readonly>
                {% endif %}
 
             </div>
@@ -57,44 +52,23 @@
       </div>
 
    </center>
-   
    <script>
-      /*
-      window.jsPDF = window.jspdf.jsPDF;
-      window.html2canvas = html2canvas;
-      */
-
-      function printContent() {
-      
+      function printContent() { 
          var content = document.getElementsByClassName("toPrint");
          var printWindow = window.open();
+         printWindow.document.write("<html><head><title>Impression de contrôle</title></head><body>");
          //printWindow.close();
          for (var i = 0; i < content.length; i++) {
-            printWindow.document.write(content[i].innerHTML);
-            // Get the height of the printed content
-            var height = printWindow.document.body.scrollHeight;
-            console.log(height);
-            
+            var newcontent = content[i].cloneNode(true);
+            if (i > 0) {
+               newcontent.style.breakInside = "avoid-page";
+            }
+            printWindow.document.write(newcontent.outerHTML);
          }
+         printWindow.document.write("</body></html>");
          printWindow.print();
- 
-        /*
-         var doc = new jsPDF();
- 
-         var element = document.getElementsByClassName("toPrint")[0];
-
-         console.log(element.outerHTML);
-         doc.html(element.outerHTML, {
-            callback: function (doc) {
-               doc.save('controle.pdf');
-            },
-            x: 10,
-            y: 10
-         });
-         console.log("salut");
-         */
       }
-
+         
    </script>
 </body>
 
