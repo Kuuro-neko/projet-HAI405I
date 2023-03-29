@@ -5,6 +5,13 @@
    {% include 'includes/head_common.html' %}
    {% include 'includes/head_visualiser.html' %}
    <script src="{{ url_for('static', filename = 'questions_functions.js') }} "></script>
+
+   <!-- script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.1/purify.min.js" integrity="sha512-TU4FJi5o+epsahLtM9OFRvH2gXmmlzGlysk9wtTFgbYbMvFzh3Cw1l3ubnYIvBiZCC/aurRHS408TeEbcuOoyQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script -->
+      
 </head>
 
 <body>
@@ -15,7 +22,7 @@
       </button>
       <div class="row container" id="toPrint">
          {%for question in questions %}
-         <div class="card bg-dark col-4"
+         <div class="card bg-dark col-4 toPrint"
             style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px; margin: 10px;">
             <div class="card-body"
                style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
@@ -50,14 +57,42 @@
       </div>
 
    </center>
+   
    <script>
+      /*
+      window.jsPDF = window.jspdf.jsPDF;
+      window.html2canvas = html2canvas;
+      */
 
       function printContent() {
-         var content = document.getElementById("toPrint").innerHTML;
-         var printWindow = window.open('', '', 'height=500,width=500');
-         printWindow.close();
-         printWindow.document.write(content);
+      
+         var content = document.getElementsByClassName("toPrint");
+         var printWindow = window.open();
+         //printWindow.close();
+         for (var i = 0; i < content.length; i++) {
+            printWindow.document.write(content[i].innerHTML);
+            // Get the height of the printed content
+            var height = printWindow.document.body.scrollHeight;
+            console.log(height);
+            
+         }
          printWindow.print();
+ 
+        /*
+         var doc = new jsPDF();
+ 
+         var element = document.getElementsByClassName("toPrint")[0];
+
+         console.log(element.outerHTML);
+         doc.html(element.outerHTML, {
+            callback: function (doc) {
+               doc.save('controle.pdf');
+            },
+            x: 10,
+            y: 10
+         });
+         console.log("salut");
+         */
       }
 
    </script>
