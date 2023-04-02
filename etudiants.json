@@ -18,6 +18,24 @@
         "password": ""
     },
     {
+        "nom": "you",
+        "prenom": "gataga",
+        "numero_etudiant": "11111114",
+        "password": ""
+    },
+    {
+        "nom": "se",
+        "prenom": "vran",
+        "numero_etudiant": "11111119",
+        "password": ""
+    },
+    {
+        "nom": "walt",
+        "prenom": "white",
+        "numero_etudiant": "11111115",
+        "password": ""
+    },
+    {
         "nom": "mdr",
         "prenom": "mdr",
         "numero_etudiant": "00001000",

@@ -79,7 +79,14 @@
                         <input type="submit" name="submit" class="btn btn-success" value="Confirmer" style="margin: 10px">  
                         <input type="hidden" name="id_question" value="{{ id_question }}">
                     </div>
+                    
+                    {% elif type == "libre" %}
+                    <div class="card-body">
+                        <input type="submit" name="submit" class="btn btn-success" value="Confirmer" style="margin: 10px">  
+                        <input type="hidden" name="id_question" value="{{ id_question }}">
+                    </div>
                     {%endif%}
+
                 </div>
             </form>
         <div style="margin-top: 5px;">

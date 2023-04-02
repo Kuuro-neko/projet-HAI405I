@@ -8,6 +8,24 @@ import re
 from datetime import datetime
 from hashlib import sha512
 
+
+def levenshtein_distance(s, t):
+    m, n = len(s), len(t)
+    d = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(m + 1):
+        d[i][0] = i
+    for j in range(n + 1):
+        d[0][j] = j
+    for j in range(1, n + 1):
+        for i in range(1, m + 1):
+            if s[i - 1] == t[j - 1]:
+                substitution_cost = 0
+            else:
+                substitution_cost = 1
+            d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + substitution_cost)
+    return d[m][n]
+
+
 ################################## Fonctions ##################################
 
 
@@ -16,9 +34,9 @@ class SequenceDeQuestions:
 
     def __init__(self, prof, questions):
         if type(questions) != list:
-            self.questions = [].append(questions)
+            self.questions = [].append(questions) 
         else:
-            self.questions = questions
+            self.questions = questions # de la forme [{"id": "id_question", "type": "ChoixMultiple", "question": "Question ?", "answers": [{"text": "Réponse 1", "correct": True}, {"text": "Réponse 2", "correct": False}, {"text": "Réponse 3", "correct": False}]}, {"id": "id_question", "type": "Alphanumerique", "question": "Question ?", "answers": [{"text": "Réponse 1", "correct": True}, {"text": "Réponse 2", "correct": False}, {"text": "Réponse 3", "correct": False}]}]
         if len(questions) == 1:
             self.id_unique = questions[0]["id"]
         else:
@@ -99,12 +117,163 @@ class SequenceDeQuestions:
             elif num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse]:
                 self.reponses[self.questions[self.etat]
                               ["id"]][str(reponse)].append(num_etu)
+                self.etudiants_qui_ont_repondu.append(num_etu) 
+                return True
+        else :
+            reponse = reponse[0] 
+            print(self.reponses[self.questions[self.etat]["id"]].keys())
+            if str(reponse) not in self.reponses[self.questions[self.etat]["id"]].keys(): 
+                self.reponses[self.questions[self.etat]["id"]][str(reponse)] = []
+                self.reponses[self.questions[self.etat]["id"]][str(reponse)].append(num_etu) 
                 self.etudiants_qui_ont_repondu.append(num_etu)
+                print("HEEEEEEREEEE  :  ",self.reponses)
+                return True
+            elif num_etu not in self.reponses[self.questions[self.etat]["id"]][reponse]:
+                self.reponses[self.questions[self.etat]
+                              ["id"]][str(reponse)].append(num_etu)
+                self.etudiants_qui_ont_repondu.append(num_etu) 
                 return True
         return False
 
     def getReponsesCourantes(self):
-        return self.reponses[self.etat]
+        return self.reponses[self.etat] 
+    
+
+    """
+    def extract_counts(self):
+        data = self.reponses
+        print("dataaaa.iiitems",data.items()) 
+        counts = {}
+        for key, values in data.items(): 
+            print ("valueeeeeeee : " ,values.items())
+            for answer, numEtu in values.items():
+                print("answer : ",answer)
+                print("numEtu : ",numEtu)
+                
+                answer = answer.lower()
+                # On compare la réponse avec toutes les clés du dictionnaire
+                matches = [] # Liste des réponses qui equivalantes
+                ancienne_reponse = ""
+                for match in counts.keys():
+                    print("couuuunt.keeeys : ",counts.keys())
+                    if levenshtein_distance(answer, match) <= 2:  # On utilise une limite de 2 modifications
+                        if len(numEtu)<=counts[match]:
+                            matches.append((match, counts[match], 0))
+                        else:
+                            matches.append((answer, (counts[match]+len(numEtu)), match))  
+                if matches:
+                    print("matches : ",matches)
+                    print("max(matches, key=lambda x: x[1])[0] : ",max(matches, key=lambda x: x[1])[0])
+                    best_match = max(matches, key=lambda x: x[1])[0]
+                    print("mtchs2 : ",matches[0][2])
+                    if best_match in counts:
+                        counts[best_match] += len(numEtu)
+                    else:
+                        counts[best_match] = counts[matches[0][2]] # GRAAAAND DOUTE
+                        del counts[matches[0][2]]
+        
+                    print("counts if : ",counts)
+                else:
+                    counts[answer] = len(numEtu)
+                    print("counts else : ",counts)
+        return counts    
+    """    
+    
+    def extract_counts(self):
+        data = self.reponses
+        print("dataaaa.iiitems",data.items()) 
+        counts = {}
+        for key, values in data.items(): 
+            print ("valueeeeeeee : " ,values.items())
+            for answer, numEtu in values.items():
+                print("answer : ",answer)
+                print("numEtu : ",numEtu)
+                
+                answer = answer.lower()
+                # On compare la réponse avec toutes les clés du dictionnaire
+                matches = [] # Liste des réponses qui equivalantes
+                for match in counts.keys():
+                    print("couuuunt.keeeys : ",counts.keys())
+                    if levenshtein_distance(answer, match) <= 2:  # On utilise une limite de 2 modifications
+                        if len(numEtu)<=counts[match]:
+                            matches.append((match, counts[match], 0))
+                        else:
+                            matches.append((answer, (counts[match]+len(numEtu)), match))  
+                if matches:
+                    print("matches : ",matches)
+                    print("max(matches, key=lambda x: x[1])[0] : ",max(matches, key=lambda x: x[1])[0])
+                    best_match = max(matches, key=lambda x: x[1])[0]
+                    print("mtchs2 : ",matches[0][2])
+                    if best_match in counts:
+                        counts[best_match] += len(numEtu)
+                    else:
+                        counts[best_match] = counts[matches[0][2]] # GRAAAAND DOUTE
+                        counts[best_match] = matches[0][1]
+                        del counts[matches[0][2]]
+        
+                    print("counts if : ",counts)
+                else:
+                    counts[answer] = len(numEtu)
+                    print("counts else : ",counts)
+        return counts
+    
+
+    
+    
+            
+
+    
+
+
+    """
+    def extract_counts(self):
+        data = self.reponses
+        counts = {}
+        for key, values in data.items():
+            for answer, responses in values.items():
+                answer = answer.lower() # convertir la réponse en minuscules
+                equivalent_word = None
+                if answer not in counts:
+                    counts[answer] = 0
+                for response in responses:
+                    response = response.lower() # convertir la réponse en minuscules
+                    if response in counts:
+                        counts[answer] += 1
+                    else:
+                        # Calculer la distance d'édition entre la réponse et la réponse attendue
+                        distance = levenshtein_distance(answer, response)
+                        # Si la distance d'édition est inférieure ou égale à 2, considérer que la réponse est équivalente à la réponse attendue
+                        if distance <= 2:
+                            equivalent_word = answer
+                if equivalent_word is not None:
+                    counts[answer] = counts.get(answer, 0) + counts.get(equivalent_word, 0)
+        return counts
+        
+    def extract_counts(self):
+        data = self.reponses
+        counts = {}
+        for key, values in data.items():
+            print("VALUUUUEEEEES : ",values.items()) # VALUUUUEEEEES :  dict_items([('oui', ['11111112'])])
+            for answer, responses in values.items():
+                answer = answer.lower()
+                counts[answer] = len(responses)
+        return counts
+            
+    def extract_counts(self):
+        data = self.reponses
+        counts = {}
+        for key, values in data.items():
+            for answer, responses in values.items():
+                answer = answer.lower()
+                # On compare la réponse avec toutes les clés du dictionnaire
+                for key in counts.keys():
+                    if levenshtein_distance(answer, key) <= 2:  # On utilise une limite de 2 modifications
+                        counts[key] += len(responses)
+                        break  # On arrête la boucle dès qu'on trouve un équivalent
+                else:  # Si on n'a pas trouvé d'équivalent, on ajoute la réponse
+                    counts[answer] = len(responses)
+        return counts        
+    """
 
     def getNbReponsesCourantes(self):
         reponses = dict(self.reponses[self.questions[self.etat]["id"]])
@@ -130,6 +299,11 @@ class SequenceDeQuestions:
                 alphanumerique["Autres"] = total - sum(alphanumerique.values())
             retour["type"] = "Alphanumerique"
             retour["answers"] = alphanumerique
+        
+        if self.questions[self.etat]["type"] == "libre":
+            retour["type"] = "libre"
+            retour["answers"] = reponses
+            total = len(reponses)
 
         retour["total"] = total
         retour["rep_count"] = len(self.etudiants_qui_ont_repondu)
@@ -139,7 +313,7 @@ class SequenceDeQuestions:
         return self.questions[self.etat]["answers"]
 
     def getAllReponses(self):
-        return self.reponses
+        return self.reponses # de la forme {id_question: {reponse: [num_etu]}}
 
     def setReponseEtudiant(self, etudiant, reponse):
         if re.match("^[a-zA-Z0-9]{8}$", etudiant) and self.reponsesOuvertes:

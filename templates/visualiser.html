@@ -52,6 +52,9 @@
                </div>
                {% elif question.type == "Alphanumerique" %}
                <input type="text" class="form-control" id="reponse" name="reponse" readonly placeholder="Réponse...">
+   
+               {% elif question.type == "libre" %}
+               <input type="text" class="form-control" id="reponse" name="reponse" readonly placeholder="Réponse...">
                {% endif %}
 
             </div>
