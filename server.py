@@ -558,6 +558,7 @@ def archive(id_sequence):
                     elif question['type'] == "libre":
                         etudiant['reponses'].append(True) # Bonne réponse
                         
+
                 etudiants.append(etudiant)
             return render_template('archive.html', sequence=sequence, sequence_id=id_sequence, etudiants=etudiants)
         else:
@@ -567,4 +568,4 @@ def archive(id_sequence):
     
 if __name__ == '__main__':
     # Lancement du serveur
-    socketio.run(app, host=host, port=port, debug=True)
+    socketio.run(app, host=host, port=port, debug=False)

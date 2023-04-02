@@ -275,14 +275,6 @@ class SequenceDeQuestions:
         return counts        
     """
 
-
-
-
-
-
-
-    
-
     def getNbReponsesCourantes(self):
         reponses = dict(self.reponses[self.questions[self.etat]["id"]])
         retour = {}
