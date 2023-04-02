@@ -226,3 +226,33 @@ code {
     background-color: #e66767 !important;
     color: black !important;
 }
+
+/*********************ARCHIVES************************/
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.clickable-row:hover {
+    background-color: #575757;
+}
+
+.highlighted-row:hover {
+    background-color: #575757;
+}   
+
+
+
+#archives-container {
+    background-color: #343a40;
+    padding: 20px;
+    color: white;
+    border-radius: 10px;
+}
+
+#archives-table {
+    margin-top: 20px;
+    background-color: #343a40;
+    color: white;
+
+}

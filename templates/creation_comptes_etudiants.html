@@ -2,9 +2,9 @@
 
 <head>
 
-   <title>createAcc</title>
+   <title>Importer comptes étudiant</title>
    {% include 'includes/head_common.html' %}
-   
+
    <script type="module" src="//unpkg.com/@grafikart/drop-files-element"></script>
 
    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" rel="stylesheet" />
@@ -33,14 +33,13 @@
             </div>
          </div>
       </nav>
-
       <div>
          <form method="post" enctype="multipart/form-data" id="my-great-dropzone">
-         <div>
-            <input type="file" name="csv_file" label="Cliquez pour parcourir vos fichiers." is="drop-files"
-               help=" ou bien glissez votre fichier" />
-         </div>
-         <input type="submit" class="btn btn-success text-light" style="margin: 10px;" value="Ajouter">
+            <div>
+               <input type="file" name="csv_file" label="Cliquez pour parcourir vos fichiers." is="drop-files"
+                  help=" ou bien glissez votre fichier" />
+            </div>
+            <input type="submit" class="btn btn-success text-light" style="margin: 10px;" value="Ajouter">
          </form>
       </div>
    </center>

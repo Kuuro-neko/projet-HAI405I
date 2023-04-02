@@ -147,6 +147,9 @@ def add_question():
                         answers = request.form['rep']
                     except:
                         answers = ""
+                elif type_question == "libre" : 
+                    answers = ""
+                    
                 user = session['user']
                 question = {
                     "type": type_question,
@@ -193,6 +196,8 @@ def edit_question(id_question):
                         answers = request.form['rep']
                     except:
                         answers = ""
+                elif type_question == "libre":
+                    answers = ""
 
                 user = session['user']
                 user_id = get_prof_id(user)
@@ -292,7 +297,6 @@ def creation_comptes_etudiants():
     try:
         if session['user_type'] == "prof":
             if request.method == 'POST':
-                print(request.files)
                 csv_file = request.files['csv_file']
                 if csv_file.filename == '':
                     return redirect(request.url)
@@ -311,8 +315,6 @@ def creation_comptes_etudiants():
 @app.route('/sequence', methods=['GET', 'POST'])
 def sequence():
     try:
-        print(session['user_type'])
-        print(session['user'])
         if session['user_type'] == "prof":
             prof = session['user']
             questions = get_questions(prof)
@@ -325,7 +327,6 @@ def sequence():
                     questions_sequence = []
                     for id in tabChoix:
                         questions_sequence.append(traiter_question(questions[int(id)]))
-                    print(questions_sequence)
                     sequence = SequenceDeQuestions(prof, questions_sequence)
                     sequencesCourantes[sequence.id_unique] = sequence 
                     return redirect(url_for('live', id_sequence=sequence.id_unique))
@@ -401,7 +402,6 @@ def changePass():
 def wait():
     try:
         if session['user_type'] == "etudiant":
-            print(json.loads(session['user']))
             return render_template("wait.html", etudiant=json.loads(session['user']))
         return render_template("index.html", name=None, error="Vous devez être connecté en tant qu'étudiant pour accéder à cette page")
     except Exception:
@@ -412,12 +412,9 @@ def wait():
 
 @app.route('/live/<string:id_sequence>', methods=['GET'])
 def live(id_sequence):
-    for sequence in sequencesCourantes.values():
-        print(sequence)
     if id_sequence not in sequencesCourantes:
         return redirect(url_for('index', error="Cette séquence n'existe pas."))
     sequence = sequencesCourantes[id_sequence]
-    print(len(sequence.getAllQuestions()))
     if session['user_type'] == "etudiant":
         etudiant = json.loads(session['user'])
         return render_template('live_etudiant.html', etudiant=etudiant, sequence=sequence)
@@ -455,12 +452,17 @@ def send_answer(data):
     num = data["numero_etudiant"]
     answer = data["answers"]
     try:
-        confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
-        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
-        reponses = sequencesCourantes[sid].getNbReponsesCourantes()
-        print("J'envoie ça au prof :")
-        print(reponses)
-        emit('refresh-answers', reponses, room=sid) # Rafraichissement des stats pour le prof
+        if sequencesCourantes[sid].getQuestionCourante()["question"]["type"] == "libre":
+            confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
+            emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
+            reponses = sequencesCourantes[sid].extract_counts()
+            print("reponnnnnnnnnnnnnnnnnses : ", reponses)
+            emit('show-word-cloud', reponses, broadcast=True) 
+        else : 
+            confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
+            emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
+            reponses = sequencesCourantes[sid].getNbReponsesCourantes()
+            emit('refresh-answers', reponses, room=sid) # Rafraichissement des stats pour le prof
     except Exception as e:
         emit('error', {'message': str(e)})
 
@@ -468,15 +470,24 @@ def send_answer(data):
 def stop_answers(data):
     sid = data["sequence_id"]
     sequencesCourantes[sid].fermerReponses()
-    emit('stop-answers', broadcast=True)
+    typeQuestion = sequencesCourantes[sid].getQuestionCourante()["question"]["type"]
+    emit('stop-answers',typeQuestion, broadcast=True)
 
 @socketio.on('show-correction')
 def show_correction(data):
     sid = data["sequence_id"]
     correction = sequencesCourantes[sid].getCorrectionCourante()
-    print("Correction : ")
-    print(correction)
+    print("Correction envoyée")
     emit('show-correction', correction, broadcast=True)
+    
+@socketio.on('show-word-cloud')
+def show_word_cloud(data):
+    sid = data["sequence_id"]
+    reponses = sequencesCourantes[sid].extract_counts() 
+    
+    print("reponnnnnnnnnnnnnnnnnses : ", reponses)
+    emit('show-word-cloud', reponses, broadcast=True)
+
 
 @socketio.on('next-question')
 def next_question(data):
@@ -492,17 +503,24 @@ def next_question(data):
         emit('end-sequence-prof', '/sequence', broadcast=True)
         emit('end-sequence-etudiant', '/wait', broadcast=True)
 
+@socketio.on('fermer-sequence')
+def fermer_sequence(data):
+    sid = data["sequence_id"]
+    sequencesCourantes[sid].fermerSequence() 
+    sequencesCourantes.pop(sid)   
+    emit('fermer-sequence-prof', '/sequence', broadcast=True)
+    emit('fermer-sequence-etudiant', '/wait', broadcast=True)
 
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):
     emit('toggleDisplayAnswers', data, broadcast=True)
+
     
 ################################################ ARCHIVES ################################################
 
 @app.route('/archives')
 def archives():
     try:
-        print(session['user_type'])
         if session['user_type'] == "prof":
             archives = dict_of_dicts_to_list_of_dicts(get_archives(session['user']))
             return render_template('archives.html', sequences=archives)
@@ -515,24 +533,37 @@ def archives():
 def archive(id_sequence):
     try:
         if session['user_type'] == "prof":
-            sequence = get_archives(session['user'], id_sequence)
-            return render_template('archive.html', sequence=sequence)
+            sequence = dict(get_archives(session['user'], id_sequence))
+            etudiants = []
+            for num_etu in sequence['etudiants']:
+                etudiant = get_etudiant(num_etu)
+                etudiant['reponses'] = []
+                # Comparaison des réponses des étudiants avec les bonnes réponses
+                for question in sequence['questions']:
+                    if question['type'] == "ChoixMultiple":
+                        correct = True
+                        for answer in question["answers"]:
+                            if (answer['isCorrect'] == "true" and  not etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]) or (not answer['isCorrect'] == "true" and etudiant["numero_etudiant"] in sequence["reponses"][question["id"]][answer["text"]]):
+                                etudiant['reponses'].append(False) # Mauvaise réponse (Au moins 1 mauvaise réponse choisie ou 1 bonne réponse non choisie)
+                                correct = False
+                                break
+                        if correct:
+                            etudiant['reponses'].append(True) # Bonne réponse (Toutes les bonnes réponses choisies et aucune mauvaise réponse choisie)
+                    elif question['type'] == "Alphanumerique":
+                        correct = question['answers']
+                        if etudiant['numero_etudiant'] in sequence['reponses'][question['id']][correct]:
+                            etudiant['reponses'].append(True) # Bonne réponse
+                        else:
+                            etudiant['reponses'].append(False) # Mauvaise réponse
+                    elif question['type'] == "libre":
+                        etudiant['reponses'].append(True) # Bonne réponse
+                        
+                etudiants.append(etudiant)
+            return render_template('archive.html', sequence=sequence, sequence_id=id_sequence, etudiants=etudiants)
         else:
             return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
-    except Exception:
-        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
-
-@socketio.on('fermer-sequence')
-def fermer_sequence(data):
-    sid = data["sequence_id"]
-    sequencesCourantes[sid].fermerSequence() 
-    sequencesCourantes.pop(sid)   
-    emit('fermer-sequence-prof', '/sequence', broadcast=True)
-    emit('fermer-sequence-etudiant', '/wait', broadcast=True)
-    
-
-print(sequencesCourantes)
-    
+    except KeyError:
+       return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur pour accéder à cette page")
     
 if __name__ == '__main__':
     # Lancement du serveur

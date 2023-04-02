@@ -73,7 +73,9 @@
 
             <div class="card bg-dark" style="width: 25rem; box-shadow: 0px 0px 10px white; padding: 10px;">
                <div class="card-body" style="display:flex; flex-direction:column; justify-content:center;">
-                  <input id="type_question" type="text" class="card-title" readonly value="{{ question.type }}" name="type" style="background-color: transparent; text-align: center; font-size: large ; font-weight:600 ;color:white; border: none;">
+                  <input id="type_question" type="text" class="card-title" readonly value="{{ question.type }}"
+                     name="type"
+                     style="background-color: transparent; text-align: center; font-size: large ; font-weight:600 ;color:white; border: none;">
 
                   <input class="form-control" style="background-color: rgb(255, 208, 243);" id="titre" name="titre"
                      placeholder="Titre de la question" value="{{ question.titre }}" required>
@@ -82,23 +84,24 @@
                      cols="33" required>{{ question.text }}</textarea>
                </div>
                {% if question.type == "ChoixMultiple" %}
-                  <div id="answers" class="container my-2 bg-dark w-80 text-light p-2"
-                     style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
-                  </div>
-                  <input type="hidden" name="answers_json" value="" id="answers_json">
-                  <div class="card-body">
-                     <button type="button" class="btn btn-labeled " onclick="addAnswer()">
-                        <span class="btn-label "><i class="fa fa-plus-circle fa-lg" style="color:white;"
-                              aria-hidden="true"></i></span></button>
-                     <input type="submit" name="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()">
-                     <input type="hidden" name="id_question" value="{{ id_question }}">
-                     <input type="hidden" name="id_question_unique" value="{{ question.id }}">
-                  </div>
+               <div id="answers" class="container my-2 bg-dark w-80 text-light p-2"
+                  style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
+               </div>
+               <input type="hidden" name="answers_json" value="" id="answers_json">
+               <div class="card-body">
+                  <button type="button" class="btn btn-labeled " onclick="addAnswer()">
+                     <span class="btn-label "><i class="fa fa-plus-circle fa-lg" style="color:white;"
+                           aria-hidden="true"></i></span></button>
+                  <input type="submit" name="submit" class="btn btn-success" value="Confirmer" onclick="majAnswers()">
+                  <input type="hidden" name="id_question" value="{{ id_question }}">
+                  <input type="hidden" name="id_question_unique" value="{{ question.id }}">
+               </div>
                {% elif question.type == "Alphanumerique" %}
                <div class="card-body">
                   <h5 style="margin: 10px;"><strong>Reponse :</strong></h5>
-                  <textarea class="form-control form" id="rep" name="rep" style="background-color: #EBFCCB;" rows="1" cols="27" placeholder="Ex : c'est Johnatan" required>{{ question.answers }}</textarea>
-                  <input type="submit" name="submit" class="btn btn-success" value="Confirmer" style="margin: 10px">  
+                  <textarea class="form-control form" id="rep" name="rep" style="background-color: #EBFCCB;" rows="1"
+                     cols="27" placeholder="Ex : c'est Johnatan" required>{{ question.answers }}</textarea>
+                  <input type="submit" name="submit" class="btn btn-success" value="Confirmer" style="margin: 10px">
                   <input type="hidden" name="id_question" value="{{ id_question }}">
                   <input type="hidden" name="id_question_unique" value="{{ question.id }}">
                </div>

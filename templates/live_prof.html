@@ -1,7 +1,7 @@
 <html>
 
 <head>
-   <title>VisualisationProf</title>
+   <title>Live professeur</title>
    {% include 'includes/head_common.html' %}
    {% include 'includes/head_visualiser.html' %}
    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" rel="stylesheet" />
@@ -12,9 +12,14 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
       integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
       crossorigin="anonymous"></script>
-   <script>
+      <script src="https://d3js.org/d3.v7.min.js"></script>
+      <script src="{{ url_for('static', filename = 'd3.layout.cloud.js') }} "></script>
+      <script src="https://d3js.org/d3.v7.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+      <script>
       var socket;
       var type;
+      var cpt = 0;
       window.onload = function () {
          socket = io.connect('http://' + location.host);
          socket.emit('connect-prof', { "sequence_id": "{{ sequence.id_unique }}" });
@@ -40,10 +45,17 @@
          socket.on('end-sequence-prof', function (data) {
             window.location.href = data;
          });
-         socket.on('fermer-sequence-prof', function(data){
+         socket.on('fermer-sequence-prof', function (data) {
             window.location.href = data;
-         })
-      };
+         });
+
+         
+         socket.on('show-word-cloud', function (dat) {
+            showWordCloud(dat);
+
+         });
+
+      }
 
       function refreshAnswers(data) {
          $('#rep-count').text(data['rep_count']);
@@ -61,7 +73,7 @@
             answers.appendChild(btndiv);
 
             reponsesDict = data["answers"];
-            
+
             for (let reponse in reponsesDict) {
                var nbReponses = reponsesDict[reponse];
                var input = creerAlphanumeriqueInput(reponse, nbReponses, data["total"]);
@@ -85,10 +97,14 @@
 
       function stopReponses() {
          socket.emit('stop-answers', { "sequence_id": "{{ sequence.id_unique }}" });
-         let btnStopReponses = document.getElementById('btn-stop-reponses');
-         let btnShowCorrection = document.getElementById('btn-show-correction');
-         btnStopReponses.classList.add('d-none');
-         btnShowCorrection.classList.remove('d-none');
+         socket.on('stop-answers', function (data) {
+            if (data != "libre"){
+               let btnStopReponses = document.getElementById('btn-stop-reponses');
+               let btnShowCorrection = document.getElementById('btn-show-correction');
+               btnStopReponses.classList.add('d-none');
+               btnShowCorrection.classList.remove('d-none');
+            }
+         });
       }
 
       function stopSequence() {
@@ -105,41 +121,346 @@
       }
 
       function displayCorrectionHere(data) { // TO CONTINUE
-         switch(type) {
-               case "ChoixMultiple":
-                  console.log("data : ");
-                  console.log(data);
-                  var answers = document.getElementsByClassName('answer-html');
-                  console.log("answers : ");
-                  console.log(answers);
-                  for (var i = 0; i < answers.length; i++) {
-                     if (data[answers[i].id.split('-')[1]]["isCorrect"] == "true") {
-                        answers[i].classList.add("answer-correct");
-                     } else {
-                        answers[i].classList.add("answer-wrong");
-                     }
+         switch (type) {
+            case "ChoixMultiple":
+               console.log("data : ");
+               console.log(data);
+               var answers = document.getElementsByClassName('answer-html');
+               console.log("answers : ");
+               console.log(answers);
+               for (var i = 0; i < answers.length; i++) {
+                  if (data[answers[i].id.split('-')[1]]["isCorrect"] == "true") {
+                     answers[i].classList.add("answer-correct");
+                  } else {
+                     answers[i].classList.add("answer-wrong");
                   }
-                  break;
-               case "Alphanumerique":
-                  var answer_container = document.getElementById('answers');
-                  var reponses = document.getElementsByClassName('reponse-alphanum');
-                  var trouve = false;
-                  for (var i = 0; i < reponses.length; i++) {
-                     if (reponses[i].value == data) {
-                        trouve = true;
-                        reponses[i].classList.add("alphanumerique-correct");
-                     } else {
-                        reponses[i].classList.add("alphanumerique-wrong");
-                     }
+               }
+               break;
+            case "Alphanumerique":
+               var answer_container = document.getElementById('answers');
+               var reponses = document.getElementsByClassName('reponse-alphanum');
+               var trouve = false;
+               for (var i = 0; i < reponses.length; i++) {
+                  if (reponses[i].value == data) {
+                     trouve = true;
+                     reponses[i].classList.add("alphanumerique-correct");
+                  } else {
+                     reponses[i].classList.add("alphanumerique-wrong");
                   }
-                  if (!trouve) {
-                     var input = creerAlphanumeriqueInput(data, 0, 0);
-                     input.childNodes[0].classList.add("alphanumerique-correct");
-                     answer_container.appendChild(input);
-                  }
-                  break;
-            }
+               }
+               if (!trouve) {
+                  var input = creerAlphanumeriqueInput(data, 0, 0);
+                  input.childNodes[0].classList.add("alphanumerique-correct");
+                  answer_container.appendChild(input);
+               }
+               break;
+         }
       }
+
+      function showWordCloud(dat) {
+
+         console.log("dat : ", dat);
+         var counts = dat;
+       
+         var data = Object.entries(counts).map(function(d) {
+           return {
+             text: d[0],
+             value: d[1]
+           };
+         }); // convert object to array of objects with text and value properties 
+       
+         // sort the data by value in descending order
+         data.sort(function(a, b) {
+           return b.value - a.value;
+         });
+       
+         var maxCount = data[0].value; // get the maximum count value
+       
+         var wordCloud = d3.select("#word-cloud").select("svg");
+         if (wordCloud.empty()) {
+           wordCloud = d3.select("#word-cloud").append("svg")
+             .attr("width", 700)
+             .attr("height", 400);
+         } else {
+           // empty the SVG for a new drawing
+           wordCloud.selectAll("*").remove();
+         }
+       
+         var fontSizeScale = d3.scaleLinear()
+           .domain([0, maxCount])
+           .range([15, 30]);
+       
+           var colorScale = d3.scaleLinear()
+            .domain([0, maxCount])
+            .range(["#FFA500", "#FFFF00"]); // dark yellow to yellow
+
+
+         
+       
+         var layout = d3.layout.cloud()
+           .size([500, 300])
+           .words(data)
+           .padding(20)
+           .rotate(function() {
+             return 0;
+           })
+           .fontSize(function(d) {
+             return fontSizeScale(d.value);
+           })
+           .on("end", draw);
+       
+         layout.start();
+       
+         function draw(words) {
+            var centerX = 350; // change the X position to center the first word
+            var centerY = 250;
+            var maxRadius = 225;
+            var angleStep = 2 * Math.PI / words.length;
+            var angle = 0;
+            var wordIndex = 0;
+            
+            var centerGroup = wordCloud.append("g")
+              .attr("transform", "translate(" + centerX + "," + centerY + ")");
+            
+            centerGroup.append("text")
+              .text(words[0].text)
+              .style("font-size", fontSizeScale(words[0].value) + "px")
+              .style("fill", function(d) { return colorScale(words[0].value); });
+            
+            var wordsGroup = wordCloud.selectAll("g")
+              .data(words)
+              .enter().append("g")
+              .attr("transform", function(d) {
+                if (d == words[0]) return; // skip the center word
+                // randomize the positions of the other words
+                var radius = Math.random() * maxRadius;
+                var x = centerX + radius * Math.cos(angle) + Math.random() * 100 - 50;
+                var y = centerY + radius * Math.sin(angle) + Math.random() * 100 - 50;
+                angle += angleStep;
+                return "translate(" + x + "," + y + ")";
+              });
+            
+            wordsGroup.append("text")
+              .text(function(d) { return d.text; })
+              .style("font-size", function(d) { return fontSizeScale(d.value) + "px"; })
+              .style("fill", function(d) { return colorScale(d.value); });
+          }
+          
+          
+          
+          
+       }
+
+      /*
+
+      function showWordCloud() {
+         var counts = {
+           "mot1": 10,
+           "mot2": 9,
+           "mot3": 8,
+           "mot4": 4,
+           "mot5": 4
+         };
+       
+         var data = Object.entries(counts).map(function(d) {
+           return {
+             text: d[0],
+             value: d[1]
+           };
+         }); // convert object to array of objects with text and value properties 
+       
+         // sort the data by value in descending order
+         data.sort(function(a, b) {
+           return b.value - a.value;
+         });
+       
+         var maxCount = data[0].value; // get the maximum count value
+       
+         var wordCloud = d3.select("#word-cloud").select("svg");
+         if (wordCloud.empty()) {
+           wordCloud = d3.select("#word-cloud").append("svg")
+             .attr("width", 600)
+             .attr("height", 500);
+         } else {
+           // empty the SVG for a new drawing
+           wordCloud.selectAll("*").remove();
+         }
+       
+         var fontSizeScale = d3.scaleLinear()
+           .domain([0, maxCount])
+           .range([15, 30]);
+       
+         var colorScale = d3.scaleLinear()
+           .domain([0, maxCount])
+           .range(["#FFA500", "#FFFF00"]); // dark yellow to yellow
+       
+         var centerWord = data[0];
+         var centerX = 300;
+         var centerY = 250;
+         var centerFontSize = fontSizeScale(centerWord.value);
+       
+         var simulation = d3.forceSimulation(data.slice(1))
+         .force("x", d3.forceX(centerX).strength(0.05))
+         .force("y", d3.forceY(centerY).strength(0.05))
+         .force("collide", d3.forceCollide().radius(function(d) {
+           return fontSizeScale(d.value) + 5;
+         }).iterations(3))
+         .force("repel", d3.forceManyBody().strength(-5).distanceMax(200))
+         .alphaDecay(0.01)
+         .on("tick", ticked);
+       
+
+           .alphaDecay(0.01)
+           .on("tick", ticked);
+       
+         var wordsGroup = wordCloud.selectAll("g")
+           .data(data.slice(1))
+           .enter().append("g")
+           .attr("transform", function(d) {
+             return "translate(" + d.x + "," + d.y + ")";
+           });
+       
+         wordsGroup.append("text")
+           .text(function(d) { return d.text; })
+           .style("font-size", function(d) { return fontSizeScale(d.value) + "px"; })
+           .style("fill", function(d) { return colorScale(d.value); });
+
+
+         var bbox = centerGroup.node().getBBox();
+         var centerX = bbox.width / 2;
+         var centerY = bbox.height / 2;
+
+         var centerGroup = wordCloud.append("g")
+           .attr("transform", "translate(" + centerX + "," + centerY + ")");
+       
+         centerGroup.append("text")
+           .text(centerWord.text)
+           .style("font-size", centerFontSize + "px")
+           .style("fill", "hsl(60, 100%, " + lightnessScale(centerWord.value) + "%)");
+       
+         function ticked() {
+           wordsGroup.attr("transform", function(d) {
+             return "translate(" + d.x + "," + d.y + ")";
+           });
+         }
+       }
+       */
+       
+
+       ////////////////////////////////// ROND //////////////////////////////////
+
+       /*
+
+       function showWordCloud() {
+         var counts = {
+            "momo":55,
+         "mot1": 35,
+         "mot2": 24,
+         "mot3": 18,
+         "mot4": 17,
+         "mot5": 16,
+         "mot6": 15,
+         "mot7": 14,
+         "mot8": 13,
+         "mot9": 12,
+
+         };
+         
+         var data = Object.entries(counts).map(function(d) {
+         return {
+         text: d[0],
+         value: d[1],
+         };
+         }); // convert object to array of objects with text and value properties
+         
+         // sort the data by value in descending order
+         data.sort(function(a, b) {
+         return b.value - a.value;
+         });
+         
+         var maxCount = data[0].value; // get the maximum count value
+         
+         var wordCloud = d3.select("#word-cloud").select("svg");
+         if (wordCloud.empty()) {
+         wordCloud = d3.select("#word-cloud").append("svg")
+         .attr("width", 600)
+         .attr("height", 500);
+         } else {
+         // empty the SVG for a new drawing
+         wordCloud.selectAll("*").remove();
+         }
+         
+         var fontSizeScale = d3.scaleLinear()
+         .domain([0, maxCount])
+         .range([15, 30]);
+         
+         var colorScale = d3.scaleLinear()
+         .domain([0, maxCount])
+         .range(["#FFA500", "#FFFF00"]); // dark yellow to yellow
+         
+         var layout = d3.layout.cloud()
+         .size([500, 300])
+         .words(data)
+         .padding(5)
+         .rotate(function() {
+         return 0;
+         })
+         .fontSize(function(d) {
+         return fontSizeScale(d.value);
+         })
+         .on("end", draw);
+         
+         layout.start();
+         
+         function draw(words) {
+         var centerWord = words[0];
+         var centerX = 300;
+         var centerY = 250;
+         var centerFontSize = fontSizeScale(centerWord.value);
+         var maxRadius = 225;
+         var angleStep = 2 * Math.PI / (words.length - 1);
+         var angle = 0;
+         var wordIndex = 1;
+         var centerGroup = wordCloud.append("g")
+  .attr("transform", "translate(" + centerX + "," + centerY + ")");
+
+centerGroup.append("text")
+  .text(centerWord.text)
+  .style("font-size", centerFontSize + "px")
+  .style("fill", function(d) {
+    return colorScale(centerWord.value);
+  });
+
+var wordsGroup = wordCloud.selectAll("g")
+  .data(words.slice(1))
+  .enter().append("g")
+  .attr("transform", function(d) {
+    var fontScale = d3.scaleLinear()
+      .domain([0, maxCount])
+      .range([1, 0.5]);
+    var radius = fontScale(d.value) * maxRadius;
+    var x = centerX + radius * Math.cos(angle);
+    var y = centerY + radius * Math.sin(angle);
+    angle += angleStep;
+    return "translate(" + x + "," + y + ")";
+  });
+
+wordsGroup.append("text")
+  .text(function(d) {
+    return d.text;
+  })
+  .style("font-size", function(d) {
+    return fontSizeScale(d.value) + "px";
+  })
+  .style("fill", function(d) {
+    return colorScale(d.value);
+  });
+}
+}
+
+*/
+       
+
 
       function showCorrection() {
          socket.emit('show-correction', { "sequence_id": "{{ sequence.id_unique }}" });
@@ -171,7 +492,7 @@
 
          var wrapper = document.createElement('div');
          wrapper.className = 'answer form-check form-switch answer-js flex-col-center-center';
-         
+
 
          var input = document.createElement('input');
          input.type = 'text';
@@ -245,7 +566,7 @@
          if (type == "ChoixMultiple") {
             for (var i = 0; i < question['question']['answers'].length; i++) {
                var reponse = question['question']['answers'][i]['text'];
-               
+
                var input = creerChoixMultipleInput(reponse, i, 0, 100);
                answers.appendChild(input);
             }
@@ -268,7 +589,6 @@
    <div>
       <div class="container-fluid bg-dark text-light py-3">
          <header class="text-center">
-            <h1 class="display-6">VisualisationProf</h1>
             {% if length > 1 %}
             <h2 class="display-6">Code de la sequence : {{ sequence.id_unique }}</h2>
             {% else %}
@@ -291,7 +611,8 @@
                         class="bi bi-arrow-right-circle"></i> Salut (test) </button>
                </div>
                <div>
-                  <label for="qst" class="text-light">Question <strong id="question-nb" class="text-light">0</strong> :</label>
+                  <label for="qst" class="text-light">Question <strong id="question-nb" class="text-light">0</strong>
+                     :</label>
                </div>
 
                <div id="qst" name="text"
@@ -303,36 +624,41 @@
                </div>
             </div>
 
-            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2" style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
+            <div id="answers" class="container my-2 bg-dark w-80 text-light p-2"
+               style="display:flex; flex-direction: column;justify-content: center;align-items: center; padding: 10px;">
             </div>
             <div>
-               <button id="btn-stop-reponses" class="btn btn-outline-warning" onclick="stopReponses()">Stopper les réponses</button>
-               <button id="btn-stop-reponses" class="btn btn-outline-danger" onclick="stopSequence()" style="float :right; display:block;position: absolute; top:0;left: 0;">Arrêter</button>
+               <button id="btn-stop-reponses" class="btn btn-outline-warning" onclick="stopReponses()">Stopper les
+                  réponses</button>
+               <button id="btn-stop-reponses" class="btn btn-outline-danger" onclick="stopSequence()"
+                  style="float :right; display:block;position: absolute; top:0;left: 0;">Arrêter</button>
 
             </div>
             <div>
-            <button id="btn-show-correction" class="d-none btn btn-outline-success" onclick="showCorrection()" style = "margin-top : 10px;">Afficher la correction</button>
+               <button id="btn-show-correction" class="d-none btn btn-outline-success" onclick="showCorrection()"
+                  style="margin-top : 10px;">Afficher la correction</button>
             </div>
-      </div>
+            <div>
+               <button id="btn-show-word-cloud" class="d-none btn btn-outline-success" onclick="showWordCloud()"
+                  style="margin-top : 10px;">Afficher le nuage</button>
+            </div>
+         </div>
+         <div style = "margin: 15px;">
+            <div id="word-cloud" style=" display:flex; align-items: center; justify-content: center;"></div>            
+         </div>
+
    </center>
 
    <script>
       mermaid.initialize({
          startOnLoad: true
       });
-      /*
-      var currentContent = 0;
-      var next_button = document.getElementById("next_button");
-      var prevBtn = document.getElementById("prevBtn");
-      var contentList = document.getElementsByClassName("card");
-      */
+
       var next_button = document.getElementById('next_button');
       next_button.addEventListener("click", function () {
          nextQuestion();
       });
-   
    </script>
-
 
 </body>
 
