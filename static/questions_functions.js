@@ -151,6 +151,8 @@ function visualiser() {
     } else if (type_question == "Alphanumerique") {
         var answers = document.getElementById("rep").value
     }
+    else {var answers = ""}
+
     var question = {
         "titre": document.getElementById("titre").value,
         "text": document.getElementById("qst").value,

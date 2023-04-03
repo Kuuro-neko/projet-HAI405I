@@ -146,6 +146,9 @@ def add_question():
                         answers = request.form['rep']
                     except:
                         answers = ""
+                elif type_question == "libre" : 
+                    answers = ""
+                    
                 user = session['user']
                 question = {
                     "type": type_question,
@@ -192,6 +195,8 @@ def edit_question(id_question):
                         answers = request.form['rep']
                     except:
                         answers = ""
+                elif type_question == "libre":
+                    answers = ""
 
                 user = session['user']
                 user_id = get_prof_id(user)
@@ -516,19 +521,27 @@ def send_answer(data):
     sid = data["sequence_id"]
     num = data["numero_etudiant"]
     answer = data["answers"]
-    try:
+    #try:
+    if sequencesCourantes[sid].getQuestionCourante()["question"]["type"] == "libre":
+        confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
+        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
+        reponses = sequencesCourantes[sid].extract_counts()
+        print("reponnnnnnnnnnnnnnnnnses : ", reponses)
+        emit('show-word-cloud', reponses, broadcast=True) 
+    else : 
         confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
         emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
         reponses = sequencesCourantes[sid].getNbReponsesCourantes()
         emit('refresh-answers', reponses, room=sid) # Rafraichissement des stats pour le prof
-    except Exception as e:
-        emit('error', {'message': str(e)})
+    #except Exception as e:
+     #   emit('error', {'message': str(e)})
 
 @socketio.on('stop-answers')
 def stop_answers(data):
     sid = data["sequence_id"]
     sequencesCourantes[sid].fermerReponses()
-    emit('stop-answers', broadcast=True)
+    typeQuestion = sequencesCourantes[sid].getQuestionCourante()["question"]["type"]
+    emit('stop-answers',typeQuestion, broadcast=True)
 
 @socketio.on('show-correction')
 def show_correction(data):
@@ -536,6 +549,15 @@ def show_correction(data):
     correction = sequencesCourantes[sid].getCorrectionCourante()
     print("Correction envoyée")
     emit('show-correction', correction, broadcast=True)
+    
+@socketio.on('show-word-cloud')
+def show_word_cloud(data):
+    sid = data["sequence_id"]
+    reponses = sequencesCourantes[sid].extract_counts() 
+    
+    print("reponnnnnnnnnnnnnnnnnses : ", reponses)
+    emit('show-word-cloud', reponses, broadcast=True)
+
 
 @socketio.on('next-question')
 def next_question(data):
@@ -562,6 +584,7 @@ def fermer_sequence(data):
 @socketio.on('toggleDisplayAnswers')
 def toggleDisplayAnswers(data):
     emit('toggleDisplayAnswers', data, broadcast=True)
+
     
 ################################################ ARCHIVES ################################################
 
@@ -602,6 +625,10 @@ def archive(id_sequence):
                             etudiant['reponses'].append(True) # Bonne réponse
                         else:
                             etudiant['reponses'].append(False) # Mauvaise réponse
+                    elif question['type'] == "libre":
+                        etudiant['reponses'].append(sequence['reponses'][question['id']][etudiant['numero_etudiant']])
+                        
+
                 etudiants.append(etudiant)
             return render_template('archive.html', sequence=sequence, sequence_id=id_sequence, etudiants=etudiants)
         else:
