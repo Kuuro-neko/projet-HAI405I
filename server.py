@@ -278,8 +278,6 @@ def generation_temp():
 @app.route('/controle', methods=['GET', 'POST'])
 def controle():
     try:
-        print("controle")
-        print(session['user_type'])
         if session['user_type'] == "prof":
             if request.method == 'POST':
                 # Récupération des données du formulaire
