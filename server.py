@@ -7,7 +7,6 @@ import os
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
-UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 socketio = SocketIO(app)
 
@@ -272,6 +271,77 @@ def generation():
     except KeyError:
         return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
 
+@app.route('/generation_temp')
+def generation_temp():
+    try:
+        if session['user_type'] == "prof":
+            return render_template('generation_temp.html')
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
+    except KeyError:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
+
+@app.route('/controle', methods=['GET', 'POST'])
+def controle():
+    try:
+        if session['user_type'] == "prof":
+            if request.method == 'POST':
+                # Récupération des données du formulaire
+                anonyme = request.form['identification']
+                if anonyme == "identifies":
+                    anonyme = False
+                else:
+                    anonyme = True
+                ordre = request.form['ordre']
+                if ordre == "tri":
+                    ordre = "ordre"
+                else:
+                    ordre = "aleatoire"
+                nb_questions = int(request.form['nb_questions'])
+                nb_controles = int(request.form['nb_controles'])
+                composition = json.loads(request.form['composition'])
+                for etiquette, bornes in composition.items():
+                    composition[etiquette] = (int(bornes[0]), int(bornes[1]))
+
+                questions = get_questions(session['user'])
+
+            
+                # Générer le controle
+                try:
+                    controles = generer_n_controles(nb_controles, nb_questions, composition, questions, ordre)
+                except Exception as exc:
+                    # Si problème de génération, retourner à la page de création de contrôle avec détail de l'erreur
+                    etiquette_dict = {}
+                    for question in questions:
+                        for etiquette in question['etiquettes']:
+                            if etiquette in etiquette_dict:
+                                etiquette_dict[etiquette] += 1
+                            else:
+                                etiquette_dict[etiquette] = 1
+                    etiquettes = []
+                    for etiquette, nb in etiquette_dict.items():
+                        etiquettes.append({"etiquette": etiquette, "nb": nb})
+                    return render_template("controle.html", etiquettes=etiquettes, error=exc)
+                # Retourner une page avec le controle
+                for controle in controles:
+                    for question in controle:
+                        question = traiter_question(question)
+                return render_template("SHOW_controle.html", controles=controles, anonyme=anonyme)
+            else:
+                questions = get_questions(session['user'])
+                etiquette_dict = {}
+                for question in questions:
+                    for etiquette in question['etiquettes']:
+                        if etiquette in etiquette_dict:
+                            etiquette_dict[etiquette] += 1
+                        else:
+                            etiquette_dict[etiquette] = 1
+                etiquettes = []
+                for etiquette, nb in etiquette_dict.items():
+                    etiquettes.append({"etiquette": etiquette, "nb": nb})
+                return render_template("controle.html", etiquettes=etiquettes)
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur1")
+    except KeyError:
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur2")
 
 @app.route('/show', methods=['POST'])
 def show():
@@ -451,20 +521,20 @@ def send_answer(data):
     sid = data["sequence_id"]
     num = data["numero_etudiant"]
     answer = data["answers"]
-    try:
-        if sequencesCourantes[sid].getQuestionCourante()["question"]["type"] == "libre":
-            confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
-            emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
-            reponses = sequencesCourantes[sid].extract_counts()
-            print("reponnnnnnnnnnnnnnnnnses : ", reponses)
-            emit('show-word-cloud', reponses, broadcast=True) 
-        else : 
-            confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
-            emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
-            reponses = sequencesCourantes[sid].getNbReponsesCourantes()
-            emit('refresh-answers', reponses, room=sid) # Rafraichissement des stats pour le prof
-    except Exception as e:
-        emit('error', {'message': str(e)})
+    #try:
+    if sequencesCourantes[sid].getQuestionCourante()["question"]["type"] == "libre":
+        confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
+        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
+        reponses = sequencesCourantes[sid].extract_counts()
+        print("reponnnnnnnnnnnnnnnnnses : ", reponses)
+        emit('show-word-cloud', reponses, broadcast=True) 
+    else : 
+        confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
+        emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
+        reponses = sequencesCourantes[sid].getNbReponsesCourantes()
+        emit('refresh-answers', reponses, room=sid) # Rafraichissement des stats pour le prof
+    #except Exception as e:
+     #   emit('error', {'message': str(e)})
 
 @socketio.on('stop-answers')
 def stop_answers(data):
@@ -556,7 +626,7 @@ def archive(id_sequence):
                         else:
                             etudiant['reponses'].append(False) # Mauvaise réponse
                     elif question['type'] == "libre":
-                        etudiant['reponses'].append(True) # Bonne réponse
+                        etudiant['reponses'].append(sequence['reponses'][question['id']][etudiant['numero_etudiant']])
                         
 
                 etudiants.append(etudiant)
@@ -568,4 +638,4 @@ def archive(id_sequence):
     
 if __name__ == '__main__':
     # Lancement du serveur
-    socketio.run(app, host=host, port=port, debug=False)
+    socketio.run(app, host=host, port=port, debug=True)

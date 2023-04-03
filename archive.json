@@ -437,6 +437,23 @@
         }
     },
     "GerrardLampard": {
+        "ac300615": {
+            "questions": [
+                {
+                    "type": "libre",
+                    "text": "<p>\n are we actually free ?\n</p>\n",
+                    "etiquettes": [],
+                    "answers": "",
+                    "titre": "libert\u00e9",
+                    "id": "ac300615"
+                }
+            ],
+            "reponses": {
+                "ac300615": {}
+            },
+            "etudiants": [],
+            "date": "02/04/2023, 15:19:10"
+        },
         "a1ab26a2": {
             "questions": [
                 {

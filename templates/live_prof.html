@@ -21,7 +21,7 @@
       var type;
       var cpt = 0;
       window.onload = function () {
-         socket = io.connect('http://' + location.host);
+         socket = io.connect('https://' + location.host);
          socket.emit('connect-prof', { "sequence_id": "{{ sequence.id_unique }}" });
 
          socket.on('connect-etu', function (data) {
