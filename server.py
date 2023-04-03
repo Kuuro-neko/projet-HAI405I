@@ -517,7 +517,7 @@ def connect_etu(data):
 @socketio.on('send-answer')
 def send_answer(data):
     print(data)
-    print("Réponse reçue")
+    print("Réponse reçue dans send_answer")
     sid = data["sequence_id"]
     num = data["numero_etudiant"]
     answer = data["answers"]
@@ -525,9 +525,13 @@ def send_answer(data):
     if sequencesCourantes[sid].getQuestionCourante()["question"]["type"] == "libre":
         confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
         emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
-        reponses = sequencesCourantes[sid].extract_counts()
-        print("reponnnnnnnnnnnnnnnnnses : ", reponses)
+        print(" Q Courante : ", sequencesCourantes[sid].getQuestionCourante())
+        reponses = sequencesCourantes[sid].extract_counts() 
         emit('show-word-cloud', reponses, broadcast=True) 
+        
+        nbReponses = sequencesCourantes[sid].getNbReponsesCourantes()
+        emit('refresh-answers', nbReponses, room=sid)
+        
     else : 
         confirm = sequencesCourantes[sid].ajouterReponse(num, answer)
         emit('confirm-answer', {'confirm': confirm}) # Message de confirmation pour le client etudiant
@@ -554,8 +558,6 @@ def show_correction(data):
 def show_word_cloud(data):
     sid = data["sequence_id"]
     reponses = sequencesCourantes[sid].extract_counts() 
-    
-    print("reponnnnnnnnnnnnnnnnnses : ", reponses)
     emit('show-word-cloud', reponses, broadcast=True)
 
 
