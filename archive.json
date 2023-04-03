@@ -683,7 +683,87 @@
                 "ac300615": {}
             },
             "etudiants": [],
-            "date": "02/04/2023, 15:19:10"
+            "date": "03/04/2023, 10:02:34"
+        },
+        "ec964a95": {
+            "questions": [
+                {
+                    "type": "ChoixMultiple",
+                    "text": "<h2>\n Quelle est la capitale du P\u00e9rou ?\n</h2>\n<p>\n <em>\n  Indice : ce n'est pas un animal\n </em>\n</p>\n",
+                    "etiquettes": [
+                        "Capitales"
+                    ],
+                    "answers": [
+                        {
+                            "text": "<p>\n Lama\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n Lima\n</p>\n",
+                            "isCorrect": "true"
+                        },
+                        {
+                            "text": "<p>\n Loma\n</p>\n",
+                            "isCorrect": "false"
+                        },
+                        {
+                            "text": "<p>\n Lime \u00e0 ongles\n</p>\n",
+                            "isCorrect": "false"
+                        }
+                    ],
+                    "titre": "Capitale P\u00e9rou",
+                    "id": "f01a6362"
+                },
+                {
+                    "type": "Alphanumerique",
+                    "text": "<p>\n 2 + 2 = ?\n</p>\n",
+                    "etiquettes": [],
+                    "answers": "4",
+                    "titre": "Math avanc\u00e9s",
+                    "id": "77fb19e0"
+                },
+                {
+                    "type": "libre",
+                    "text": "<p>\n are we actually free ?\n</p>\n",
+                    "etiquettes": [],
+                    "answers": "",
+                    "titre": "libert\u00e9",
+                    "id": "ac300615"
+                }
+            ],
+            "reponses": {
+                "f01a6362": {
+                    "<p>\n Lama\n</p>\n": [],
+                    "<p>\n Lima\n</p>\n": [
+                        "11111112"
+                    ],
+                    "<p>\n Loma\n</p>\n": [
+                        "11111115"
+                    ],
+                    "<p>\n Lime \u00e0 ongles\n</p>\n": []
+                },
+                "77fb19e0": {
+                    "3": [
+                        "11111112"
+                    ],
+                    "24": [
+                        "11111115"
+                    ]
+                },
+                "ac300615": {
+                    "hohohohooh": [
+                        "11111112"
+                    ],
+                    "khkhkhkhkhk": [
+                        "11111115"
+                    ]
+                }
+            },
+            "etudiants": [
+                "11111112",
+                "11111115"
+            ],
+            "date": "03/04/2023, 10:53:01"
         }
     }
 }

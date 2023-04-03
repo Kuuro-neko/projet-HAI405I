@@ -23,7 +23,7 @@
 
       window.onload = function () {
          // Initialisation de la connexion au serveur
-         socket = io.connect('https://' + location.host);
+         socket = io.connect('http://' + location.host);
          num = "{{ etudiant.numero_etudiant }}"
          console.log(num)
          id = "{{ sequence.id_unique }}"
@@ -120,6 +120,7 @@
             } else if (type == 'Alphanumerique' || type == 'libre') {
                reponses.push(document.getElementById('reponse').value);
             }
+            console.log("reponses : " + reponses + " id : " + id + " : " + num)
             socket.emit('send-answer', {
                'numero_etudiant': num,
                'sequence_id': id,
@@ -128,6 +129,7 @@
             fermerReponses();
             console.log("Réponses envoyées :");
             console.log(reponses);
+            console.log("Type : " + type);
          }
       }
 
@@ -229,10 +231,6 @@
          } else {
 
                answers.appendChild(creerAlphanumeriqueInputEtu("Saisissez votre réponse"));
-               if (type == "libre"){
-                  input = document.getElementById(reponse);
-                  input.pattern = pattern="^\S+$";
-               }
             }
       }
 

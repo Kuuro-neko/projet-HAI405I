@@ -21,7 +21,7 @@
       var type;
       var cpt = 0;
       window.onload = function () {
-         socket = io.connect('https://' + location.host);
+         socket = io.connect('http://' + location.host);
          socket.emit('connect-prof', { "sequence_id": "{{ sequence.id_unique }}" });
 
          socket.on('connect-etu', function (data) {
@@ -245,221 +245,8 @@
               .style("font-size", function(d) { return fontSizeScale(d.value) + "px"; })
               .style("fill", function(d) { return colorScale(d.value); });
           }
-          
-          
-          
-          
-       }
-
-      /*
-
-      function showWordCloud() {
-         var counts = {
-           "mot1": 10,
-           "mot2": 9,
-           "mot3": 8,
-           "mot4": 4,
-           "mot5": 4
-         };
-       
-         var data = Object.entries(counts).map(function(d) {
-           return {
-             text: d[0],
-             value: d[1]
-           };
-         }); // convert object to array of objects with text and value properties 
-       
-         // sort the data by value in descending order
-         data.sort(function(a, b) {
-           return b.value - a.value;
-         });
-       
-         var maxCount = data[0].value; // get the maximum count value
-       
-         var wordCloud = d3.select("#word-cloud").select("svg");
-         if (wordCloud.empty()) {
-           wordCloud = d3.select("#word-cloud").append("svg")
-             .attr("width", 600)
-             .attr("height", 500);
-         } else {
-           // empty the SVG for a new drawing
-           wordCloud.selectAll("*").remove();
-         }
-       
-         var fontSizeScale = d3.scaleLinear()
-           .domain([0, maxCount])
-           .range([15, 30]);
-       
-         var colorScale = d3.scaleLinear()
-           .domain([0, maxCount])
-           .range(["#FFA500", "#FFFF00"]); // dark yellow to yellow
-       
-         var centerWord = data[0];
-         var centerX = 300;
-         var centerY = 250;
-         var centerFontSize = fontSizeScale(centerWord.value);
-       
-         var simulation = d3.forceSimulation(data.slice(1))
-         .force("x", d3.forceX(centerX).strength(0.05))
-         .force("y", d3.forceY(centerY).strength(0.05))
-         .force("collide", d3.forceCollide().radius(function(d) {
-           return fontSizeScale(d.value) + 5;
-         }).iterations(3))
-         .force("repel", d3.forceManyBody().strength(-5).distanceMax(200))
-         .alphaDecay(0.01)
-         .on("tick", ticked);
-       
-
-           .alphaDecay(0.01)
-           .on("tick", ticked);
-       
-         var wordsGroup = wordCloud.selectAll("g")
-           .data(data.slice(1))
-           .enter().append("g")
-           .attr("transform", function(d) {
-             return "translate(" + d.x + "," + d.y + ")";
-           });
-       
-         wordsGroup.append("text")
-           .text(function(d) { return d.text; })
-           .style("font-size", function(d) { return fontSizeScale(d.value) + "px"; })
-           .style("fill", function(d) { return colorScale(d.value); });
-
-
-         var bbox = centerGroup.node().getBBox();
-         var centerX = bbox.width / 2;
-         var centerY = bbox.height / 2;
-
-         var centerGroup = wordCloud.append("g")
-           .attr("transform", "translate(" + centerX + "," + centerY + ")");
-       
-         centerGroup.append("text")
-           .text(centerWord.text)
-           .style("font-size", centerFontSize + "px")
-           .style("fill", "hsl(60, 100%, " + lightnessScale(centerWord.value) + "%)");
-       
-         function ticked() {
-           wordsGroup.attr("transform", function(d) {
-             return "translate(" + d.x + "," + d.y + ")";
-           });
-         }
-       }
-       */
-       
-
-       ////////////////////////////////// ROND //////////////////////////////////
-
-       /*
-
-       function showWordCloud() {
-         var counts = {
-            "momo":55,
-         "mot1": 35,
-         "mot2": 24,
-         "mot3": 18,
-         "mot4": 17,
-         "mot5": 16,
-         "mot6": 15,
-         "mot7": 14,
-         "mot8": 13,
-         "mot9": 12,
-
-         };
-         
-         var data = Object.entries(counts).map(function(d) {
-         return {
-         text: d[0],
-         value: d[1],
-         };
-         }); // convert object to array of objects with text and value properties
-         
-         // sort the data by value in descending order
-         data.sort(function(a, b) {
-         return b.value - a.value;
-         });
-         
-         var maxCount = data[0].value; // get the maximum count value
-         
-         var wordCloud = d3.select("#word-cloud").select("svg");
-         if (wordCloud.empty()) {
-         wordCloud = d3.select("#word-cloud").append("svg")
-         .attr("width", 600)
-         .attr("height", 500);
-         } else {
-         // empty the SVG for a new drawing
-         wordCloud.selectAll("*").remove();
-         }
-         
-         var fontSizeScale = d3.scaleLinear()
-         .domain([0, maxCount])
-         .range([15, 30]);
-         
-         var colorScale = d3.scaleLinear()
-         .domain([0, maxCount])
-         .range(["#FFA500", "#FFFF00"]); // dark yellow to yellow
-         
-         var layout = d3.layout.cloud()
-         .size([500, 300])
-         .words(data)
-         .padding(5)
-         .rotate(function() {
-         return 0;
-         })
-         .fontSize(function(d) {
-         return fontSizeScale(d.value);
-         })
-         .on("end", draw);
-         
-         layout.start();
-         
-         function draw(words) {
-         var centerWord = words[0];
-         var centerX = 300;
-         var centerY = 250;
-         var centerFontSize = fontSizeScale(centerWord.value);
-         var maxRadius = 225;
-         var angleStep = 2 * Math.PI / (words.length - 1);
-         var angle = 0;
-         var wordIndex = 1;
-         var centerGroup = wordCloud.append("g")
-  .attr("transform", "translate(" + centerX + "," + centerY + ")");
-
-centerGroup.append("text")
-  .text(centerWord.text)
-  .style("font-size", centerFontSize + "px")
-  .style("fill", function(d) {
-    return colorScale(centerWord.value);
-  });
-
-var wordsGroup = wordCloud.selectAll("g")
-  .data(words.slice(1))
-  .enter().append("g")
-  .attr("transform", function(d) {
-    var fontScale = d3.scaleLinear()
-      .domain([0, maxCount])
-      .range([1, 0.5]);
-    var radius = fontScale(d.value) * maxRadius;
-    var x = centerX + radius * Math.cos(angle);
-    var y = centerY + radius * Math.sin(angle);
-    angle += angleStep;
-    return "translate(" + x + "," + y + ")";
-  });
-
-wordsGroup.append("text")
-  .text(function(d) {
-    return d.text;
-  })
-  .style("font-size", function(d) {
-    return fontSizeScale(d.value) + "px";
-  })
-  .style("fill", function(d) {
-    return colorScale(d.value);
-  });
-}
-}
-
-*/
-       
+            
+       }   
 
 
       function showCorrection() {
@@ -547,20 +334,26 @@ wordsGroup.append("text")
          var qst = document.getElementById('qst');
          qst.innerHTML = question['question']['text'];
          // Affichage des réponses
-         var answers = document.getElementById('answers');
+         if(question['question']['type'] != 'libre'){
+            var answers = document.getElementById('answers');
 
-         answers.innerHTML = '';
-         var btndiv = document.createElement('div');
-         btndiv.className = 'answer form-check form-switch';
-         var btn = document.createElement('input');
-         btn.className = 'isCorrect form-check-input answers-btn';
-         btn.type = 'checkbox';
-         btn.name = 'correct';
-         btn.id = 'flexSwitchCheckDefault';
-         btn.checked = true;
-         btn.onchange = function () { toggleDisplayAnswers(this); };
-         btndiv.appendChild(btn);
-         answers.appendChild(btndiv);
+            answers.innerHTML = '';
+            var btndiv = document.createElement('div');
+            btndiv.className = 'answer form-check form-switch';
+            var btn = document.createElement('input');
+            btn.className = 'isCorrect form-check-input answers-btn';
+            btn.type = 'checkbox';
+            btn.name = 'correct';
+            btn.id = 'flexSwitchCheckDefault';
+            btn.checked = true;
+            btn.onchange = function () { toggleDisplayAnswers(this); };
+            btndiv.appendChild(btn);
+            answers.appendChild(btndiv);            
+         } else if (question['question']['type'] == 'libre') {
+            var answers = document.getElementById('answers');
+            answers.parentNode.removeChild(answers);
+         }
+
 
          type = question['question']['type'];
          if (type == "ChoixMultiple") {
