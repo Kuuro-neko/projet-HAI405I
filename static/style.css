@@ -160,7 +160,6 @@ code {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -199,8 +198,8 @@ code {
 }
 
 /* target the radio-id that have a checked input in its children */
-.radio-id > input:checked + .radio-id {
-    background-color: #28a746de !important;
+.radio-id.active {
+    background-color: #2196f3 !important;
 }
 
 .radio-id input {
@@ -210,22 +209,34 @@ code {
 #range-qst {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
 }
 
-#range-qst > * {
+.slider-label {
+    font-size: 22px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 60px;
     justify-content: flex-start;
+    width: 100%;
 }
 
-.sl-label {
-    margin-left: 50px;
-    font-weight: 600;
+.slider-label p {
+    margin: 5px;
     font-size: 22px;
+}
+
+.etiquette-slider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 35px;
+}
+
+.range-slider {
+    width: 30vw;
 }
 
 

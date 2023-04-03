@@ -278,12 +278,52 @@ def generation_temp():
 @app.route('/controle', methods=['GET', 'POST'])
 def controle():
     try:
+        print("controle")
+        print(session['user_type'])
         if session['user_type'] == "prof":
             if request.method == 'POST':
-                # To do : generation controle
-                return render_template("controle.html", controles=None)
+                # Récupération des données du formulaire
+                anonyme = request.form['identification']
+                if anonyme == "identifies":
+                    anonyme = False
+                else:
+                    anonyme = True
+                ordre = request.form['ordre']
+                if ordre == "tri":
+                    ordre = "ordre"
+                else:
+                    ordre = "aleatoire"
+                nb_questions = int(request.form['nb_questions'])
+                nb_controles = int(request.form['nb_controles'])
+                composition = json.loads(request.form['composition'])
+                for etiquette, bornes in composition.items():
+                    composition[etiquette] = (int(bornes[0]), int(bornes[1]))
+
+                questions = get_questions(session['user'])
+
+            
+                # Générer le controle
+                try:
+                    controles = generer_n_controles(nb_controles, nb_questions, composition, questions, ordre)
+                except Exception as exc:
+                    # Si problème de génération, retourner à la page de création de contrôle avec détail de l'erreur
+                    etiquette_dict = {}
+                    for question in questions:
+                        for etiquette in question['etiquettes']:
+                            if etiquette in etiquette_dict:
+                                etiquette_dict[etiquette] += 1
+                            else:
+                                etiquette_dict[etiquette] = 1
+                    etiquettes = []
+                    for etiquette, nb in etiquette_dict.items():
+                        etiquettes.append({"etiquette": etiquette, "nb": nb})
+                    return render_template("controle.html", etiquettes=etiquettes, error=exc)
+                # Retourner une page avec le controle
+                for controle in controles:
+                    for question in controle:
+                        question = traiter_question(question)
+                return render_template("SHOW_controle.html", controles=controles, anonyme=anonyme)
             else:
-                # To do : récupérer les etiquettes des questions du prof et les stats puis les envoyer a la page
                 questions = get_questions(session['user'])
                 etiquette_dict = {}
                 for question in questions:
@@ -296,9 +336,9 @@ def controle():
                 for etiquette, nb in etiquette_dict.items():
                     etiquettes.append({"etiquette": etiquette, "nb": nb})
                 return render_template("controle.html", etiquettes=etiquettes)
-        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur1")
     except KeyError:
-        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur")
+        return render_template("index.html", name=None, error="Vous devez être connecté en tant que professeur2")
 
 @app.route('/show', methods=['POST'])
 def show():
