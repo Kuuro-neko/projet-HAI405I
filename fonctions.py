@@ -160,12 +160,14 @@ class SequenceDeQuestions:
         counts = {}
         for key, values in data.items(): 
             for answer, numEtu in values.items():
+                """
                 answer_lemmas = []
                 doc = nlp(answer.lower())
                 for token in doc:
                     answer_lemmas.append(token.lemma_)
                 answer = " ".join(answer_lemmas)
-                #answer = answer.lower()
+                answer = answer.lower()
+                """
                 # On compare la réponse avec toutes les clés du dictionnaire
                 matches = [] # Liste des réponses qui equivalantes
                 for match in counts.keys():
