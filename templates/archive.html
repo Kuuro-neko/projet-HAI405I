@@ -28,10 +28,12 @@
 
                      {% for reponse in etudiant.reponses %}
                         <td style="vertical-align: middle;">
-                           {% if reponse %}
+                           {% if reponse and not reponse is string %}
                               <span class="badge bg-success">Correct</span>
-                           {% else %}
+                           {% elif not reponse  %}
                               <span class="badge bg-danger">Incorrect</span>
+                           {% else %}
+                              <span class="badge bg-info">{{ reponse }}</span>
                            {% endif %}
                         </td>
                      {% endfor %}

@@ -8,6 +8,9 @@ from datetime import datetime
 from hashlib import sha512
 from random import randint, shuffle, choice
 import copy
+import spacy
+
+nlp = spacy.load("fr_core_news_sm")
 
 UPLOAD_FOLDER = './uploads'
 
@@ -189,7 +192,11 @@ class SequenceDeQuestions:
         counts = {}
         for key, values in data.items(): 
             for answer, numEtu in values.items():
-                answer = answer.lower()
+                answer_lemmas = []
+                doc = nlp(answer.lower())
+                for token in doc:
+                    answer_lemmas.append(token.lemma)
+                answer = " ".join(answer_lemmas)
                 # On compare la réponse avec toutes les clés du dictionnaire
                 matches = [] # Liste des réponses qui equivalantes
                 for match in counts.keys():

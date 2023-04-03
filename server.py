@@ -628,7 +628,10 @@ def archive(id_sequence):
                         else:
                             etudiant['reponses'].append(False) # Mauvaise réponse
                     elif question['type'] == "libre":
-                        etudiant['reponses'].append(sequence['reponses'][question['id']][etudiant['numero_etudiant']])
+                        for answer_text, etu_list in sequence['reponses'][question['id']].items():
+                            if etudiant['numero_etudiant'] in etu_list:
+                                etudiant['reponses'].append(answer_text)
+                                break
                         
 
                 etudiants.append(etudiant)
