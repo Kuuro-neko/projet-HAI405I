@@ -143,40 +143,7 @@ class SequenceDeQuestions:
     def getReponsesCourantes(self):
         return self.reponses[self.etat] 
     
-    """
     def extract_counts(self):
-        data = self.reponses # de la forme {id_question : {reponse : [num_etu, num_etu, ...]}}
-        counts = {}
-        for key, values in data.items(): 
-            for answer, numEtu in values.items():
-                answer = answer.lower()
-                # On compare la réponse avec toutes les clés du dictionnaire
-                matches = [] # Liste des réponses qui equivalantes
-                for match in counts.keys():
-                    if levenshtein_distance(answer, match) <= 2:  # On utilise une limite de 2 modifications
-                        if len(numEtu)<=counts[match]:
-                            matches.append((match, counts[match], 0))
-                        else:
-                            matches.append((answer, (counts[match]+len(numEtu)), match))  
-                if matches:
-                    best_match = max(matches, key=lambda x: x[1])[0]
-                    if best_match in counts:
-                        counts[best_match] += len(numEtu)
-                    else:
-                        counts[best_match] = counts[matches[0][2]]
-                        counts[best_match] = matches[0][1]
-                        del counts[matches[0][2]]
-                else:
-                    counts[answer] = len(numEtu)
-        return counts  
-          
-    """
-    
-    def getQuestionCourante(self):
-        return {"question": self.questions[self.etat], "position": self.etat + 1, "total": len(self.questions)} 
-    
-    def extract_counts(self):
-        
         if len(self.questions) >1:
             idQ = self.questions[self.etat]["id"]
             reps = self.reponses
