@@ -143,7 +143,8 @@ class SequenceDeQuestions:
     def getReponsesCourantes(self):
         return self.reponses[self.etat] 
     
-    def extract_counts(self):
+    def extract_counts(self): 
+        
         if len(self.questions) >1:
             idQ = self.questions[self.etat]["id"]
             reps = self.reponses
@@ -162,8 +163,9 @@ class SequenceDeQuestions:
                 answer_lemmas = []
                 doc = nlp(answer.lower())
                 for token in doc:
-                    answer_lemmas.append(token.lemma)
+                    answer_lemmas.append(token.lemma_)
                 answer = " ".join(answer_lemmas)
+                #answer = answer.lower()
                 # On compare la réponse avec toutes les clés du dictionnaire
                 matches = [] # Liste des réponses qui equivalantes
                 for match in counts.keys():
